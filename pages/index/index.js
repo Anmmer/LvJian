@@ -6,56 +6,56 @@ Page({
   data: {
     userName: null,
     gezi: [{
-        icon: "photo-o",
+        icon: "/pages/image/kecheng1.png",
         wenzi: "扫码",
         linktype: "navigateTo",
         url: "/pages/qrcodeInfo/qrcodeInfo",
         img: "/pages/image/kecheng1.png"
       },
       {
-        icon: "photo-o",
+        icon: "/pages/image/kecheng2.png",
         wenzi: "计划",
         linktype: "navigateTo",
         url: "/pages/plan/plan",
         img: "/pages/image/kecheng2.png"
       },
       {
-        icon: "photo-o",
+        icon: "/pages/image/kecheng3.png",
         wenzi: "生产查看",
         linktype: "navigateTo",
         url: "/pages/producelook/producelook",
         img: "/pages/image/kecheng3.png"
       },
       {
-        icon: "photo-o",
+        icon: "/pages/image/kecheng3.png",
         wenzi: "生产确认",
         linktype: "navigateTo",
         url: "/pages/produce/produce",
         img: "/pages/image/kecheng3.png"
       },
       {
-        icon: "photo-o",
+        icon: "/pages/image/kecheng4.png",
         wenzi: "修补库",
         linktype: "navigateTo",
         url: "",
         img: "/pages/image/kecheng4.png"
       },
       {
-        icon: "photo-o",
+        icon: "/pages/image/kecheng5.png",
         wenzi: "扫码入库",
         linktype: "navigateTo",
         url: "/pages/inbound/inbound",
         img: "/pages/image/kecheng5.png"
       },
       {
-        icon: "photo-o",
+        icon: "/pages/image/kecheng5.png",
         wenzi: "扫码出库",
         linktype: "navigateTo",
         url: "/pages/outbound/outbound",
         img: "/pages/image/kecheng5.png"
       },
       {
-        icon: "photo-o",
+        icon: "/pages/image/kecheng5.png",
         wenzi: "盘点库存",
         linktype: "navigateTo",
         url: "/pages/checkWarehouse/checkWarehouse",
