@@ -1,0 +1,128 @@
+/**index.wxss**/
+.functionItem1 {
+  height: 100rpx;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content:center;
+  align-items:center;
+  background-color: rgb(18, 68, 233);
+}
+.functionItem2 {
+  height: 100rpx;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content:center;
+  align-items:center;
+  background-color: rgb(30, 144, 210);
+}
+.functionItem3 {
+  height: 100rpx;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content:center;
+  align-items:center;
+  background-color: rgb(10, 175, 51);
+}
+.functionItem4 {
+  height: 100rpx;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content:center;
+  align-items:center;
+  background-color: rgb(42, 230, 142);
+}
+.functionItem5 {
+  height: 100rpx;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content:center;
+  align-items:center;
+  background-color: rgb(42, 177, 230);
+}
+.functionItem6 {
+  height: 100rpx;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content:center;
+  align-items:center;
+  background-color: rgb(119, 184, 173);
+}
+.functionItem7 {
+  height: 100rpx;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content:center;
+  align-items:center;
+  background-color: rgb(188, 190, 20);
+}
+.emptyItem {
+  height: 75rpx;
+  width: 60%;
+}
+
+/* *************中间scrow-view************* */
+.major{
+  white-space: nowrap;  /*文本在同一行上继续*/
+  padding: 20rpx 20rpx;
+}
+.major .pic {
+  width: 100rpx;
+  height: 100rpx;
+}
+.major .txt{
+  font-size: 26rpx;
+} 
+.major .box{
+  text-align: center;
+  padding: 0 30rpx; /*上下0 左右30*/
+  display: inline-block;  /*不换行的块级元素*/
+}
+
+.zhanwei{
+  margin-bottom: 200rpx;
+}
+
+/*
+<view class="functionItem1" bindtap="toQrcodeInfo">
+    <text>查看构件二维码信息</text>
+  </view>
+
+  <view class="emptyItem"></view>
+  <view class="functionItem6">
+<navigator  url="/pages/produce/produce">浇捣确认</navigator>
+</view>
+
+<view class="emptyItem"></view>
+  <view class="functionItem2" bindtap="toProcessConfirm">
+    <text>质量检验</text>
+  </view>
+
+  
+  <view class="emptyItem"></view>
+  <view class="functionItem3" bindtap="toInbound">
+    <text>修补库</text>
+  </view>
+  <view class="emptyItem"></view>
+  <view class="functionItem4" bindtap="toOutbound">
+    <text>扫码出库</text>
+  </view>
+  <view class="emptyItem"></view>
+  <view class="functionItem5" bindtap="toCheckWarehouse">
+    <text>清点库存</text>
+  </view> 
+</view>
+*/

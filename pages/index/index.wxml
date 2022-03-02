@@ -1,0 +1,48 @@
+<!--index.wxml-->
+<view class="container">
+  <view class='navigation'>
+    <view class='startBar' style='height:{{startBarHeight}}px'></view>
+    <view class='navgation' style='height:{{navgationHeight}}px'>
+      <view class="wenzi">相城绿建</view>
+    </view>
+  </view>
+</view>
+<scroll-view class="major" scroll-x>
+  <navigator class="box" url="/pages/qrcodeInfo/qrcodeInfo">
+    <image class="pic" src="/pages/image/kecheng1.png"></image>
+    <view class="txt">扫码查</view>
+  </navigator>
+  <navigator class="box" url="/pages/plan/plan">
+    <image class="pic" src="/pages/image/kecheng2.png"></image>
+    <view class="txt">计划</view>
+  </navigator>
+  <navigator class="box" url="/pages/producelook/producelook">
+    <image class="pic" src="/pages/image/kecheng3.png"></image>
+    <view class="txt">生产查看</view>
+  </navigator>
+  <navigator class="box" url="/pages/produce/produce">
+    <image class="pic" src="/pages/image/kecheng3.png"></image>
+    <view class="txt">生产确认</view>
+  </navigator>
+
+</scroll-view>
+
+<scroll-view class="major" scroll-x>
+  <navigator class="box" url="">
+    <image class="pic" src="/pages/image/kecheng4.png"></image>
+    <view class="txt">修补库</view>
+  </navigator>
+  <navigator class="box" url="/pages/inbound/inbound">
+    <image class="pic" src="/pages/image/kecheng5.png"></image>
+    <view class="txt">扫码入库</view>
+  </navigator>
+  <navigator class="box" url="/pages/outbound/outbound">
+    <image class="pic" src="/pages/image/kecheng5.png"></image>
+    <view class="txt">扫码出库</view>
+  </navigator>
+  <navigator class="box" url="/pages/checkWarehouse/checkWarehouse">
+    <image class="pic" src="/pages/image/kecheng5.png"></image>
+    <view class="txt">盘点库存</view>
+  </navigator>
+</scroll-view>
+<view class="zhanwei"></view>

@@ -1,0 +1,16 @@
+.productItem{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:nowrap;
+  align-items:center;
+  justify-content: space-between;
+}
+.items{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+::-webkit-scrollbar {
+  display: none;
+}

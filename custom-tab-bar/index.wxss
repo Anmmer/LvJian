@@ -1,0 +1,4 @@
+/* pages/custom-tab-bar/index.wxss */
+.van-tabbar{
+  color: #fff;
+}

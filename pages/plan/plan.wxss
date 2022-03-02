@@ -1,0 +1,53 @@
+/* pages/plan/plan.wxss */
+.ipt{
+    border: 1px solid black;
+}
+
+.time{
+  display: flex;
+  
+}
+.date1{
+  background-color: #888;
+  width: 40rpx;
+  
+}
+
+.dynamic{
+    padding: 90rpx 0 70rpx;
+  }
+  .dyItem{
+      width: 100%;
+    display: flex;
+    padding: 15rpx 0;
+    border: 1px dashed #eee;
+    align-items: center;
+  }
+  .pic1{
+    width: 40rpx;
+    height: 35rpx;
+    background-color: green;
+    margin-right: 30rpx;
+    margin-left: 20rpx;
+  }
+  .pic2{
+    width: 40rpx;
+    height: 35rpx;
+    background-color: red;
+    margin-right: 30rpx;
+    margin-left: 20rpx;
+  }
+  .dyItem .txt{
+    width:100%;
+    display: flex;
+    flex-direction: column; /*垂直排列*/
+    justify-content: space-between; /*两端对齐*/
+  }
+  .dyItem .title{
+    font-size: 34rpx;
+  }
+  .dyItem .info{
+    font-size: 26rpx;
+    color: #888;
+    padding-top: 60rpx;
+  }

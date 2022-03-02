@@ -1,0 +1,9 @@
+<!--pages/planproduct/planproduct.wxml-->
+<text>pages/planproduct/planproduct.wxml</text>
+<view>计划编号：{{planid}}</view>
+<view wx:for="{{productlist}}" >
+    <view>物料编码：{{item.materialcode}}  构件号：{{item.preproductid}}</view>
+    <view>物料名称：{{item.materialname}}  质检员：{{item.qc}}</view>
+    <view>打印次数：{{item.print}}  序号：{{index}}</view>
+</view>
+

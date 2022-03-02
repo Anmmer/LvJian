@@ -1,0 +1,19 @@
+/* pages/index/my.wxss */
+.wenzi{
+  /* border:1rpx solid black; */
+  height: 100%;
+  width: 90%;
+  margin: 0rpx auto;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 40rpx;
+}
+
+
+
+
+
+.zhanwei{
+  margin-bottom: 200rpx;
+}

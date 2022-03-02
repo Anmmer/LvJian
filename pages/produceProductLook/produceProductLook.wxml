@@ -1,0 +1,8 @@
+<!--pages/produceProductLook/produceProductLook.wxml-->
+<text>接受的计划参数：{{planid}}</text>
+<view>构建信息</view>
+
+<view wx:for="{{productlist}}">
+<view>{{index}}构件号：{{item.preproductid}} 物料编码：{{item.materialcode}} 物料名称：{{item.materialname}}</view>
+<view>构件方量：{{item.fangliang}}</view>
+</view>

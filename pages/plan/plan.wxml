@@ -1,0 +1,28 @@
+<form bindsubmit="submit">
+  <input type="text" class="ipt" name="planname" placeholder="请输入计划名称" />
+  <input type="text" class="ipt" name="materialcode" placeholder="请输入物料编码" />
+  <view class="time">
+    <picker style="width: 50%;" mode="date" name="startime" value="{{date1}}" start="2018-09-01" end="2025-09-01" bindchange="bindDateChange1">
+      <view class="picker">开始日期: <text class="date1">{{date1}}</text></view>
+    </picker>
+
+    <picker style="width: 50%;" mode="date" name="endTime" value="{{date2}}" start="2018-09-01" end="2025-09-01" bindchange="bindDateChange2">
+      <view class="picker">结束日期: <text class="date1">{{date2}}</text></view>
+    </picker>
+  </view>
+  <button form-type="submit" type="primary">提交</button>
+</form>
+
+<view>计划信息</view>
+
+<view class="dynamic">
+  <view class="container">
+    <view class="dyItem" wx:for="{{planlist}}" data-id="{{item.plannumber}}" bindtap="product">
+      <view class="{{item.printstate?'pic1':'pic2'}}"></view>
+      <view class="txt">
+        <view class="title">项目名称：{{item.planname}}</view>
+        <view class="info"><text space="emsp">计划编号：{{item.plannumber}} 生产时间：2020-05-01</text></view>
+      </view>
+    </view>
+  </view>
+</view>

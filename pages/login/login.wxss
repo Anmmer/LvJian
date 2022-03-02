@@ -1,0 +1,25 @@
+/**login.wxss**/
+.LoginContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column; /**从上往下排列**/
+  flex-wrap: nowrap;      /**不换行**/
+  justify-content: center;/** 主轴上向上顶着排列**/
+  align-items:center;         /** 交叉轴上居中**/
+  padding: 100rpx 0;          /** 设定边距**/
+  box-sizing: border-box;
+}
+.InputStyle {
+  height: 50rpx;
+  width: 400rpx;
+  border-bottom: 2rpx solid black;
+}
+.EmptyStyle {
+  height: 50rpx;
+  width: 400rpx;
+}
+
+.TitleStyle{
+  font-size: large;
+  font-weight: bolder;
+}

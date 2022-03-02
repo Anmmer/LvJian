@@ -1,0 +1,12 @@
+<view>两个按钮，浇捣和检验，并显示待办数量</view>
+
+<view class="emptyItem"></view>
+  <view class="functionItem4" bindtap="jiaodao">
+    <text class="main">浇捣</text>
+    <text class="daipan">待办数量：{{pourMadeNumber}}</text>
+  </view>
+  <view class="emptyItem"></view>
+  <view class="functionItem5" bindtap="check">
+    <text class="main">质检</text>
+    <text class="daipan">待办数量：{{checkNumber}}</text>
+  </view> 

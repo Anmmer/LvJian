@@ -1,0 +1,22 @@
+<!--inbound.wxml-->
+<view class="functionContainer">
+  <text>入库</text>
+  <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;"
+  mode="scanCode" bindscancode="scanCode"></camera>
+  <view style="width:80%">
+    <text>库位:{{warehouse_id}} {{warehouse_name}}
+    </text>
+    <text>扫描到的构件有:
+    </text>
+    <view style="height:200px;width:100%;overflow-y:auto;">
+      <view wx:for="{{products}}">
+        <view class="items"><view><text> {{index+1}}. {{item}}</text></view><button data-id="{{index}}" style="width:100px" bindtap="deleteItem">删除</button></view>
+      </view>      
+    </view>
+  </view>
+  <view style="width:100%;height:20px;"></view>
+  <view class="productItem">
+    <button bindtap="deleteAll">清空扫描到的构件</button>
+    <button bindtap="submitAll">入库</button>
+  </view>
+</view>
