@@ -35,7 +35,7 @@ Page({
           app.globalData.userId = res.data.userId
           app.globalData.userName = res.data.userName
           // 页面跳转
-          wx.navigateTo({
+          wx.switchTab({
             url: '../index/index',
           })
         } 
@@ -98,7 +98,7 @@ Page({
                 duration: 1000
               })
               // 进行跳转界面
-              wx.navigateTo({
+              wx.switchTab({
                 url: '../index/index',
               })
             },

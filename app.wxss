@@ -1,19 +1,28 @@
 /**app.wxss**/
-.container {
+
+page {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
   height: 100%;
+  background-color: #f8f8f8;
+  font-size: 32rpx;
+  color: #333;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 40rpx 0;
-  box-sizing: border-box;
-} 
-.functionContainer {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0rpx 0;
-  box-sizing: border-box;
+ flex-direction: column;
 }
+.navigation{
+ background-color: #1E90FF;
+ position: fixed;
+ z-index: 100;
+ width: 100%;
+}
+.container{
+ flex: 1;
+ display: flex;
+ flex-direction: column;
+ position: relative;
+ 
+}
+

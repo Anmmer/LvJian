@@ -1,48 +1,47 @@
 <!--index.wxml-->
-<view class="container">
+<!--index.wxml top-->
+<view>
   <view class='navigation'>
     <view class='startBar' style='height:{{startBarHeight}}px'></view>
     <view class='navgation' style='height:{{navgationHeight}}px'>
       <view class="wenzi">相城绿建</view>
     </view>
   </view>
+  <!-- <view class='container'></view> -->
 </view>
-<scroll-view class="major" scroll-x>
-  <navigator class="box" url="/pages/qrcodeInfo/qrcodeInfo">
-    <image class="pic" src="/pages/image/kecheng1.png"></image>
-    <view class="txt">扫码查</view>
-  </navigator>
-  <navigator class="box" url="/pages/plan/plan">
-    <image class="pic" src="/pages/image/kecheng2.png"></image>
-    <view class="txt">计划</view>
-  </navigator>
-  <navigator class="box" url="/pages/producelook/producelook">
-    <image class="pic" src="/pages/image/kecheng3.png"></image>
-    <view class="txt">生产查看</view>
-  </navigator>
-  <navigator class="box" url="/pages/produce/produce">
-    <image class="pic" src="/pages/image/kecheng3.png"></image>
-    <view class="txt">生产确认</view>
-  </navigator>
+<view class="top" style="margin-top:{{startBarHeight+navgationHeight}}px">
+  <view class="containerq">
+    <view class="userinfo">
+      <block wx:if="{{canIUseOpenData}}">
+        <view class="userinfo-avatar" bindtap="bindViewTap">
+          <open-data type="userAvatarUrl"></open-data>
+        </view>
+        <open-data class="username" type="userNickName"></open-data>
+      </block>
+      <block wx:elif="{{!hasUserInfo}}">
+        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
+        <button wx:elif="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+        <view wx:else> 请使用1.4.4及以上版本基础库 </view>
+      </block>
+      <block wx:else>
+        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+        <text class="userinfo-nickname">{{userInfo.nickName}}hdadi</text>
+      </block>
+      <!-- <button class="login" bindtap="login">未登录</button> -->
+    </view>
+  </view>
+</view>
+<!-- 热门服务 宫格 -->
+<view class="mid">
+  <view class="tiaomu1"> <text class="mark">|</text> 热门服务</view>
+  <van-grid column-num="2" border="{{ false }}">
+    <van-grid-item icon="{{item.icon}}" text="{{item.wenzi}}" wx:for="{{ gezi }}" link-type="{{item.linktype}}"
+      url="{{item.url}}">
+      <!-- use-slot 自定义图片时加上这个属性-->
+      <image style="width: 100%; height: 100px;" src="{{item.img}}" />
+      <!-- <view>{{item.wenzi}}</view> -->
+    </van-grid-item>
+  </van-grid>
+</view>
 
-</scroll-view>
-
-<scroll-view class="major" scroll-x>
-  <navigator class="box" url="">
-    <image class="pic" src="/pages/image/kecheng4.png"></image>
-    <view class="txt">修补库</view>
-  </navigator>
-  <navigator class="box" url="/pages/inbound/inbound">
-    <image class="pic" src="/pages/image/kecheng5.png"></image>
-    <view class="txt">扫码入库</view>
-  </navigator>
-  <navigator class="box" url="/pages/outbound/outbound">
-    <image class="pic" src="/pages/image/kecheng5.png"></image>
-    <view class="txt">扫码出库</view>
-  </navigator>
-  <navigator class="box" url="/pages/checkWarehouse/checkWarehouse">
-    <image class="pic" src="/pages/image/kecheng5.png"></image>
-    <view class="txt">盘点库存</view>
-  </navigator>
-</scroll-view>
 <view class="zhanwei"></view>
