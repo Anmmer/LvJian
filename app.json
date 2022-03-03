@@ -38,7 +38,7 @@
     "pages/check/check",
     "pages/test/test",
     "pages/plan/plan",
-    "pages/planproduct/planproduct",
+    "pages/planDetail/planDetail",
     "custom-tab-bar/index",
     "pages/my/my"
   ],

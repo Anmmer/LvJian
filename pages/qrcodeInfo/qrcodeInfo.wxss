@@ -9,3 +9,14 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
+.wenzi{
+  /* border:1rpx solid black; */
+  height: 100%;
+  width: 90%;
+  margin: 0rpx auto;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 40rpx;
+}

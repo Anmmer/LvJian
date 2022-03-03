@@ -23,7 +23,6 @@ Page({
         productId = strs[i].substring(idx+1)
       }
     }
-    console.log(productId)
     if(productId != null){
       wx.request({
         url: 'http://101.132.73.7:8989/DuiMa/GetProductInfo',
@@ -35,7 +34,6 @@ Page({
           "content-type":'application/x-www-form-urlencoded'
         },
         success(res){
-          console.log(res.data)
           that.setData({dataArray:JSON.parse(res.data.produceInfo)})
           
           if(typeof(res.data.warehouse_name) != "undefined"){
@@ -55,6 +53,7 @@ Page({
         duration:1000
       })
     }
+    
     /*
     var index1 = resultstr.indexOf("\n")
     var str1 = resultstr.substring(0,index1)
@@ -78,5 +77,28 @@ Page({
       }
     })
     */
-  }
+  },
+  onLoad() {
+    this.setNavigation();
+  },
+  setNavigation() {
+    let startBarHeight = 20
+    let navgationHeight = 44
+    let that = this
+    wx.getSystemInfo({
+      success: function (res) {
+        console.log(res.model)
+        if (res.model == 'iPhone X') {
+          startBarHeight = 44
+        }
+        that.setData({
+          startBarHeight: startBarHeight,
+          navgationHeight: navgationHeight
+        })
+      }
+    })
+  },
+  fanhui:function(){
+    wx.navigateBack()
+  },
 })

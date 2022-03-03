@@ -1,6 +1,4 @@
-/* pages/plan/plan.wxss */
-
-.wenzi {
+.wenzi{
   /* border:1rpx solid black; */
   height: 100%;
   width: 90%;
@@ -10,8 +8,7 @@
   color: #fff;
   font-size: 40rpx;
 }
-
-.title {
+.title{
   width: 100%;
   height: 100rpx;
   line-height: 100rpx;

@@ -19,6 +19,7 @@ App({
     wxId: null,
     userName: null,
     pcauthority:null,
-    fauthority:null
+    fauthority:null,
+    minDate:'2022-1-1'
   }
 })

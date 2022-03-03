@@ -1,42 +1,140 @@
 // pages/plan/plan.js
+const app = getApp();
+import utils from "../../utils/util"
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    planlist:[],
-    planname:'',
-    materialcode:'',
-    date1: '',
-    date2: '',
-    pages:0
+    planname: '',
+    materialcode: '',
+    pages: 0,
+    show1: false,
+    show2: false,
+    currentDate1: new Date().getTime(), // 初始日期 // 时间戳补 3 位
+    currentDate2: new Date().getTime(), // 初始日期 // 时间戳补 3 位
+    minDate: app.globalData.minDate, // 最小时间
+    // 时间 - 显示赋值
+    formatter(type, value) {
+      if (type === 'year') {
+        return `${value} 年 `;
+      } else if (type === 'month') {
+        return `${value} 月 `;
+      } else if (type === 'day') {
+        return `${value} 日 `;
+      }
+      return value;
+    }
+  },
+  // 时间 - 当值变化时触发的事件 start
+  onInput1(event) {
+    var newTime = new Date(event.detail);
+    if (this.data.show == 0) {
+      newTime = null;
+    } else {
+      newTime = utils.formatTime(newTime);
+    }
+    this.setData({
+      currentDate: event.detail,
+    });
+  },
+  // 时间 - 当值变化时触发的事件 end
+  onInput2(event) {
+    var etime = event.detail + (86400 - 1) * 1000;
+    var newTime = new Date(etime);
+    if (this.data.show2 == false) {
+      newTime = null;
+    } else {
+      newTime = utils.formatTime(newTime);
+    }
+    this.setData({
+      currentDate2: event.detail,
+    });
+  },
+  // 时间 - 弹出框
+  showPopup1() {
+    this.setData({
+      key1: 1
+    });
+    this.setData({
+      show1: true
+    });
+  },
+  // 时间 - 弹出框
+  showPopup2() {
+    this.setData({
+      key2: 1
+    });
+    this.setData({
+      show2: true
+    });
+  },
+  // 时间 - 弹出框关闭
+  onClose() {
+    this.setData({
+      show1: false
+    });
+    this.setData({
+      show2: false
+    });
+  },
+  // 时间 - 确定按钮
+  confirmFn1(e) {
+    var newTime = new Date(e.detail);
+    newTime = utils.formatTime(newTime);
+    this.setData({
+      start_date: newTime
+    });
+    this.setData({
+      show1: false
+    });
+  },
+  // 时间 - 确定按钮
+  confirmFn2(e) {
+    var newTime = new Date(e.detail);
+    newTime = utils.formatTime(newTime);
+    this.setData({
+      end_date: newTime
+    });
+    this.setData({
+      show2: false
+    });
+  },
+  // 时间 - 取消按钮
+  cancelFn() {
+    this.setData({
+      show1: false
+    });
+    this.setData({
+      show2: false
+    });
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.showLoading({
-      title: '加载数据中',
-    })
-    this.lookPlan()
-
+    // wx.showLoading({
+    //   title: '加载数据中',
+    // })
+    this.setNavigation();
+    // this.lookPlan()
   },
-  lookPlan(){
+  lookPlan() {
     var that = this
-    var newPage=that.data.pages+1
-        that.setData({
-            pages:newPage
-        })
+    var newPage = that.data.pages + 1
+    that.setData({
+      pages: newPage
+    })
     wx.request({
-      url: 'http://101.132.73.7:8989/DuiMa/GetPlanWx',
+      url: 'http://localhost:8989/DuiMa/GetPlan',
       data: {
-       // productState: 0,
+        // productState: 0,
         pageCur: that.data.pages,
         pageMax: 10,
         materialcode: that.data.materialcode,
-        startDate: that.data.date1,
-        endDate: that.data.date2,
+        startDate: that.data.start_date,
+        endDate: that.data.end_date,
         planname: that.data.planname,
 
       },
@@ -46,62 +144,33 @@ Page({
       },
       success(res) {
         wx.hideLoading({
-          success: (res) => {                   
-          },
+          success: (res) => {},
         })
         console.log('加载计划页面访问成功')
-        console.log(res)
-        that.setData({
-          planlist: that.data.planlist.concat(res.data.data)
+        console.log(res.data.data)
+        wx.navigateTo({
+          url: '../planDetail/planDetail?planList=' + JSON.stringify(res.data.data),
         })
-        
-        
       }
-
     })
   },
 
-  submit(e){
-    var that=this
+  submit(e) {
+    var that = this
     that.setData({
-        planname:e.detail.value.planname,
-        materialcode:e.detail.value.materialcode,
-        date1:e.detail.value.startime,
-        date2:e.detail.value.endTime,
-        planlist:[],
-        pages:0
-
+      planname: e.detail.value.planname,
+      materialcode: e.detail.value.materialcode,
+      start_date: e.detail.value.start_date,
+      end_date: e.detail.value.end_date,
+      planlist: [],
+      pages: 0
     })
-    console.log("发送请求前数据核对：",that.data.materialcode)
-    console.log("发送请求前数据核对：",that.data.planname)
-    console.log("发送请求前数据核对：",that.data.date1)
-    console.log("发送请求前数据核对：",that.data.date2)
+    wx.showLoading({
+      title: '数据加载中',
+    })
     this.lookPlan()
-    // wx.request({
-    //   url: 'http://101.132.73.7:8989/DuiMa/GetPlanWx',
-    //   data: {
-    //     materialcode: that.data.materialcode,
-    //     startDate: that.data.date1,
-    //     endDate: that.data.date2,
-    //     planname: that.data.planname,
-    //    // productState: 0,
-    //     pageCur: that.data.pages,
-    //     pageMax: 10
-    //   },
-    //   method: 'POST',
-    //   header: {
-    //     "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
-    //   },
-    //   success(res) {
-    //     console.log('计划单搜索成功')
-    //     console.log(res.data.data)
-    //     that.setData({
-    //       planlist: res.data.data
-    //     })
-    //   }
-    // })
   },
-  
+
   product(options) {
     console.log("传入的计划id", options.currentTarget.dataset.id)
     wx.navigateTo({
@@ -122,7 +191,7 @@ Page({
     })
   },
 
-  
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -171,5 +240,25 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+  setNavigation() {
+    let startBarHeight = 20
+    let navgationHeight = 44
+    let that = this
+    wx.getSystemInfo({
+      success: function (res) {
+        console.log(res.model)
+        if (res.model == 'iPhone X') {
+          startBarHeight = 44
+        }
+        that.setData({
+          startBarHeight: startBarHeight,
+          navgationHeight: navgationHeight
+        })
+      }
+    })
+  },
+  fanhui: function () {
+    wx.navigateBack()
+  },
 })

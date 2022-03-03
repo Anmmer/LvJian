@@ -1,5 +1,11 @@
 <!--qrcodeInfo.wxml-->
 <view class="functionContainer">
+  <view class='navigation'>
+    <view class='startBar' style='height:{{startBarHeight}}px'></view>
+    <view class='navgation' style='height:{{navgationHeight}}px'>
+      <view class="wenzi" bindtap="fanhui">返回</view>
+    </view>
+  </view>
   <text>二维码信息查询</text>
   <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;"
   mode="scanCode" bindscancode="scanCode"></camera>
