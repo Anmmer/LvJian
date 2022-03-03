@@ -6,9 +6,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    planname: '',
-    materialcode: '',
-    pages: 0,
     show1: false,
     show2: false,
     currentDate1: new Date().getTime(), // 初始日期 // 时间戳补 3 位
@@ -114,61 +111,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // wx.showLoading({
-    //   title: '加载数据中',
-    // })
     this.setNavigation();
-    // this.lookPlan()
   },
-  lookPlan() {
-    var that = this
-    var newPage = that.data.pages + 1
-    that.setData({
-      pages: newPage
-    })
-    wx.request({
-      url: 'http://localhost:8989/DuiMa/GetPlan',
-      data: {
-        // productState: 0,
-        pageCur: that.data.pages,
-        pageMax: 10,
-        materialcode: that.data.materialcode,
-        startDate: that.data.start_date,
-        endDate: that.data.end_date,
-        planname: that.data.planname,
 
-      },
-      method: 'POST',
-      header: {
-        "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      success(res) {
-        wx.hideLoading({
-          success: (res) => {},
-        })
-        console.log('加载计划页面访问成功')
-        console.log(res.data.data)
-        wx.navigateTo({
-          url: '../planDetail/planDetail?planList=' + JSON.stringify(res.data.data),
-        })
-      }
-    })
-  },
 
   submit(e) {
-    var that = this
-    that.setData({
-      planname: e.detail.value.planname,
-      materialcode: e.detail.value.materialcode,
-      start_date: e.detail.value.start_date,
-      end_date: e.detail.value.end_date,
-      planlist: [],
-      pages: 0
+    
+    wx.navigateTo({
+      url: '../planDetail/planDetail?planname=' + e.detail.value.planname +
+        '&materialcode=' + e.detail.value.materialcode +
+        '&start_date=' + e.detail.value.start_date +
+        '&end_date=' + e.detail.value.end_date
     })
-    wx.showLoading({
-      title: '数据加载中',
-    })
-    this.lookPlan()
   },
 
   product(options) {
@@ -177,18 +131,6 @@ Page({
       url: '../planproduct/planproduct?id=' + options.currentTarget.dataset.id,
     })
 
-  },
-  bindDateChange1: function (e) {
-    console.log('picker发送选择改变，开始日期携带值为', e.detail.value)
-    this.setData({
-      date1: e.detail.value
-    })
-  },
-  bindDateChange2: function (e) {
-    console.log('picker发送选择改变，结束日期携带值为', e.detail.value)
-    this.setData({
-      date2: e.detail.value
-    })
   },
 
 
