@@ -5,32 +5,52 @@ Page({
    * 页面的初始数据
    */
   data: {
-      pourMadeNumber:0,
-      checkNumber:0
+    pourMadeNumber: 0,
+    checkNumber: 0
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-     this.pourData()
+    this.setNavigation();
+    // this.pourData();
   },
-  pourData(){
-    var that=this
+  pourData() {
+    var that = this
     console.log("查询数量")
     wx.request({
-      url: 'http://101.132.73.7:8989/DuiMa/GetPourCheckNum',
-
+      url: 'http://localhost:8989/DuiMa/GetPourCheckNum',
       method: 'POST',
       header: {
-          "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
+        "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      success(res){
-        console.log('查询浇捣数量成功',res)
+      success(res) {
+        console.log('查询浇捣数量成功', res)
         console.log(res.data.data[0].pourNum)
         console.log(res.data.data[1].inspectNum)
         that.setData({
-          pourMadeNumber:res.data.data[0].pourNum,
-          checkNumber:res.data.data[1].inspectNum
+          pourMadeNumber: res.data.data[0].pourNum,
+          checkNumber: res.data.data[1].inspectNum
+        })
+      }
+    })
+  },
+  fanhui: function () {
+    wx.navigateBack()
+  },
+  setNavigation() {
+    let startBarHeight = 20
+    let navgationHeight = 44
+    let that = this
+    wx.getSystemInfo({
+      success: function (res) {
+        console.log(res.model)
+        if (res.model == 'iPhone X') {
+          startBarHeight = 44
+        }
+        that.setData({
+          startBarHeight: startBarHeight,
+          navgationHeight: navgationHeight
         })
       }
     })

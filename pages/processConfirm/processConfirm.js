@@ -114,5 +114,32 @@ Page({
         duration:1000
       })
     }
-  }
+  },
+    /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.setNavigation();
+    // this.pourData();
+  },
+  fanhui: function () {
+    wx.navigateBack()
+  },
+  setNavigation() {
+    let startBarHeight = 20
+    let navgationHeight = 44
+    let that = this
+    wx.getSystemInfo({
+      success: function (res) {
+        console.log(res.model)
+        if (res.model == 'iPhone X') {
+          startBarHeight = 44
+        }
+        that.setData({
+          startBarHeight: startBarHeight,
+          navgationHeight: navgationHeight
+        })
+      }
+    })
+  },
 })

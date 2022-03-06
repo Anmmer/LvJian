@@ -37,6 +37,7 @@
     "pages/produce/produce",
     "pages/produceProductLook/produceProductLook",
     "pages/producelook/producelook",
+    "pages/producelookDetail/producelookDetail",
     "pages/check/check",
     "pages/test/test",
     "pages/plan/plan",

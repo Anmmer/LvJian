@@ -116,7 +116,7 @@ Page({
 
 
   submit(e) {
-    
+    console.log(e.detail.value)
     wx.navigateTo({
       url: '../planDetail/planDetail?planname=' + e.detail.value.planname +
         '&materialcode=' + e.detail.value.materialcode +
@@ -124,15 +124,6 @@ Page({
         '&end_date=' + e.detail.value.end_date
     })
   },
-
-  product(options) {
-    console.log("传入的计划id", options.currentTarget.dataset.id)
-    wx.navigateTo({
-      url: '../planproduct/planproduct?id=' + options.currentTarget.dataset.id,
-    })
-
-  },
-
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -169,13 +160,7 @@ Page({
 
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-    console.log('触底了')
-    this.lookPlan()
-  },
+
 
   /**
    * 用户点击右上角分享

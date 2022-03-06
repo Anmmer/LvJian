@@ -1,37 +1,23 @@
-<text>生产页面</text>
-<text>显示生产计划信息</text>
-
-<form bindsubmit="bindsubmit">
-    <input name='input1' type="text" bindinput="wuliaobianma" placeholder="请输入物料编码"/>
-    <icon type="search" size="15"></icon>
-    <input name='input2' type="text" bindinput="planidselect" placeholder="请输入项目名称"/>
-    <view class="select">
-    <radio-group name='radio1'>
-        <label><radio value="0">生产中</radio></label>
-        <label><radio value="1">已完成</radio></label>
-    </radio-group>
+<view>
+  <view class='navigation'>
+    <view class='startBar' style='height:{{startBarHeight}}px'></view>
+    <view class='navgation' style='height:{{navgationHeight}}px'>
+      <view class="wenzi" bindtap="fanhui">返回</view>
     </view>
-    <button form-type="submit">提交</button>
-</form>
+  </view>
 
-<view>输入的计划编号为：{{plannumber}}</view>
-<view>输入的物料编码为：{{materialcode}}</view>
-<view>选择的生产状态为：{{productstate}}</view>
-
-<view wx:for="{{planlist}}">
-    <view>计划编号：{{item.plannumber}}</view>
-    <view>项目名称：{{item.planname}}</view>
-    <view>生产状态：{{item.checkstate}}</view>
-</view>
-
-<view class="dynamic">
-  <view class="container">
-    <view class="dyItem" wx:for="{{planlist}}" data-id="{{item.plannumber}}" bindtap="product">
-      <view class="{{item.printstate?'pic1':'pic2'}}"></view>
-      <view class="txt">
-        <view class="title">项目名称：{{item.planname}}</view>
-        <view class="info"><text space="emsp">计划编号：{{item.plannumber}} 生产时间：2020-05-01</text></view>
-      </view>
-    </view>
+  <view style="margin-top:{{startBarHeight+navgationHeight}}px">
+    <view class="title">生产信息查询</view>
+    <form bindsubmit="bindsubmit">
+      <van-cell-group>
+        <van-field label="计划名称" name="input1" placeholder="请输入物料编码" />
+        <van-field label="物料编码" name="input2" placeholder="请输入项目名称" />
+        <van-radio-group  name='radio1' bind:change="onChange">
+          <van-radio name="0">待生产</van-radio>
+          <van-radio name="1">已生产</van-radio>
+        </van-radio-group>
+        <button form-type="submit" style="background-color: #1989fa;" type="primary">查询</button>
+      </van-cell-group>
+    </form>
   </view>
 </view>

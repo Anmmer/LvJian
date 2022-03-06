@@ -6,19 +6,17 @@
     </view>
   </view>
   <view style="margin-top:{{startBarHeight+navgationHeight}}px">
-    <view class="title">计划信息</view>
+    <view class="title">生产信息</view>
     <van-collapse value="{{ activeNames }}" bind:change="onChange">
       <van-collapse-item wx:for="{{planList}}" wx:key="planList" name="{{item.plannumber}}">
         <view slot="title">
-          <view>项目名称：{{item.planname}} </view>
-          <view>生产时间：{{item.plantime}}</view>
+          <view>项目名称：{{item.planname}}</view>
+          <view style="{{item.style}}">生产状态：{{item.state}}</view>
         </view>
         <view wx:for="{{preproductList}}" wx:key="preproductList">
           <view>物料编码：{{item.materialcode}} </view>
           <view>物料名称：{{item.materialname}} </view>
-          <view>质 检 员：{{item.qc}}</view>
-          <view>构 件 号：{{item.preproductid}}</view>
-          <view>打印次数：{{item.print}} </view>
+          <view style="{{item.style}}">生产状态：{{item.state}}</view>
           <text>\n</text>
         </view>
       </van-collapse-item>

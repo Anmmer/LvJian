@@ -1,38 +1,20 @@
-.dynamic{
-    padding: 90rpx 0 70rpx;
-  }
-  .dyItem{
-      width: 100%;
+  .wenzi{
+    /* border:1rpx solid black; */
+    height: 100%;
+    width: 90%;
+    margin: 0rpx auto;
     display: flex;
-    padding: 15rpx 0;
-    border: 1px dashed #eee;
     align-items: center;
+    color: #fff;
+    font-size: 40rpx;
   }
-  .pic1{
-    width: 40rpx;
-    height: 35rpx;
-    background-color: green;
-    margin-right: 30rpx;
-    margin-left: 20rpx;
-  }
-  .pic2{
-    width: 40rpx;
-    height: 35rpx;
-    background-color: red;
-    margin-right: 30rpx;
-    margin-left: 20rpx;
-  }
-  .dyItem .txt{
-    width:100%;
-    display: flex;
-    flex-direction: column; /*垂直排列*/
-    justify-content: space-between; /*两端对齐*/
-  }
-  .dyItem .title{
+  .title{
+    width: 100%;
+    height: 100rpx;
+    line-height: 100rpx;
+    /* padding-left: 10rpx; */
+    color: #1E90FF;
     font-size: 34rpx;
-  }
-  .dyItem .info{
-    font-size: 26rpx;
-    color: #888;
-    padding-top: 60rpx;
+    background-color: #fff;
+    text-align: center;
   }

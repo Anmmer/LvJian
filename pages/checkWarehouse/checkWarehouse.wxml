@@ -1,11 +1,20 @@
 <!--checkWarehouse.wxml-->
-<view class="functionContainer">
-  <test>清点库存</test>
-  <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;"
-  mode="scanCode" bindscancode="scanCode"></camera>
-  <text>库房名:{{warehouse_name}}</text>
-  <text>该库房存在的构件有:</text>
-  <view wx:for="{{products}}">
-    <text>{{index}}. {{item}}</text>
+<view>
+  <view class='navigation'>
+    <view class='startBar' style='height:{{startBarHeight}}px'></view>
+    <view class='navgation' style='height:{{navgationHeight}}px'>
+      <view class="wenzi" bindtap="fanhui">返回</view>
+    </view>
+  </view>
+  <view style="margin-top:{{startBarHeight+navgationHeight}}px">
+    <view class="functionContainer">
+      <test>清点库存</test>
+      <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;" mode="scanCode" bindscancode="scanCode"></camera>
+      <text>库房名:{{warehouse_name}}</text>
+      <text>该库房存在的构件有:</text>
+      <view wx:for="{{products}}">
+        <text>{{index}}. {{item}}</text>
+      </view>
+    </view>
   </view>
 </view>

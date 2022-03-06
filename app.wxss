@@ -23,6 +23,25 @@ page {
  display: flex;
  flex-direction: column;
  position: relative;
- 
+}
+.mid {
+  width: 95%;
+  /* border: black 1rpx solid; */
+  background-color: #fff;
+  margin: 25rpx auto 0rpx;
+  padding-bottom: 20rpx;
+}
+.tiaomu1 {
+  color: #000;
+  height: 60rpx;
+  line-height: 60rpx;
+  /* border: black 1rpx solid; */
+  /* width: 95%; */
+  margin-left: 20rpx;
+  font-weight: 800;
 }
 
+.mark {
+  color: #1E90FF;
+  font-weight: 1000;
+}
