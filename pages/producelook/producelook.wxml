@@ -7,17 +7,22 @@
   </view>
 
   <view style="margin-top:{{startBarHeight+navgationHeight}}px">
-    <view class="title">生产信息查询</view>
-    <form bindsubmit="bindsubmit">
-      <van-cell-group>
-        <van-field label="计划名称" name="input1" placeholder="请输入物料编码" />
-        <van-field label="物料编码" name="input2" placeholder="请输入项目名称" />
-        <van-radio-group  name='radio1' bind:change="onChange">
-          <van-radio name="0">待生产</van-radio>
-          <van-radio name="1">已生产</van-radio>
-        </van-radio-group>
-        <button form-type="submit" style="background-color: #1989fa;" type="primary">查询</button>
-      </van-cell-group>
-    </form>
+    <view class="mid">
+      <view class="tiaomu1"> <text class="mark">|</text> 生产信息查询</view>
+      <form bindsubmit="bindsubmit">
+        <van-cell-group>
+          <van-field label="计划名称" name="input1" placeholder="请输入物料编码" />
+          <van-field label="物料编码" name="input2" placeholder="请输入项目名称" />
+          <view style="height:44px;display: flex;flex-wrap: wrap;margin: 0 auto;align-items: center;width: 90%;">
+            <view style="color: #646566;font-size: 14px;">生产状态</view>
+            <van-radio-group name='radio1' style="margin-left: 40px;" direction="horizontal" bind:change="onChange">
+              <van-radio name="0">待生产</van-radio>
+              <van-radio name="1">已生产</van-radio>
+            </van-radio-group>
+          </view>
+        </van-cell-group>
+        <button form-type="submit" style="background-color: #1989fa;margin-top: 5px;" type="primary">查询</button>
+      </form>
+    </view>
   </view>
 </view>

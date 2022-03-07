@@ -38,6 +38,7 @@
   align-items:center;
   background-color: rgb(42, 230, 142);
   margin: auto auto;
+  border-radius:50rpx;
 }
 .functionItem5 {
   height: 100rpx;
@@ -49,6 +50,7 @@
   align-items:center;
   background-color: rgb(42, 177, 230);
   margin: auto auto;
+  border-radius:50rpx;
 }
 .emptyItem {
   height: 75rpx;

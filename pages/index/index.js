@@ -14,14 +14,14 @@ Page({
       },
       {
         icon: "/pages/image/kecheng2.png",
-        wenzi: "计划",
+        wenzi: "计划查询",
         linktype: "navigateTo",
         url: "/pages/plan/plan",
         img: "/pages/image/kecheng2.png"
       },
       {
         icon: "/pages/image/kecheng3.png",
-        wenzi: "生产查看",
+        wenzi: "生产查询",
         linktype: "navigateTo",
         url: "/pages/producelook/producelook",
         img: "/pages/image/kecheng3.png"

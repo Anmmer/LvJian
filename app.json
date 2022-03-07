@@ -26,8 +26,8 @@
     "van-collapse-item": "@vant/weapp/collapse-item/index"
   },
   "pages":[
-    "pages/login/login",
     "pages/index/index",
+    "pages/login/login",
     "pages/logs/logs",
     "pages/inbound/inbound",
     "pages/outbound/outbound",
