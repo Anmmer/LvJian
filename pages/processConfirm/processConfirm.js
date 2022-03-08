@@ -14,6 +14,14 @@ Page({
   },
   // 扫码函数
   scanCode(e) {
+    if (this.data.pid != '') {
+      wx.showToast({
+        title: '已扫描构建!',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     this.setData({
       result: e.detail.result
     })
@@ -36,9 +44,6 @@ Page({
       materialcode: materialcode
     })
     if (materialcode != null) {
-      if (this.data.pid != '') {
-        return
-      }
       // 获取构件目前生产状态
       var that = this
       wx.request({
@@ -105,7 +110,6 @@ Page({
           "content-type": 'application/x-www-form-urlencoded'
         },
         success(res) {
-          console.log(res)
           // 成功后
           Toast.success('浇捣成功！');
           that.setData({

@@ -7,10 +7,14 @@
     </view>
   </view>
   <view style="margin-top:{{startBarHeight+navgationHeight}}px">
-    <view class="functionContainer">
-      <text>修补库维修出库</text>
-      <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;" mode="scanCode" bindscancode="scanCode"></camera>
-      <view style="width:80%">
+    <view class="mid">
+      <view class="tiaomu1"> <text class="mark">|</text> 出库</view>
+      <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin:0 auto" mode="scanCode" bindscancode="scanCode"></camera>
+      <van-cell-group>
+        <van-field value="{{materialcode}}" label="出库构建" disabled border="{{ false }}" />
+      </van-cell-group>
+      <button bindtap="submitAll" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">出库</button>
+      <!-- <view style="width:80%">
         <text>扫描到的构件有:
         </text>
         <view style="height:200px;width:100%;overflow-y:auto;">
@@ -25,7 +29,7 @@
       <view class="productItem">
         <button bindtap="deleteAll">清空扫描到的构件</button>
         <button bindtap="submitAll">出库</button>
-      </view>
+      </view> -->
     </view>
   </view>
 </view>

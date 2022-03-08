@@ -17,8 +17,7 @@
         <van-field value="{{materialcode}}" label="物料编码" disabled border="{{ false }}" />
         <van-field value="{{state}}" label="生产状态" disabled border="{{ false }}" />
       </van-cell-group>
-      <button bindtap="submitInfo" disabled="{{disabled}}" style="background-color: #1989fa;margin-top: 20rpx;"
-        type="primary">质检</button>
+      <button bindtap="submitInfo" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">质检</button>
     </view>
   </view>
 </view>

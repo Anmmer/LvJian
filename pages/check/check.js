@@ -12,6 +12,14 @@ Page({
   },
   // 扫码函数
   scanCode(e) {
+    if (this.data.pid != '') {
+      wx.showToast({
+        title: '已扫描构建!',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     this.setData({
       result: e.detail.result
     })
@@ -20,19 +28,12 @@ Page({
     // 1. 通过字符串正则表达式提取构件号
     var resultstr = e.detail.result.toString()
     var strs = resultstr.split("\n")
-    console.log(strs)
     // for循环从strs中找到构件号
     var materialcode = null
     for (var i = 0; i < strs.length; i++) {
       var idx = strs[i].indexOf(":")
       console.log("idx:" + idx)
       var fieldname = strs[i].substring(0, idx)
-      console.log(fieldname.charCodeAt(3).toString(16))
-      console.log(fieldname.charCodeAt(2).toString(16))
-      console.log(fieldname.charCodeAt(1).toString(16))
-      console.log(fieldname.charCodeAt(0).toString(16))
-      console.log(fieldname.indexOf("物料编码"))
-      console.log("物料编码".length)
       if (fieldname.indexOf("物料编码") >= 0) {
         materialcode = strs[i].substring(idx + 1)
       }
@@ -40,7 +41,6 @@ Page({
     that.setData({
       materialcode: materialcode
     })
-    console.log(materialcode)
     if (materialcode != null) {
       // 获取构件目前生产状态
       var that = this
@@ -81,39 +81,36 @@ Page({
   },
   submitInfo(e) {
     var that = this
-    console.log(app.globalData.userId)
-    console.log(this.data.product_id)
     // 传送userId和product_id，在服务器端写入时间
     if (this.data.product_id != null && this.data.pc_name != "") {
       wx.request({
-        url: 'http://101.132.73.7:8989/DuiMa/Confirm',
+        url: 'http://101.132.73.7:8989/DuiMa/Inspect',
         data: {
-          productId: that.data.product_id,
-          userId: app.globalData.userId,
-          userName: app.globalData.userName
+          materialcode: that.data.materialcode,
         },
         method: 'POST',
         header: {
           "content-type": 'application/x-www-form-urlencoded'
         },
         success(res) {
-          console.log(res)
           // 成功后
           wx.showToast({
             title: '完成工序确认!',
             icon: 'success',
             duration: 1000
           })
-          // 同时清除构件号product_id和所在工序内容pc_name和errormsg
+          // 同时物料编码
+          Toast.success('浇捣成功！');
           that.setData({
-            product_id: "",
-            pc_name: "",
-            errormsg: ""
+            state: '',
+            pid: "",
+            plannumber: "",
+            materialcode: '',
           })
         }
       })
     } else {
-      // 没有productId
+      // 没有materialcode
       wx.showToast({
         title: '请先扫描一个未完工构件的二维码!',
         icon: 'none',
@@ -126,7 +123,6 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
-    // this.pourData();
   },
   fanhui: function () {
     wx.navigateBack()

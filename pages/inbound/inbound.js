@@ -92,7 +92,6 @@ Page({
           })
           that.data.ready = true
         }
-
       } else if (fieldname.trim().indexOf("货位号") >= 0) {
         // 这是货位标签
         this.setData({

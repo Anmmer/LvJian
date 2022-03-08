@@ -31,6 +31,8 @@ Page({
 
 
   getData(id) {
+    let arr = [];
+    arr.push(id)
     wx.showLoading({
       title: '加载数据中',
     })
@@ -52,7 +54,7 @@ Page({
         })
         that.setData({
           preproductList: res.data.data,
-          activeNames: [id]
+          activeNames: arr
         })
       }
     })
@@ -90,6 +92,7 @@ Page({
   },
 
   onChange(event) {
+    console.log(event.detail[0])
     if (event.detail.length !== 0) {
       this.getData(event.detail[0])
     } else {
