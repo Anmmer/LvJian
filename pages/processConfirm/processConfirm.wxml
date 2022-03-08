@@ -6,18 +6,18 @@
       <view class="wenzi" bindtap="fanhui">返回</view>
     </view>
   </view>
-  <view class="functionContainer">
-    <text>工序确定</text>
-    <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;" mode="scanCode" bindscancode="scanCode"></camera>
-    <view style="width:100%;height:10px"></view>
-    <view style="width:80%;">
-      <text>构件号:{{product_id}}
-      </text>
-      <text>物料编码：
-      </text>
-      <text>该构件目前所在工序:{{pc_name}}</text><text style="color:red">{{errormsg}}</text>
+  <view style="margin-top:{{startBarHeight+navgationHeight+10}}px">
+    <view class="mid">
+      <view class="tiaomu1"> <text class="mark">|</text> 浇捣</view>
+      <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin: 0 auto;"
+        mode="scanCode" bindscancode="scanCode"></camera>
+      <view style="width:100%;height:10px"></view>
+      <van-cell-group>
+        <van-field value="{{plannumber}}" label="计划编号" disabled border="{{ false }}" />
+        <van-field value="{{materialcode}}" label="物料编码" disabled border="{{ false }}" />
+        <van-field value="{{state}}" label="生产状态" disabled border="{{ false }}" />
+      </van-cell-group>
+      <button bindtap="submitInfo" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">浇捣</button>
     </view>
-    <view style="width:100%;height:100px"></view>
-    <button bindtap="submitInfo">确定浇捣工序结束</button>
   </view>
 </view>

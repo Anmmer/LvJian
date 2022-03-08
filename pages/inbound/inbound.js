@@ -45,7 +45,7 @@ Page({
             product_id: "STRING"
           }
           wx.request({
-            url: 'http://localhost:8989/DuiMa/QuerySQL',
+            url: 'http://101.132.73.7:8989/DuiMa/QuerySQL',
             data: {
               sqlStr: "select product_id from product where warehouse_id is null and product_id='" + productId + "'",
               fieldNames: JSON.stringify(fields),
@@ -145,7 +145,7 @@ Page({
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       // 可以上传
       wx.request({
-        url: 'http://localhost:8989/DuiMa/InOutWarehouse',
+        url: 'http://101.132.73.7:8989/DuiMa/InOutWarehouse',
         data: {
           warehouseId: this.data.warehouse_id,
           productIds: JSON.stringify(this.data.products),

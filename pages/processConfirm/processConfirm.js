@@ -1,16 +1,22 @@
 // processConfirm.js
 const app = getApp()
+import Toast from '@vant/weapp/dist/toast/toast';
 
 Page({
   data: {
-    result:'',
-    product_id:'',
-    pc_name:'',
-    errormsg:''
+    result: '',
+    plannumber: '',
+    pid: '',
+    materialcode: '',
+    disabled: '',
+    state: '',
+    errormsg: ''
   },
   // 扫码函数
-  scanCode(e){
-    this.setData({result:e.detail.result})
+  scanCode(e) {
+    this.setData({
+      result: e.detail.result
+    })
     var that = this
     // 对扫码结果进行分析
     // 1. 通过字符串正则表达式提取构件号
@@ -18,104 +24,108 @@ Page({
     var strs = resultstr.split("\n")
     console.log(strs)
     // for循环从strs中找到构件号
-    var productId = null
-    for(var i = 0; i < strs.length; i++){
+    var materialcode = null
+    for (var i = 0; i < strs.length; i++) {
       var idx = strs[i].indexOf(":")
-      console.log("idx:"+idx)
-      var fieldname = strs[i].substring(0,idx)
-      console.log(fieldname.charCodeAt(3).toString(16))
-      console.log(fieldname.charCodeAt(2).toString(16))
-      console.log(fieldname.charCodeAt(1).toString(16))
-      console.log(fieldname.charCodeAt(0).toString(16))
-      console.log(fieldname.indexOf("构件号"))
-      console.log("构件号".length)
-      if(fieldname.indexOf("构件号") >= 0){
-        productId = strs[i].substring(idx+1)
+      var fieldname = strs[i].substring(0, idx)
+      if (fieldname.indexOf("物料编码") >= 0) {
+        materialcode = strs[i].substring(idx + 1)
       }
     }
-    that.setData({product_id:productId})
-    console.log(productId)
-    if(productId != null){
-      // 获取构件目前所在的工序
-      var fields = {
-        pc_name:"STRING"
+    that.setData({
+      materialcode: materialcode
+    })
+    if (materialcode != null) {
+      if (this.data.pid != '') {
+        return
       }
+      // 获取构件目前生产状态
+      var that = this
       wx.request({
-        url: 'http://101.132.73.7:8989/DuiMa/QuerySQL',
-        data:{
-          sqlStr:"select pc_name from product,process_content where product.process_content_id = pc_id and product_id='"+that.data.product_id+"'",
-          fieldNames:JSON.stringify(fields),
-          pageCur:1,
-          pageMax:10
+        url: 'http://101.132.73.7:8989/DuiMa/GetPreProduct',
+        data: {
+          materialcode: materialcode,
         },
-        method:'POST',
-        header:{
-          "content-type":'application/x-www-form-urlencoded'
+        method: 'POST',
+        header: {
+          "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
         },
-        success(res){
-          if(res.data.cnt != 0){
-            // 未完工，显示当前工序
-            that.setData({pc_name:JSON.parse(res.data.data)[0].pc_name})
-          }
-          else{
-            // 已完工
-            that.setData({errormsg:"该构件已完工!"})
+        success(res) {
+          if (res.data.data.length != 0) {
+            Toast('扫码成功！');
+            // 生产状态
+            let pop_pageDate = res.data.data
+            that.data.disabled = ''
+            if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
+              pop_pageDate[0].state = '待浇捣'
+            }
+            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
+              pop_pageDate[0].state = '浇捣完成'
+              that.data.disabled = 'disabled'
+            }
+            that.setData({
+              state: pop_pageDate[0].state,
+              plannumber: pop_pageDate[0].plannumber,
+              pid: pop_pageDate[0].pid
+            })
           }
         }
       })
-    }
-    else{
+    } else {
       wx.showToast({
-        title:'请扫描具有构件号的构件二维码!',
-        icon:'none',
-        duration:1000
+        title: '请扫描具有构件号的构件二维码!',
+        icon: 'none',
+        duration: 1000
       })
     }
   },
-  submitInfo(e){
+  onClose() {
+    this.setData({ show: false });
+  },
+  submitInfo(e) {
     var that = this
-    console.log(app.globalData.userId)
-    console.log(this.data.product_id)
-    // 传送userId和product_id，在服务器端写入时间
-    if(this.data.product_id!=null && this.data.pc_name !="") {
+    if (this.data.pid != '') {
+      if (this.data.disabled == 'disabled') {
+        wx.showToast({
+          title: '已浇捣!',
+          icon: 'none',
+          duration: 1000
+        })
+        return
+      }
+      let arr = [];
+      arr.push(this.data.pid)
       wx.request({
-        url: 'http://101.132.73.7:8989/DuiMa/Confirm',
-        data:{
-          productId:that.data.product_id,
-          userId:app.globalData.userId,
-          userName:app.globalData.userName
+        url: 'http://101.132.73.7:8989/DuiMa/Pour',
+        data: {
+          pids: JSON.stringify(arr)
         },
-        method:'POST',
-        header:{
-          "content-type":'application/x-www-form-urlencoded'
+        method: 'POST',
+        header: {
+          "content-type": 'application/x-www-form-urlencoded'
         },
-        success(res){
+        success(res) {
           console.log(res)
           // 成功后
-          wx.showToast({
-            title:'完成工序确认!',
-            icon:'success',
-            duration:1000
-          })
-          // 同时清除构件号product_id和所在工序内容pc_name和errormsg
+          Toast.success('浇捣成功！');
           that.setData({
-            product_id:"",
-            pc_name:"",
-            errormsg:""
+            state: '',
+            pid: "",
+            plannumber: "",
+            materialcode: '',
           })
         }
       })
-    }
-    else{
+    } else {
       // 没有productId
       wx.showToast({
-        title:'请先扫描一个未完工构件的二维码!',
-        icon:'none',
-        duration:1000
+        title: '请先扫描一个未完工构件的二维码!',
+        icon: 'none',
+        duration: 1000
       })
     }
   },
-    /**
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {

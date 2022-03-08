@@ -13,24 +13,42 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
-    // this.pourData();
+    this.pourData();
   },
   pourData() {
     var that = this
-    console.log("查询数量")
     wx.request({
-      url: 'http://localhost:8989/DuiMa/GetPourCheckNum',
+      url: 'http://101.132.73.7:8989/DuiMa/GetPreProduct',
+      data: {
+        pourState: "0",
+        pageCur: 1,
+        pageMax: 10000
+      },
       method: 'POST',
       header: {
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
-        console.log('查询浇捣数量成功', res)
-        console.log(res.data.data[0].pourNum)
-        console.log(res.data.data[1].inspectNum)
         that.setData({
-          pourMadeNumber: res.data.data[0].pourNum,
-          checkNumber: res.data.data[1].inspectNum
+          pourMadeNumber: res.data.cnt,
+        })
+      }
+    })
+
+    wx.request({
+      url: 'http://101.132.73.7:8989/DuiMa/GetPreProduct',
+      data: {
+        inspectState: "0",
+        pageCur: 1,
+        pageMax: 1000
+      },
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      success(res) {
+        that.setData({
+          checkNumber: res.data.cnt
         })
       }
     })
