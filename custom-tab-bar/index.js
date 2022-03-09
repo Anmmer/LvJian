@@ -16,7 +16,6 @@ Component({
   },
   methods: {
     onChange(e) {
-      console.log(e, 'e')
       this.setData({
         active: e.detail
       });

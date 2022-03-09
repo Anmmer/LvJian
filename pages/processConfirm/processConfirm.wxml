@@ -15,9 +15,11 @@
       <van-cell-group>
         <van-field value="{{plannumber}}" label="计划编号" disabled border="{{ false }}" />
         <van-field value="{{materialcode}}" label="物料编码" disabled border="{{ false }}" />
+        <van-field value="{{materialname}}" label="物料名称" disabled border="{{ false }}" />
         <van-field value="{{state}}" label="生产状态" disabled border="{{ false }}" />
       </van-cell-group>
       <button bindtap="submitInfo" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">浇捣</button>
+      <van-toast id="van-toast" />
     </view>
   </view>
 </view>

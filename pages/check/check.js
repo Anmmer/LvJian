@@ -1,14 +1,15 @@
 // check.js
 const app = getApp()
+import Toast from '@vant/weapp/toast/toast';
+import Dialog from '@vant/weapp/dialog/dialog';
 
 Page({
   data: {
     result: '',
     plannumber: '',
     materialcode: '',
-    disabled: '',
+    pid: '',
     state: '',
-    errormsg: ''
   },
   // 扫码函数
   scanCode(e) {
@@ -32,7 +33,6 @@ Page({
     var materialcode = null
     for (var i = 0; i < strs.length; i++) {
       var idx = strs[i].indexOf(":")
-      console.log("idx:" + idx)
       var fieldname = strs[i].substring(0, idx)
       if (fieldname.indexOf("物料编码") >= 0) {
         materialcode = strs[i].substring(idx + 1)
@@ -57,23 +57,24 @@ Page({
           if (res.data.data.length != 0) {
             // 生产状态
             let pop_pageDate = res.data.data
-            that.data.disabled = ''
-            if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 1) {
-                pop_pageDate[0].state = '待质检'
-              }
-              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
-                pop_pageDate[0].state = '质检完成'
-                that.data.disabled = 'disabled'
-              }
+            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
+              pop_pageDate[0].state = '待质检'
+            }
+            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
+              pop_pageDate[0].state = '质检完成'
+            }
             that.setData({
-              state: pop_pageDate[0].state
+              state: pop_pageDate[0].state,
+              plannumber: pop_pageDate[0].plannumber,
+              materialname: pop_pageDate[0].materialname,
+              pid: pop_pageDate[0].pid
             })
           }
         }
       })
     } else {
       wx.showToast({
-        title: '请扫描具有构件号的构件二维码!',
+        title: '请扫描有物料编码的二维码!',
         icon: 'none',
         duration: 1000
       })
@@ -81,34 +82,70 @@ Page({
   },
   submitInfo(e) {
     var that = this
-    // 传送userId和product_id，在服务器端写入时间
-    if (this.data.product_id != null && this.data.pc_name != "") {
-      wx.request({
-        url: 'http://101.132.73.7:8989/DuiMa/Inspect',
-        data: {
-          materialcode: that.data.materialcode,
-        },
-        method: 'POST',
-        header: {
-          "content-type": 'application/x-www-form-urlencoded'
-        },
-        success(res) {
-          // 成功后
-          wx.showToast({
-            title: '完成工序确认!',
-            icon: 'success',
-            duration: 1000
-          })
-          // 同时物料编码
-          Toast.success('浇捣成功！');
-          that.setData({
-            state: '',
-            pid: "",
-            plannumber: "",
-            materialcode: '',
-          })
-        }
+    if (this.data.state !== '待质检') {
+      wx.showToast({
+        title: '未处于质检状态!',
+        icon: 'none',
+        duration: 1000
       })
+      return
+    }
+    if (this.data.pid != null) {
+      Dialog.confirm({
+        title: '质检确认！',
+        confirmButtonText: '合格',
+        cancelButtonText: '不合格'
+      }).then(() => {
+        // on confirm
+        let arr = [];
+        arr.push(this.data.pid)
+        wx.request({
+          url: 'http://101.132.73.7:8989/DuiMa/Inspect',
+          data: {
+            pids: JSON.stringify(arr),
+          },
+          method: 'POST',
+          header: {
+            "content-type": 'application/x-www-form-urlencoded'
+          },
+          success(res) {
+            // 成功后
+            Toast.success('质检成功！');
+            that.setData({
+              state: '',
+              pid: "",
+              plannumber: "",
+              materialcode: '',
+              materialname: ''
+            })
+          }
+        })
+      }).catch(() => {
+        // on cancel
+        let arr = [];
+        arr.push(this.data.pid)
+        wx.request({
+          url: 'http://101.132.73.7:8989/DuiMa/InspectNo',
+          data: {
+            pids: JSON.stringify(arr),
+          },
+          method: 'POST',
+          header: {
+            "content-type": 'application/x-www-form-urlencoded'
+          },
+          success(res) {
+            // 成功后
+            Toast.success('质检成功！');
+            that.setData({
+              state: '',
+              pid: "",
+              plannumber: "",
+              materialcode: '',
+            })
+          }
+        })
+      });
+
     } else {
       // 没有materialcode
       wx.showToast({

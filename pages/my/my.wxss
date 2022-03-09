@@ -9,8 +9,49 @@
   color: #fff;
   font-size: 40rpx;
 }
+.containerq {
+  /* border: #1E90FF solid 1rpx; */
+  width: 90%;
+  /* height: 100%; */
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: flex-start;
+  margin:0rpx auto;
+  /* padding: 200rpx 0; */
+  /* box-sizing: border-box; */
+} 
+.userinfo {
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+  color: #aaa;
+}
 
-
+.userinfo-avatar {
+  overflow: hidden;
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+  color: #fff;
+}
+.detail{
+  color: #fff;
+  margin-left: 20rpx;
+}
+.usermotto {
+  margin-top: 200px;
+}
+.top{
+  width: 100%;
+  height: 200rpx;
+  background-color: #1E90FF;
+}
+.carid{
+  font-size: 25rpx;
+  color:lightblue;
+}
 
 
 

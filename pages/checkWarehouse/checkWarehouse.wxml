@@ -9,10 +9,17 @@
   <view style="margin-top:{{startBarHeight+navgationHeight}}px">
     <view class="mid">
       <view class="tiaomu1"> <text class="mark">|</text> 库存信息</view>
-      <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin:0 auto" mode="scanCode" bindscancode="scanCode"></camera>
+      <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin:0 auto"
+        mode="scanCode" bindscancode="scanCode"></camera>
       <van-cell-group>
         <van-field value="{{warehouse_name}}" label="库房名" disabled border="{{ false }}" />
-        <van-field value="{{products}}" label="库房构建" disabled border="{{ false }}" />
+        <van-panel title="库房构建:">
+          <view style="width: 80%;margin: 0 auto;">
+            <view wx:for="{{products}}">
+              <text>{{index}}. {{item}}</text>
+            </view>
+          </view>
+        </van-panel>
       </van-cell-group>
       <!-- <text>库房名:{{warehouse_name}}</text>
       <text>该库房存在的构件有:</text>

@@ -1,27 +1,37 @@
-// 获取应用实例
-const app = getApp();
+// pages/index/my.js
+const app = getApp()
 
 Page({
-  data:{
-    userName:null,
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    userName: '',
+    userInfo: {},
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    canIUseGetUserProfile: false,
+    canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
   },
-  setNavigation(){  
+  setNavigation() {
     let startBarHeight = 20
     let navgationHeight = 44
     let that = this
     wx.getSystemInfo({
       success: function (res) {
         console.log(res.model)
-        if (res.model == 'iPhone X'){
+        if (res.model == 'iPhone X') {
           startBarHeight = 44
-       }
-       that.setData({
-         startBarHeight: startBarHeight,
-         navgationHeight: navgationHeight
-       })
-     }
-   })
- },
+        }
+        that.setData({
+          userName: app.globalData.userName,
+          startBarHeight: startBarHeight,
+          navgationHeight: navgationHeight
+        })
+      }
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */

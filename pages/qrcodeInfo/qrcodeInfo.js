@@ -11,19 +11,19 @@ Page({
     this.setData({result:e.detail.result})
     var that = this
     // 对扫码结果进行分析
-    // 1. 通过字符串正则表达式提取构件号
+    // 1. 通过字符串正则表达式提取物料编码
     var resultstr = e.detail.result.toString()
     var strs = resultstr.split("\n")
-    // for循环从strs中找到构件号
-    var productId = null
+    // for循环从strs中找到物料编码
+    var materialcode = null
     for(var i = 0; i < strs.length; i++){
       var idx = strs[i].indexOf(":")
       var fieldname = strs[i].substring(0,idx)
-      if(fieldname.indexOf("构件号")>=0){
-        productId = strs[i].substring(idx+1)
+      if(fieldname.indexOf("物料编码")>=0){
+        materialcode = strs[i].substring(idx+1)
       }
     }
-    if(productId != null){
+    if(materialcode != null){
       wx.request({
         url: 'http://101.132.73.7:8989/DuiMa/GetProductInfo',
         data:{

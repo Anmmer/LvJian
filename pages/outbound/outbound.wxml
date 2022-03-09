@@ -11,7 +11,16 @@
       <view class="tiaomu1"> <text class="mark">|</text> 出库</view>
       <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin:0 auto" mode="scanCode" bindscancode="scanCode"></camera>
       <van-cell-group>
-        <van-field value="{{materialcode}}" label="出库构建" disabled border="{{ false }}" />
+        <van-panel title="出库构建:">
+          <view style="width: 80%;margin: 0 auto;">
+            <view wx:for="{{products}}" wx:key="products">
+              <view class="items">
+                <view><text> {{index+1}}. {{item}}</text></view><button data-id="{{index}}" style="width:100px"
+                  bindtap="deleteItem">删除</button>
+              </view>
+            </view>
+          </view>
+        </van-panel>
       </van-cell-group>
       <button bindtap="submitAll" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">出库</button>
       <!-- <view style="width:80%">

@@ -5,7 +5,8 @@ const app = getApp()
 Page({
   data: {
     userName: null,
-    gezi: [{
+    gezi: [],
+    authority: [{
         icon: "/pages/image/kecheng1.png",
         wenzi: "扫码",
         linktype: "navigateTo",
@@ -71,7 +72,12 @@ Page({
     canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
   },
   onLoad() {
+    let arr = []
+    for (let val of app.globalData.fauthority) {
+      arr.push(this.data.authority[val.pc_id - 1])
+    }
     this.setData({
+      gezi: arr,
       userName: app.globalData.userName
     })
     this.setNavigation();
@@ -130,29 +136,4 @@ Page({
       }
     })
   },
-  toQrcodeInfo() {
-    console.log("查询二维码")
-    wx.navigateTo({
-      url: "../qrcodeInfo/qrcodeInfo",
-    })
-  },
-
-  toInbound() {
-    console.log("入库")
-    wx.navigateTo({
-      url: "../inbound/inbound",
-    })
-  },
-  toOutbound() {
-    console.log("出库")
-    wx.navigateTo({
-      url: "../outbound/outbound",
-    })
-  },
-  toCheckWarehouse() {
-    console.log("清点库存");
-    wx.navigateTo({
-      url: '../checkWarehouse/checkWarehouse',
-    })
-  }
 })

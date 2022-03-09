@@ -15,11 +15,7 @@ Page({
   // 扫码函数
   scanCode(e) {
     if (this.data.pid != '') {
-      wx.showToast({
-        title: '已扫描构建!',
-        icon: 'none',
-        duration: 1000
-      })
+      Toast('扫码成功！');
       return
     }
     this.setData({
@@ -57,7 +53,6 @@ Page({
         },
         success(res) {
           if (res.data.data.length != 0) {
-            Toast('扫码成功！');
             // 生产状态
             let pop_pageDate = res.data.data
             that.data.disabled = ''
@@ -71,6 +66,7 @@ Page({
             that.setData({
               state: pop_pageDate[0].state,
               plannumber: pop_pageDate[0].plannumber,
+              materialname: pop_pageDate[0].materialname,
               pid: pop_pageDate[0].pid
             })
           }
@@ -85,10 +81,20 @@ Page({
     }
   },
   onClose() {
-    this.setData({ show: false });
+    this.setData({
+      show: false
+    });
   },
   submitInfo(e) {
     var that = this
+    if(this.data.state!=='待浇捣'){
+      wx.showToast({
+        title: '未处于浇捣状态!',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     if (this.data.pid != '') {
       if (this.data.disabled == 'disabled') {
         wx.showToast({
