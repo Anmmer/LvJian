@@ -12,7 +12,7 @@
       <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin: 0 auto;"
         mode="scanCode" bindscancode="scanCode"></camera>
       <!--构件信息展示-->
-      <view style="width:80%;margin: 0 auto;height:auto">
+      <view style="width:90%;margin: 0 auto;height:auto">
         <text>构件信息: </text>
         <!--构件信息详情-->
         <view style="height:auto;overflow-y:auto;border: 1rpx solid gray; ">
@@ -20,12 +20,16 @@
         </view>
       </view>
       <!--构件生产情况-->
-      <!-- <view style="width:80%;height:100px">
+      <view style="width:90%;margin: 0 auto;height:auto">
         <text>构件生产流程信息:</text>
-        <view style="height:80px;overflow-y:auto;" wx:for="{{dataArray}}" wx:key="dataArray">
-          <text class="timeStyle">{{item.produce_time}}</text><text>由{{item.user_name}}完成工序'{{item.pc_name}}'!</text>
+        <view style="height:auto;" wx:for="{{dataArray}}" wx:key="dataArray">
+          <view style="height:auto;overflow-y:auto;border: 1rpx solid gray; ">
+            <view>物料编码：{{item.materialcode}} </view>
+            <view>物料名称：{{item.materialname}} </view>
+            <view>生产状态：{{item.state}}</view>
+          </view>
         </view>
-      </view> -->
+      </view>
       <!--构件仓储信息-->
       <!-- <view style="width:80%;height:100px">
         <text>构件仓储信息:
