@@ -12,12 +12,11 @@ Page({
       title: '数据加载中',
     })
     this.setNavigation();
-    console.log(options)
     this.setData({
       planname: options.planname,
       materialcode: options.materialcode,
       start_date: options.start_date,
-      end_date: options.start_date
+      end_date: options.end_date
     })
     this.lookPlan();
   },

@@ -116,7 +116,14 @@ Page({
 
 
   submit(e) {
-    console.log(e.detail.value)
+    if (e.detail.value.start_date > e.detail.value.end_date){
+      wx.showToast({
+        title: '开始日期不能大于结束日期!',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     wx.navigateTo({
       url: '../planDetail/planDetail?planname=' + e.detail.value.planname +
         '&materialcode=' + e.detail.value.materialcode +
