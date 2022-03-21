@@ -9,7 +9,7 @@
 </view>
 <!-- <view class='container'></view> -->
 <view class="top" style="margin-top:{{startBarHeight+navgationHeight}}px">
-  <view class="containerq">
+  <view class="containerq" style=" margin-top: 60rpx;">
     <view class="userinfo">
       <block wx:if="{{canIUseOpenData}}">
         <view class="userinfo-avatar" bindtap="bindViewTap">
@@ -28,13 +28,17 @@
       </block>
       <block wx:else>
         <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}hdadi</text>
+        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
       </block>
       <!-- <button class="login" bindtap="login">未登录</button> -->
     </view>
   </view>
 </view>
 
+<view style="margin: 0 auto;">
+  <view style="height: 300px;"></view>
+  <van-button plain type="primary" bindtap="loginOut" size="small">退出登录</van-button>
+</view>
 
 
 

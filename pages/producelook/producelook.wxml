@@ -13,7 +13,7 @@
         <van-cell-group>
           <van-field label="物料编码" name="input1" placeholder="请输入物料编码" />
           <van-field label="计划名称" name="input2" placeholder="请输入计划名称" />
-          <view style="height:44px;display: flex;flex-wrap: wrap;margin: 0 auto;align-items: center;width: 90%;">
+          <view style="height:44px;display: flex;margin: 0 auto;align-items: center;width: 90%;">
             <view style="color: #646566;font-size: 14px;">生产状态</view>
             <van-radio-group name='radio1' style="margin-left: 40px;" direction="horizontal" bind:change="onChange">
               <van-radio name="0">待生产</van-radio>

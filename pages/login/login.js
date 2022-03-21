@@ -58,7 +58,6 @@ Page({
       },
       success(res) {
         // 成功登陆将修改app的全局数据
-        console.log(res)
         var userName = res.data.userName
         if (res.data.ret == "true") {
           // 登陆成功，获取权限
