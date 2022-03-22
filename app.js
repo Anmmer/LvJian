@@ -5,21 +5,52 @@ App({
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-
+    let appid = 'wx1cc9a0655d15921e'
+    let secret = 'dcdfd855d3846a8e4aa2ab7f48ba2eba'
+    let that = this
     // 登录
     wx.login({
       success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        // 发送 res.code 到后台换取 openId
+        wx.request({
+          url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appid + '&secret=' + secret + '&js_code=' + res.code + '&grant_type=authorization_code',
+          method: "GET",
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success(res) {
+            if (res.errMsg == 'request:ok') {
+              that.globalData.openid = res.data.openid
+              wx.request({
+                url: 'http://localhost:8989/DuiMa/AutoLogin',
+                data: {
+                  openid: res.data.openid
+                },
+                method: 'POST',
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded'
+                },
+                success(res) {
+                  if (res.data.flag && res.data.data.length !== 0) {
+                    wx.setStorageSync('userId', res.data.data[0].user_id)
+                    wx.setStorageSync('userName', res.data.data[0].user_name)
+                    wx.setStorageSync('gp_name', res.data.data[0].gp_name)
+                  }
+                }
+              })
+            }
+          }
+        })
       }
     })
   },
   globalData: {
     userInfo: null,
     userId: null,
-    wxId: null,
+    openid: null,
     userName: null,
-    pcauthority:null,
-    fauthority:null,
-    minDate:'2022-1-1'
+    pcauthority: null,
+    fauthority: null,
+    minDate: '2022-1-1'
   }
 })

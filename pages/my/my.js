@@ -49,6 +49,7 @@ Page({
         }
         that.setData({
           userName: app.globalData.userName,
+          gp_name:wx.getStorageSync('gp_name'),
           startBarHeight: startBarHeight,
           navgationHeight: navgationHeight
         })
