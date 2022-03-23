@@ -15,7 +15,9 @@ Page({
     this.setData({
       planname: options.planname,
       materialcode: options.materialcode,
-      productstate: options.productstate
+      productstate: options.productstate,
+      line: options.line,
+      preproductid: options.preproductid
     })
     this.lookPlan();
   },
@@ -56,15 +58,19 @@ Page({
           }
           if (pop_pageDate[i]['pourmade'] === 1 && pop_pageDate[i]['inspect'] === 0) {
             pop_pageDate[i].state = '浇捣完成'
-            pop_pageDate[i].style = 'background-color: rgb(0,176,80);'
+            pop_pageDate[i].style = 'background-color: yellow;'
           }
           if (pop_pageDate[i]['pourmade'] === 0 && pop_pageDate[i]['inspect'] === 1) {
             pop_pageDate[i].state = '待质检'
             pop_pageDate[i].style = 'background-color: grey;'
           }
           if (pop_pageDate[i]['pourmade'] === 1 && pop_pageDate[i]['inspect'] === 1) {
-            pop_pageDate[i].state = '质检完成'
-            pop_pageDate[i].style = 'background-color: yellow;'
+            pop_pageDate[i].state = '质检合格'
+            pop_pageDate[i].style = 'background-color: green;'
+          }
+          if (pop_pageDate[i]['pourmade'] === 1 && pop_pageDate[i]['inspect'] === 0) {
+            pop_pageDate[i].state = '质检不合格'
+            pop_pageDate[i].style = 'background-color: red;'
           }
         }
         that.setData({
@@ -85,6 +91,8 @@ Page({
         pageMax: that.data.pagesMax,
         materialcode: that.data.materialcode,
         planname: that.data.planname,
+        line: that.data.line,
+        preproductid: that.data.preproductid,
         productState: that.data.productstate
       },
       method: 'POST',
@@ -100,7 +108,7 @@ Page({
           for (let i = 0; i < jsonObj.length; i++) {
             if (jsonObj[i]['pourmadestate'] === 1 && jsonObj[i]['checkstate'] === 1) {
               jsonObj[i].state = '已完成'
-              jsonObj[i].style = 'background-color: grey;'
+              jsonObj[i].style = 'background-color: green;'
             } else {
               jsonObj[i].state = '未完成'
               jsonObj[i].style = 'background-color: red;'
@@ -147,7 +155,7 @@ Page({
     wx.navigateBack()
   },
 
-    /**
+  /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {

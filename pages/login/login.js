@@ -70,7 +70,7 @@ Page({
     if (userId !== null && userId !== '') {
       console.log(userId)
       wx.request({
-        url: 'http://localhost:8989/DuiMa/GetAuthority',
+        url: 'http://101.132.73.7:8989/DuiMa/GetAuthority',
         data: {
           userId: userId
         },
@@ -107,7 +107,7 @@ Page({
   // 系统登陆函数
   systemLogin: function (data) {
     wx.request({
-      url: 'http://localhost:8989/DuiMa/LoginCheck',
+      url: 'http://101.132.73.7:8989/DuiMa/LoginCheck',
       data: {
         user_phone: data.detail.value.user_phone,
         userPwd: data.detail.value.password,
@@ -124,7 +124,7 @@ Page({
           var userId = res.data.userId
           // 登陆成功，获取权限
           wx.request({
-            url: 'http://localhost:8989/DuiMa/GetAuthority',
+            url: 'http://101.132.73.7:8989/DuiMa/GetAuthority',
             data: {
               userId: userId
             },
@@ -147,12 +147,6 @@ Page({
               app.globalData.fauthority = JSON.parse(res.data.processContent)
               app.globalData.userId = data.detail.value.userid
               app.globalData.userName = userName
-              // 显示操作成功界面
-              wx.showToast({
-                title: '登陆成功',
-                icon: 'success',
-                duration: 1000
-              })
               // 进行跳转界面
               wx.switchTab({
                 url: '../index/index',

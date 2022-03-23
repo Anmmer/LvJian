@@ -7,6 +7,7 @@ Page({
     warehouse_id: "",
     warehouse_name: "",
     products: [],
+    product: {},
     ready: true
   },
   // 扫码函数
@@ -71,10 +72,8 @@ Page({
               if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
                 pop_pageDate[0].state = '质检完成(生产完成)'
               }
-              let arr = that.data.products
-              arr.push(pop_pageDate[0])
               that.setData({
-                products: arr
+                product: pop_pageDate[0]
               })
             } else {
               // 该构件已入库，提醒
@@ -91,112 +90,114 @@ Page({
         })
       }
 
-    
-    /* 如果需要可以去除注释，默认不扫描货位的二维码
-    else if(fieldname == "货位号"){
-      // 这是货位标签
-      var warehouseId = strs[i].substring(idx+1)
-      console.log("扫描到货位'"+warehouseIdd+"'")
-      if(this.data.warehouse_id==""){
-        this.setData({warehouse_id:warehouseId})
-      }
-      else{
-        wx.showToast({
-          title: '您已扫描过库房号，若希望扫描新库房号，请点击清空或者点击入库',
-          icon: 'none',
-          duration: 1000
-        })
-      }
-    }
-    else if(fieldname == "货位名"){
-      // 显示货位名
-      var warehouseName = strs[i].substring(idx+1)
-      console.log("扫描到货位'"+warehouseName+"'")
-      if(this.data.warehouse_name ==""){
-        this.setData({warehouse_name:warehouseName})
-      }
-    }
-    */
-  }
-},
-deleteItem(event) {
-  console.log(event.currentTarget.dataset.id)
-  var list = this.data.products
-  // 删除制定的构件
-  list.splice(event.currentTarget.dataset.id, 1)
-  this.setData({
-    products: list
-  })
-},
-deleteAll(event) {
-  this.setData({
-    products: []
-  })
-},
-submitAll(event) {
-  var that = this
-  // 提交并清空
-  if (this.data.warehouse_id != null && this.data.products.length != 0) {
-    // 可以上传
-    wx.request({
-      url: 'http://101.132.73.7:8989/DuiMa/InOutWarehouse',
-      data: {
-        warehouseId: this.data.warehouse_id,
-        productIds: JSON.stringify(this.data.products),
-        type: "0", // 0出库
-        userId: app.globalData.userId,
-        userName: app.globalData.userName
-      },
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      success(res) {
-        // 清空所有
-        console.log(res.data)
-        var list = []
-        that.setData({
-          products: [],
-          warehouse_id: "",
-          warehouse_name: ""
-        })
-      }
-    })
-  } else {
-    wx.showToast({
-      title: '你还未扫描库房或者未扫描构件',
-      icon: 'none',
-      duration: 1000
-    })
-  }
-},
 
-/**
- * 生命周期函数--监听页面加载
- */
-onLoad: function (options) {
-  this.setNavigation();
-},
-
-setNavigation() {
-  let startBarHeight = 20
-  let navgationHeight = 44
-  let that = this
-  wx.getSystemInfo({
-    success: function (res) {
-      console.log(res.model)
-      if (res.model == 'iPhone X') {
-        startBarHeight = 44
+      // 如果需要可以去除注释，默认不扫描货位的二维码
+      else if (fieldname == "货位号") {
+        // 这是货位标签
+        var warehouseId = strs[i].substring(idx + 1)
+        console.log("扫描到货位'" + warehouseIdd + "'")
+        if (this.data.warehouse_id == "") {
+          this.setData({
+            warehouse_id: warehouseId
+          })
+        } else {
+          wx.showToast({
+            title: '您已扫描过库房号，若希望扫描新库房号，请点击清空或者点击入库',
+            icon: 'none',
+            duration: 1000
+          })
+        }
+      } else if (fieldname == "货位名") {
+        // 显示货位名
+        var warehouseName = strs[i].substring(idx + 1)
+        console.log("扫描到货位'" + warehouseName + "'")
+        if (this.data.warehouse_name == "") {
+          this.setData({
+            warehouse_name: warehouseName
+          })
+        }
       }
-      that.setData({
-        startBarHeight: startBarHeight,
-        navgationHeight: navgationHeight
+
+    }
+  },
+  deleteItem(event) {
+    console.log(event.currentTarget.dataset.id)
+    var list = this.data.products
+    // 删除制定的构件
+    list.splice(event.currentTarget.dataset.id, 1)
+    this.setData({
+      products: list
+    })
+  },
+  deleteAll(event) {
+    this.setData({
+      products: []
+    })
+  },
+  submitAll(event) {
+    var that = this
+    // 提交并清空
+    if (this.data.warehouse_id != null && this.data.products.length != 0) {
+      // 可以上传
+      wx.request({
+        url: 'http://101.132.73.7:8989/DuiMa/InOutWarehouse',
+        data: {
+          warehouseId: this.data.warehouse_id,
+          productIds: JSON.stringify(this.data.products),
+          type: "0", // 0出库
+          userId: app.globalData.userId,
+          userName: app.globalData.userName
+        },
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        success(res) {
+          // 清空所有
+          console.log(res.data)
+          var list = []
+          that.setData({
+            products: [],
+            warehouse_id: "",
+            warehouse_name: ""
+          })
+        }
+      })
+    } else {
+      wx.showToast({
+        title: '你还未扫描库房或者未扫描构件',
+        icon: 'none',
+        duration: 1000
       })
     }
-  })
-},
-fanhui: function () {
-  wx.navigateBack()
-},
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.setNavigation();
+  },
+
+  setNavigation() {
+    let startBarHeight = 20
+    let navgationHeight = 44
+    let that = this
+    wx.getSystemInfo({
+      success: function (res) {
+        console.log(res.model)
+        if (res.model == 'iPhone X') {
+          startBarHeight = 44
+        }
+        that.setData({
+          startBarHeight: startBarHeight,
+          navgationHeight: navgationHeight
+        })
+      }
+    })
+  },
+  fanhui: function () {
+    wx.navigateBack()
+  },
 
 })

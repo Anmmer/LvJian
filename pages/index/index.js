@@ -29,9 +29,16 @@ Page({
       },
       {
         icon: "/pages/image/kecheng3.png",
-        wenzi: "生产确认",
+        wenzi: "浇捣",
         linktype: "navigateTo",
-        url: "/pages/produce/produce",
+        url: "/pages/pour/pour",
+        img: "/pages/image/kecheng3.png"
+      },
+      {
+        icon: "/pages/image/kecheng3.png",
+        wenzi: "质检",
+        linktype: "navigateTo",
+        url: "/pages/inspect/inspect",
         img: "/pages/image/kecheng3.png"
       },
       {
@@ -62,6 +69,7 @@ Page({
         url: "/pages/checkWarehouse/checkWarehouse",
         img: "/pages/image/kecheng5.png"
       },
+
     ],
     active: 0,
 

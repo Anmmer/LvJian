@@ -22,7 +22,7 @@
       <!--start 时间选择 -->
       <van-popup show="{{ show1 }}" bind:close="onClose" position="bottom">
         <view>
-          <van-datetime-picker type="date" value="{{ currentDate1 }}" bind:input="onInput1" min-date="{{ minDate }}"
+          <van-datetime-picker type="date" value="{{ currentDate1 }}" bind:input="onInput1" max-date="{{ maxDate }}"
             formatter="{{ formatter }}" bind:confirm="confirmFn1" bind:cancel="cancelFn" />
         </view>
       </van-popup>
@@ -30,7 +30,7 @@
       <!--end 时间选择 -->
       <van-popup show="{{ show2 }}" bind:close="onClose" position="bottom">
         <view>
-          <van-datetime-picker type="date" value="{{ currentDate2 }}" bind:input="onInput2" min-date="{{ minDate }}"
+          <van-datetime-picker type="date" value="{{ currentDate2 }}" bind:input="onInput2" max-date="{{ maxDate }}"
             formatter="{{ formatter }}" bind:confirm="confirmFn2" bind:cancel="cancelFn" />
         </view>
       </van-popup>

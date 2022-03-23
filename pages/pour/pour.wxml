@@ -1,0 +1,26 @@
+<view style="height: 100%;">
+  <view class='navigation'>
+    <view class='startBar' style='height:{{startBarHeight}}px'></view>
+    <view class='navgation' style='height:{{navgationHeight}}px'>
+      <view class="wenzi" bindtap="fanhui">返回</view>
+    </view>
+  </view>
+  <view style="margin-top:{{startBarHeight+navgationHeight+10}}px;height: 83%;">
+    <view class="mid" style="height: 100%;">
+      <view class="tiaomu1"> <text class="mark">|</text> 浇捣</view>
+      <text class="daipan">待浇捣数量：{{pourMadeNumber}}\n</text>
+      <text class="daipan">待浇捣明细：</text>
+      <view class="detail">
+        <view wx:for="{{pour_list}}" wx:key="pour_list">
+          <view>物料编码：{{item.materialcode}} </view>
+          <view>物料名称：{{item.materialname}} </view>
+          <view>构 件 号：{{item.preproductid}}</view>
+          <text>\n</text>
+        </view>
+      </view>
+      <view class="functionItem4" bindtap="jiaodao">
+        <text class="main">浇捣</text>
+      </view>
+    </view>
+  </view>
+</view>

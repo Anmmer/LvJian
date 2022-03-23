@@ -148,6 +148,6 @@
   color: #818181;
 }
 
-.zhanwei {
-  margin-bottom: 200rpx;
-}
+/* .zhanwei {
+  margin-bottom: 150rpx;
+} */

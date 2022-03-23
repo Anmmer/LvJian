@@ -8,9 +8,11 @@ Page({
   data: {
     show1: false,
     show2: false,
+    start_date: '',
+    end_date: '',
     currentDate1: new Date().getTime(), // 初始日期 // 时间戳补 3 位
     currentDate2: new Date().getTime(), // 初始日期 // 时间戳补 3 位
-    minDate: app.globalData.minDate, // 最小时间
+    maxDate: new Date().getTime(), // 最小时间
     // 时间 - 显示赋值
     formatter(type, value) {
       if (type === 'year') {
@@ -116,7 +118,7 @@ Page({
 
 
   submit(e) {
-    if (e.detail.value.start_date > e.detail.value.end_date){
+    if (e.detail.value.start_date > e.detail.value.end_date) {
       wx.showToast({
         title: '开始日期不能大于结束日期!',
         icon: 'none',

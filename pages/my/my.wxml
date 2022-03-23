@@ -37,10 +37,8 @@
 </view>
 
 <view style="margin: 0 auto;">
-  <view style="height: 300px;"></view>
+  <view style="height: 280px;"></view>
   <van-button plain type="primary" bindtap="loginOut" size="small">退出登录</van-button>
 </view>
 
 
-
-<view class="zhanwei"></view>

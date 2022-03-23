@@ -22,7 +22,7 @@ App({
             if (res.errMsg == 'request:ok') {
               that.globalData.openid = res.data.openid
               wx.request({
-                url: 'http://localhost:8989/DuiMa/AutoLogin',
+                url: 'http://101.132.73.7:8989/DuiMa/AutoLogin',
                 data: {
                   openid: res.data.openid
                 },

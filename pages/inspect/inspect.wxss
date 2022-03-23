@@ -58,9 +58,7 @@
   align-items: center;
 }
 .daipan{
-  text-align: right;
-  font-size: 25rpx;
-  margin-left: 50%;
+  margin-left: 40rpx;
 }
 
 .wenzi{
@@ -82,4 +80,12 @@
   font-size: 34rpx;
   background-color: #fff;
   text-align: center;
+}
+
+.detail{
+  height: 75%;
+  width: 88%;
+  margin: 15rpx auto;
+  overflow: auto;
+  font-size: 13px;
 }

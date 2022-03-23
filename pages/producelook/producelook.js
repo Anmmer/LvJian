@@ -16,7 +16,9 @@ Page({
         wx.navigateTo({
             url: '../producelookDetail/producelookDetail?planname=' + e.detail.value.input2 +
                 '&materialcode=' + e.detail.value.input1 +
-                '&productstate=' + this.data.checked
+                '&productstate=' + this.data.checked +
+                '&line=' + e.detail.value.line +
+                '&preproductid=' + e.detail.value.preproductid
         })
     },
 
