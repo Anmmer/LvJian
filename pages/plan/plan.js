@@ -88,6 +88,11 @@ Page({
       show1: false
     });
   },
+  onChange(event) {
+    this.setData({
+        checked: event.detail
+    });
+},
   // 时间 - 确定按钮
   confirmFn2(e) {
     var newTime = new Date(e.detail);

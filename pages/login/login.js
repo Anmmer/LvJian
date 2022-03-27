@@ -160,7 +160,7 @@ Page({
           console.log("Login Error!")
           // 显示操作失败
           wx.showToast({
-            title: '登陆失败',
+            title: res.data.message,
             icon: 'none',
             duration: 1000
           })
