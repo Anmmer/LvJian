@@ -13,10 +13,10 @@ Page({
     canIUseGetUserProfile: true,
     canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
   },
-  loginOut(){
-    app.globalData.userId = ''
-    app.globalData.userName = ''
-    app.globalData.fauthority = ''
+  loginOut() {
+    wx.setStorageSync('fauthority', null);
+    wx.setStorageSync('userId', null)
+    wx.setStorageSync('userName', null)
     wx.removeStorage({
       key: 'user_data',
     })
@@ -48,8 +48,8 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          userName: app.globalData.userName,
-          gp_name:wx.getStorageSync('gp_name'),
+          userName: wx.getStorageSync('userName'),
+          gp_name: wx.getStorageSync('gp_name'),
           startBarHeight: startBarHeight,
           navgationHeight: navgationHeight
         })

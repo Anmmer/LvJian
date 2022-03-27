@@ -31,6 +31,7 @@ Page({
           wx.getStorage({
             key: 'user_data',
             success(res) {
+              console.log(res)
               app.globalData.fauthority = JSON.parse(res.data.fauthority)
             },
             fail(res) {
@@ -107,9 +108,9 @@ Page({
               fauthority: res.data.processContent,
             }
           })
-          app.globalData.fauthority = JSON.parse(res.data.processContent)
-          app.globalData.userId = userId
-          app.globalData.userName = userName
+          wx.setStorageSync('fauthority', JSON.parse(res.data.processContent));
+          wx.setStorageSync('userId', userId)
+          wx.setStorageSync('userName', userName)
           // 进行跳转界面'
           wx.switchTab({
             url: '../index/index',
@@ -161,9 +162,9 @@ Page({
                   fauthority: res.data.processContent,
                 }
               })
-              app.globalData.fauthority = JSON.parse(res.data.processContent)
-              app.globalData.userId = data.detail.value.userid
-              app.globalData.userName = userName
+              wx.setStorageSync('fauthority', JSON.parse(res.data.processContent));
+              wx.setStorageSync('userId', userId)
+              wx.setStorageSync('userName', userName)
               // 进行跳转界面
               wx.switchTab({
                 url: '../index/index',

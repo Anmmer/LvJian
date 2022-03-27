@@ -68,7 +68,7 @@ Page({
             pop_pageDate[i].state = '质检合格'
             pop_pageDate[i].style = 'background-color: green;'
           }
-          if (pop_pageDate[i]['pourmade'] === 1 && pop_pageDate[i]['inspect'] === 0) {
+          if (pop_pageDate[i]['pourmade'] === 1 && pop_pageDate[i]['inspect'] === 2) {
             pop_pageDate[i].state = '质检不合格'
             pop_pageDate[i].style = 'background-color: red;'
           }

@@ -81,12 +81,14 @@ Page({
   },
   onLoad() {
     let arr = []
-    for (let val of app.globalData.fauthority) {
+    let fauthority = wx.getStorageSync('fauthority')
+    console.log(fauthority)
+    for (let val of fauthority) {
       arr.push(this.data.authority[val.pc_id - 1])
     }
     this.setData({
       gezi: arr,
-      userName: app.globalData.userName
+      userName: wx.getStorageSync('userName')
     })
     this.setNavigation();
     if (wx.getUserProfile) {
