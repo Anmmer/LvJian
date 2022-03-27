@@ -1,7 +1,12 @@
 // login.js
 // 登陆界面
 const app = getApp()
+import Dialog from '@vant/weapp/dialog/dialog';
+
 Page({
+  data: {
+    show: false
+  },
   // 页面创建时执行
   onLoad: function () {
     this.setNavigation();
@@ -43,9 +48,22 @@ Page({
       fail() {
         // 没有user_data的存储
         console.log("There is no user_data")
-        that.autoLogin()
+        Dialog.confirm({
+          title: '使用微信号登录',
+          // message: '弹窗内容'
+        }).then(() => {
+          // on confirm
+          that.autoLogin();
+        }).catch(() => {
+          // on cancel
+        });
       }
     })
+  },
+  onClose() {
+    this.setData({
+      show: false
+    });
   },
   setNavigation() {
     let startBarHeight = 20
@@ -68,7 +86,6 @@ Page({
     let userId = wx.getStorageSync('userId')
     let userName = wx.getStorageSync('userName')
     if (userId !== null && userId !== '') {
-      console.log(userId)
       wx.request({
         url: 'http://101.132.73.7:8989/DuiMa/GetAuthority',
         data: {
