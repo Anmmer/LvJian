@@ -34,7 +34,6 @@ App({
                   if (res.data.flag && res.data.data.length !== 0) {
                     wx.setStorageSync('userId', res.data.data[0].user_id)
                     wx.setStorageSync('userName', res.data.data[0].user_name)
-                    wx.setStorageSync('gp_name', res.data.data[0].gp_name)
                   }
                 }
               })

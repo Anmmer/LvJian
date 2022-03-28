@@ -164,7 +164,7 @@ Page({
               wx.setStorageSync('fauthority', JSON.parse(res.data.processContent));
               wx.setStorageSync('userId', userId)
               wx.setStorageSync('userName', userName)
-              wx.setStorageSync('gp_name', res.data.list[0].gp_name)
+              wx.setStorageSync('gp_name', JSON.parse(res.data.function)[0].gp_name)
               // 进行跳转界面
               wx.switchTab({
                 url: '../index/index',
