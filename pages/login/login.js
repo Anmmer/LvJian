@@ -107,6 +107,7 @@ Page({
               fauthority: res.data.processContent,
             }
           })
+          wx.setStorageSync('gp_name', JSON.parse(res.data.function)[0].gp_name)
           wx.setStorageSync('fauthority', JSON.parse(res.data.processContent));
           wx.setStorageSync('userId', userId)
           wx.setStorageSync('userName', userName)
