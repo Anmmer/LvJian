@@ -20,7 +20,7 @@ App({
           },
           success(res) {
             if (res.errMsg == 'request:ok') {
-              wx.setStorageSync('gp_name', res.data.openid)
+              wx.setStorageSync('openid', res.data.openid)
               wx.request({
                 url: 'http://101.132.73.7:8989/DuiMa/AutoLogin',
                 data: {
