@@ -82,7 +82,6 @@ Page({
   onLoad() {
     let arr = []
     let fauthority = wx.getStorageSync('fauthority')
-    console.log(fauthority)
     for (let val of fauthority) {
       arr.push(this.data.authority[val.pc_id - 1])
     }
