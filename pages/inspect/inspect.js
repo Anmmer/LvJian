@@ -73,7 +73,7 @@ Page({
   jiaodao() {
     console.log("出库")
     wx.navigateTo({
-      url: "../processConfirm/processConfirm",
+      url: "../check/check",
     })
   },
   check() {
