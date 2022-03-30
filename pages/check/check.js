@@ -13,14 +13,6 @@ Page({
   },
   // 扫码函数
   scanCode(e) {
-    if (this.data.pid != '') {
-      wx.showToast({
-        title: '已扫描构建!',
-        icon: 'none',
-        duration: 1000
-      })
-      return
-    }
     this.setData({
       result: e.detail.result
     })
@@ -63,6 +55,7 @@ Page({
             if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
               pop_pageDate[0].state = '质检完成'
             }
+            Toast('扫码成功！');
             that.setData({
               state: pop_pageDate[0].state,
               plannumber: pop_pageDate[0].plannumber,

@@ -14,10 +14,6 @@ Page({
   },
   // 扫码函数
   scanCode(e) {
-    if (this.data.pid != '') {
-      Toast('扫码成功！');
-      return
-    }
     this.setData({
       result: e.detail.result
     })
@@ -63,6 +59,7 @@ Page({
               pop_pageDate[0].state = '浇捣完成'
               that.data.disabled = 'disabled'
             }
+            Toast('扫码成功！');
             that.setData({
               state: pop_pageDate[0].state,
               plannumber: pop_pageDate[0].plannumber,
