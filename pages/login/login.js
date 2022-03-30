@@ -10,6 +10,15 @@ Page({
   // 页面创建时执行
   onLoad: function () {
     this.setNavigation();
+    wx.showLoading({
+      title: '加载中',
+    })
+    setTimeout(() => {
+      this.getDate()
+    }, 1000)
+
+  },
+  getDate() {
     let that = this
     // 检测是否有工号在Storage中，并检查时间戳
     wx.getStorage({
@@ -20,11 +29,18 @@ Page({
         //if(currentTime.getTime()-lastLoginTime.getTime() > 1) {
         if (currentTime.getTime() - lastLoginTime.getTime() > 7 * 24 * 60 * 60 * 1000) {
           // 登陆过期
-          wx.showToast({
-            title: '您的登陆信息已过期，请重新登陆！',
-            icon: 'none',
-            duration: 1000
+          wx.hideLoading({
+            success: (res) => {},
           })
+          Dialog.confirm({
+            title: '使用微信号登录',
+            // message: '弹窗内容'
+          }).then(() => {
+            // on confirm
+            that.autoLogin();
+          }).catch(() => {
+            // on cancel
+          });
         } else {
           // 免密登陆，进行跳转
           // 加载权限
@@ -48,15 +64,21 @@ Page({
       fail() {
         // 没有user_data的存储
         console.log("There is no user_data")
-        Dialog.confirm({
-          title: '使用微信号登录',
-          // message: '弹窗内容'
-        }).then(() => {
-          // on confirm
-          that.autoLogin();
-        }).catch(() => {
-          // on cancel
-        });
+        wx.hideLoading({
+          success: (res) => {},
+        })
+        if (wx.getStorageSync('openid') !== '') {
+          Dialog.confirm({
+            title: '使用微信号登录',
+            // message: '弹窗内容'
+          }).then(() => {
+            // on confirm
+            that.autoLogin();
+          }).catch(() => {
+            // on cancel
+          });
+        }
+
       }
     })
   },
@@ -83,42 +105,61 @@ Page({
     })
   },
   autoLogin() {
-    let userId = wx.getStorageSync('userId')
-    let userName = wx.getStorageSync('userName')
-    if (userId !== null && userId !== '') {
-      wx.request({
-        url: 'http://101.132.73.7:8989/DuiMa/GetAuthority',
-        data: {
-          userId: userId
-        },
-        method: 'POST',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        success(res) {
-          // 写入Storage
-          var currentTime = new Date()
-          wx.setStorage({
-            key: "user_data",
-            data: {
-              LastLoginTime: currentTime.getTime(),
-              userId: userId,
-              userName: userName,
-              fauthority: res.data.processContent,
+    let openid = wx.getStorageSync('openid')
+    console.log(openid)
+    if (openid !== '') {
+      let pro = new Promise((resolve, reject) => {
+        wx.request({
+          url: 'http://101.132.73.7:8989/DuiMa/AutoLogin',
+          data: {
+            openid: openid
+          },
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success(res) {
+            if (res.data.flag && res.data.data.length !== 0) {
+              wx.setStorageSync('userId', res.data.data[0].user_id)
+              wx.setStorageSync('userName', res.data.data[0].user_name)
+              resolve()
             }
-          })
-          wx.setStorageSync('gp_name', JSON.parse(res.data.function)[0].gp_name)
-          wx.setStorageSync('fauthority', JSON.parse(res.data.processContent));
-          wx.setStorageSync('userId', userId)
-          wx.setStorageSync('userName', userName)
-          // 进行跳转界面'
-          wx.switchTab({
-            url: '../index/index',
-          })
-        },
-        fail(res) {
-          console.log(res)
-        }
+          }
+        })
+      })
+      pro.then(() => {
+        wx.request({
+          url: 'http://101.132.73.7:8989/DuiMa/GetAuthority',
+          data: {
+            userId: wx.getStorageSync('userId')
+          },
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          success(res) {
+            // 写入Storage
+            var currentTime = new Date()
+            wx.setStorage({
+              key: "user_data",
+              data: {
+                LastLoginTime: currentTime.getTime(),
+                userId: wx.getStorageSync('userId'),
+                userName: wx.getStorageSync('userName'),
+                fauthority: res.data.processContent,
+              }
+            })
+            wx.setStorageSync('gp_name', JSON.parse(res.data.function)[0].gp_name)
+            wx.setStorageSync('fauthority', JSON.parse(res.data.processContent));
+            // 进行跳转界面'
+            wx.switchTab({
+              url: '../index/index',
+            })
+          },
+          fail(res) {
+            console.log(res)
+          }
+        })
       })
     }
   },
@@ -129,7 +170,7 @@ Page({
       data: {
         user_phone: data.detail.value.user_phone,
         userPwd: data.detail.value.password,
-        openid: app.globalData.openid
+        openid: wx.getStorageSync('openid')
       },
       method: "POST",
       header: {

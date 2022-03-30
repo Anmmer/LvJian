@@ -14,7 +14,7 @@ Page({
     canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
   },
   loginOut() {
-    wx.clearStorageSync();//清除缓存
+    // wx.clearStorageSync();//清除缓存
     wx.removeStorage({
       key: 'user_data',
     })

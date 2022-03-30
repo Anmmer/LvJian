@@ -5,8 +5,8 @@ App({
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-    let appid = 'wx1cc9a0655d15921e'
-    let secret = 'dcdfd855d3846a8e4aa2ab7f48ba2eba'
+    let appid = 'wx791d077604afc99f'
+    let secret = 'c40c401ac1fbd590231c87d5dc351382'
     let that = this
     // 登录
     wx.login({
@@ -21,22 +21,7 @@ App({
           success(res) {
             if (res.errMsg == 'request:ok') {
               wx.setStorageSync('openid', res.data.openid)
-              wx.request({
-                url: 'http://101.132.73.7:8989/DuiMa/AutoLogin',
-                data: {
-                  openid: res.data.openid
-                },
-                method: 'POST',
-                header: {
-                  'content-type': 'application/x-www-form-urlencoded'
-                },
-                success(res) {
-                  if (res.data.flag && res.data.data.length !== 0) {
-                    wx.setStorageSync('userId', res.data.data[0].user_id)
-                    wx.setStorageSync('userName', res.data.data[0].user_name)
-                  }
-                }
-              })
+              console.log(res.data.openid)
             }
           }
         })
