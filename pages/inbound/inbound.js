@@ -1,6 +1,6 @@
 // inbound.js
 const app = getApp()
-
+import Toast from '@vant/weapp/toast/toast';
 Page({
   data: {
     result: '',
@@ -57,13 +57,10 @@ Page({
               // 生产状态
               let pop_pageDate = res.data.data
               if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
-                pop_pageDate[0].state = '待浇捣'
+                pop_pageDate[0].state = '待生产'
               }
               if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
                 pop_pageDate[0].state = '浇捣完成'
-              }
-              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
-                pop_pageDate[0].state = '待质检'
               }
               if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
                 pop_pageDate[0].state = '质检完成(生产完成)'
@@ -137,6 +134,14 @@ Page({
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
+        if (val.state !== '质检完成(生产完成)') {
+          wx.showToast({
+            title: val.materialname + '未生产完成',
+            icon: 'none',
+            duration: 2000
+          })
+          return
+        }
         arr.push(val.materialcode)
       }
       // 可以上传
@@ -146,8 +151,8 @@ Page({
           warehouseId: this.data.warehouse_id,
           productIds: JSON.stringify(arr),
           type: "1",
-          userId: app.globalData.userId,
-          userName: app.globalData.userName
+          userId: wx.getStorageSync('userId'),
+          userName: wx.getStorageSync('userName')
         },
         method: 'POST',
         header: {
@@ -155,11 +160,17 @@ Page({
         },
         success(res) {
           // 清空所有
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 1000
-          })
+          if (res.data.msg !== '') {
+            Dialog.confirm({
+              title: '入库提示',
+              message: res.data.msg
+            }).then(() => {
+              // on confirm
+            }).catch(() => {
+              // on cancel
+            });
+          }
+          Toast('入库成功！');
           that.setData({
             products: [],
             warehouse_id: "",
@@ -181,6 +192,11 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
+    wx.showToast({
+      title: '请先扫描库房二维码',
+      icon: 'none',
+      duration: 2500
+    })
   },
 
   setNavigation() {
