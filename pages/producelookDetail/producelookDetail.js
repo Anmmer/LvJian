@@ -53,24 +53,20 @@ Page({
         let pop_pageDate = res.data.data;
         for (let i = 0; i < pop_pageDate.length; i++) {
           if (pop_pageDate[i]['pourmade'] === 0 && pop_pageDate[i]['inspect'] === 0) {
-            pop_pageDate[i].state = '待生产'
-            pop_pageDate[i].style = 'background-color: grey;'
+            pop_pageDate[i].state = '待浇捣'
+            pop_pageDate[i].style = "background-color: grey;"
           }
           if (pop_pageDate[i]['pourmade'] === 1 && pop_pageDate[i]['inspect'] === 0) {
-            pop_pageDate[i].state = '浇捣完成'
-            pop_pageDate[i].style = 'background-color: yellow;'
-          }
-          if (pop_pageDate[i]['pourmade'] === 0 && pop_pageDate[i]['inspect'] === 1) {
             pop_pageDate[i].state = '待质检'
-            pop_pageDate[i].style = 'background-color: grey;'
+            pop_pageDate[i].style = "background-color: yellow;"
           }
           if (pop_pageDate[i]['pourmade'] === 1 && pop_pageDate[i]['inspect'] === 1) {
             pop_pageDate[i].state = '质检合格'
-            pop_pageDate[i].style = 'background-color: green;'
+            pop_pageDate[i].style = "background-color: green;"
           }
           if (pop_pageDate[i]['pourmade'] === 1 && pop_pageDate[i]['inspect'] === 2) {
             pop_pageDate[i].state = '质检不合格'
-            pop_pageDate[i].style = 'background-color: red;'
+            pop_pageDate[i].style = "background-color: red;"
           }
         }
         that.setData({

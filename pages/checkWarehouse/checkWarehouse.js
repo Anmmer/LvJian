@@ -1,5 +1,6 @@
 // checkWarehouse.js
 const app = getApp()
+import Toast from '@vant/weapp/toast/toast';
 Page({
   data: {
     result: '',
@@ -18,18 +19,13 @@ Page({
     var resultstr = e.detail.result.toString()
     var strs = resultstr.split("\n")
     // for循环从strs中找到构件号或者货位号
-    var productId = null
     for (var i = 0; i < strs.length; i++) {
       var idx = strs[i].indexOf(":")
       var fieldname = strs[i].substring(0, idx)
-      var flag = (fieldname == "货位号")
-      console.log()
-      console.log(flag)
-      console.log(fieldname)
-      if (fieldname.indexOf("构件号") >= 0) {
+      if (fieldname.indexOf("物料编码") >= 0) {
         // 这是一个构件标签
-        var productId = strs[i].substring(idx + 1)
-        console.log("扫描到构件'" + productId + "'")
+        var materialcode = strs[i].substring(idx + 1)
+        console.log("扫描到构件'" + materialcode + "'")
         if (that.data.warehouse_id == "") {
           // 还未扫描货位
           wx.showToast({
@@ -37,52 +33,38 @@ Page({
             icon: 'none',
             duration: 1000
           })
-          continue
+          return
         } else {
-          // for循环找是否存在在库位中
-          var list = that.data.products
-          var listtmp = that.data.productstmp
-          var flag = false
-          for (var j = 0; j < listtmp.length; j++) {
-            if (listtmp[j] == productId) flag = true;
-          }
-          if (!flag) {
-            wx.showToast({
-              title: '该构件不是该库的构件!',
-              icon: 'none',
-              duration: 3000
-            })
-            continue
-          }
-          var idx = 0;
-          flag = false
-          for (var j = 0; j < list.length; j++) {
-            if (list[j] == productId) {
-              idx = j;
-              flag = true
+          // 循环找是否存在在库位中
+          console.log(materialcode)
+          this.data.products.map((val, i) => {
+            if (val.materialcode == materialcode) {
+              this.data.products.splice(i, 1);
+              console.log(materialcode)
+              console.log(this.data.products)
+              this.setData({
+                products: this.data.products
+              })
+              wx.showToast({
+                title: 'ok!',
+                icon: 'none',
+                duration: 1000
+              })
             }
-          }
-          if (flag) {
-            list.splice(idx, 1)
-            that.setData({
-              products: list
-            })
+          })
+
+          if (this.data.products.length == 0) {
+            Toast.success('盘库成功');
           }
         }
-      } else if (fieldname.trim() == "货位号") {
+      } else if (fieldname.indexOf("货位号") > 0) {
         // 扫到一个库
         var warehouseId = strs[i].substring(idx + 1)
         console.log("扫描到货位，其货位号为" + warehouseId)
-        var fields = {
-          warehouse_name: "STRING"
-        }
         wx.request({
-          url: 'http://101.132.73.7:8989/DuiMa/QuerySQL',
+          url: 'http://101.132.73.7:8989/DuiMa/GetPreProductWarehouse',
           data: {
-            sqlStr: "select warehouse_name from warehouse where warehouse_id =" + warehouseId + ";",
-            fieldNames: JSON.stringify(fields),
-            pageCur: 1,
-            pageMax: 10
+            warehouseId: warehouseId
           },
           method: "POST",
           header: {
@@ -91,42 +73,25 @@ Page({
           success(res) {
             console.log(res.data)
             // 重置名字，重置id
-            var jsonobj = JSON.parse(res.data.data)
-            that.setData({
-              warehouse_name: jsonobj.warehouse_name,
-              warehouse_id: warehouseId
-            })
-          }
-        })
-        // 查询所有该货位上的构件
-        fields = {
-          product_id: "STRING"
-        }
-        wx.request({
-          url: 'http://101.132.73.7:8989/DuiMa/QuerySQL',
-          data: {
-            sqlStr: "select product_id from product where warehouse_id=" + warehouseId + ";",
-            fieldNames: JSON.stringify(fields),
-            pageCur: 1,
-            pageMax: 1000
-          },
-          method: "POST",
-          header: {
-            'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-          },
-          success(res) {
-            console.log(res.data)
-            var jsonobj = JSON.parse(res.data.data)
-            console.log(jsonobj)
-            var list = []
-            var listtmp = [] // 深复制
-            for (var j = 0; j < jsonobj.length; j++) {
-              list.push(jsonobj[j].product_id)
-              listtmp.push(jsonobj[j].product_id)
+            var jsonobj = res.data.data
+            for (let i = 0; i < jsonobj.length; i++) {
+              if (jsonobj[i]['pourmade'] === 0 && jsonobj[i]['inspect'] === 0) {
+                jsonobj[i].state = '待浇捣'
+              }
+              if (jsonobj[i]['pourmade'] === 1 && jsonobj[i]['inspect'] === 0) {
+                jsonobj[i].state = '待质检'
+              }
+              if (jsonobj[i]['pourmade'] === 1 && jsonobj[i]['inspect'] === 1) {
+                jsonobj[i].state = '质检合格'
+              }
+              if (jsonobj[i]['pourmade'] === 1 && jsonobj[i]['inspect'] === 2) {
+                jsonobj[i].state = '质检不合格'
+              }
             }
             that.setData({
-              products: list,
-              productstmp: listtmp
+              warehouse_name: jsonobj[0].warehouse_name,
+              warehouse_id: warehouseId,
+              products: jsonobj
             })
           }
         })
@@ -139,6 +104,11 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
+    wx.showToast({
+      title: '请先扫描库房二维码',
+      icon: 'none',
+      duration: 2500
+    })
   },
 
   setNavigation() {

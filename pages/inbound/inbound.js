@@ -26,13 +26,21 @@ Page({
       var idx = strs[i].indexOf(":")
       var fieldname = strs[i].substring(0, idx)
       if (fieldname.indexOf("物料编码") >= 0) {
+        if (this.data.warehouse_id == '') {
+          wx.showToast({
+            title: '请先扫描库房二维码!',
+            icon: 'none',
+            duration: 1500
+          })
+          return
+        }
         // 这是一个构件标签
         var materialcode = strs[i].substring(idx + 1)
         if (this.data.materialcodes.find(val => val == materialcode) !== undefined) {
           wx.showToast({
-            title: '扫描成功!',
+            title: '扫描结果已存在!',
             icon: 'none',
-            duration: 1000
+            duration: 1500
           })
           return
         }
@@ -57,13 +65,24 @@ Page({
               // 生产状态
               let pop_pageDate = res.data.data
               if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
-                pop_pageDate[0].state = '待生产'
+                pop_pageDate[0].state = '待浇捣'
               }
               if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
-                pop_pageDate[0].state = '浇捣完成'
+                pop_pageDate[0].state = '待质检'
               }
               if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
-                pop_pageDate[0].state = '质检完成(生产完成)'
+                pop_pageDate[0].state = '质检合格'
+              }
+              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
+                pop_pageDate[0].state = '质检不合格'
+              }
+              if (pop_pageDate[0].state != '质检合格') {
+                wx.showToast({
+                  title: '不符合入库条件，无法入库!',
+                  icon: 'none',
+                  duration: 1500
+                })
+                return
               }
               let arr = that.data.products
               arr.push(pop_pageDate[0])
@@ -115,7 +134,6 @@ Page({
     }
   },
   deleteItem(event) {
-    console.log(event.currentTarget.dataset.id)
     var list = this.data.products
     // 删除制定的构件
     list.splice(event.currentTarget.dataset.id, 1)
@@ -134,14 +152,6 @@ Page({
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
-        if (val.state !== '质检完成(生产完成)') {
-          wx.showToast({
-            title: val.materialname + '未生产完成',
-            icon: 'none',
-            duration: 2000
-          })
-          return
-        }
         arr.push(val.materialcode)
       }
       // 可以上传
