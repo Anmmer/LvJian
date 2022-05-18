@@ -71,17 +71,15 @@ Page({
 
   },
   jiaodao() {
-    console.log("出库")
     wx.navigateTo({
       url: "../check/check",
     })
   },
-  check() {
-    console.log("出库")
-    wx.navigateTo({
-      url: "../check/check",
-    })
-  },
+  // check() {
+  //   wx.navigateTo({
+  //     url: "../check/check",
+  //   })
+  // },
   /**
    * 生命周期函数--监听页面隐藏
    */

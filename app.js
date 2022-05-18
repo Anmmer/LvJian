@@ -5,8 +5,8 @@ App({
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-    let appid = 'wx791d077604afc99f'
-    let secret = 'c40c401ac1fbd590231c87d5dc351382'
+    let appid = 'wx1cc9a0655d15921e'
+    let secret = 'dcdfd855d3846a8e4aa2ab7f48ba2eba'
     let that = this
     // 登录
     wx.login({

@@ -26,7 +26,8 @@
     "van-collapse-item": "@vant/weapp/collapse-item/index",
     "van-toast": "@vant/weapp/toast/index",
     "van-panel": "@vant/weapp/panel/index",
-    "van-dialog": "@vant/weapp/dialog/index"
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-tree-select": "@vant/weapp/tree-select/index"
   },
   "pages":[
     "pages/login/login",
