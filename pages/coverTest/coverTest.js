@@ -5,9 +5,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    pourMadeNumber: 0,
+    testMadeNumber: 0,
     checkNumber: 0,
-    pour_list: [],
+    test_list: [],
     pageCur: 1,
     pageMax: 10
   },
@@ -16,30 +16,25 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
-    this.pourData();
+    this.testData();
   },
-  pourData() {
+  testData() {
     var that = this
-    let data = {
-      pourState: "0",
-      inspectState: "0",
-      pageCur: this.data.pageCur,
-      pageMax: this.data.pageMax
-    }
-    if (wx.getStorageSync('on_or_off') == '1') {
-      data.isTest = 'true'
-    }
     wx.request({
       url: 'http://101.132.73.7:8989/DuiMa/GetPreProduct',
-      data: data,
+      data: {
+        isPrint: "true",
+        pageCur: this.data.pageCur,
+        pageMax: this.data.pageMax
+      },
       method: 'POST',
       header: {
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
         that.setData({
-          pour_list: that.data.pour_list.concat(res.data.data),
-          pourMadeNumber: res.data.cnt,
+          test_list: that.data.test_list.concat(res.data.data),
+          testMadeNumber: res.data.cnt,
           pageCur: that.data.pageCur + 1
         })
       }
@@ -78,16 +73,9 @@ Page({
   onShow: function () {
 
   },
-  jiaodao() {
-    console.log("出库")
+  test() {
     wx.navigateTo({
-      url: "../processConfirm/processConfirm",
-    })
-  },
-  check() {
-    console.log("出库")
-    wx.navigateTo({
-      url: "../check/check",
+      url: "../test/test",
     })
   },
   /**
@@ -115,7 +103,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    this.testData();
   },
 
   /**

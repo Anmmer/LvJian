@@ -6,7 +6,9 @@ Page({
    */
   data: {
     pourMadeNumber: 0,
-    checkNumber: 0
+    checkNumber: 0,
+    pageCur: 1,
+    pageMax: 10
   },
   /**
    * 生命周期函数--监听页面加载
@@ -17,14 +19,18 @@ Page({
   },
   inspectData() {
     var that = this
+    let data = {
+      inspectState: "0",
+      pourState: "1",
+      pageCur: this.data.pageCur,
+      pageMax: this.data.pageMax
+    }
+    if (wx.getStorageSync('on_or_off') == '1') {
+      data.isTest = 'true'
+    }
     wx.request({
       url: 'http://101.132.73.7:8989/DuiMa/GetPreProduct',
-      data: {
-        inspectState: "0",
-        pourState: "1",
-        pageCur: 1,
-        pageMax: 1000
-      },
+      data: data,
       method: 'POST',
       header: {
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
@@ -32,7 +38,7 @@ Page({
       success(res) {
         that.setData({
           checkNumber: res.data.cnt,
-          inspect_list: res.data.data
+          inspect_list: that.data.inspectData.concant(res.data.data)
         })
       }
     })

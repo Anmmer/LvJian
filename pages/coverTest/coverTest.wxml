@@ -7,19 +7,21 @@
   </view>
   <view style="margin-top:{{startBarHeight+navgationHeight+10}}px;height: 83%;">
     <view class="mid" style="height: 100%;">
-      <view class="tiaomu1"> <text class="mark">|</text> 质检</view>
-      <text class="daipan">待质检数量：{{checkNumber}}\n</text>
-      <text class="daipan">待质检明细：</text>
-      <scroll-view scroll-y="true" style="height: 75%;" bindscrolltolower="inspectData">
-        <view wx:for="{{inspect_list}}" wx:key="inspect_list">
+      <view class="tiaomu1"> <text class="mark">|</text> 隐蔽性检验</view>
+      <text class="daipan">待检验数量：{{testMadeNumber}}\n</text>
+      <text class="daipan">待检验明细：</text>
+      <!-- <view class="detail"> -->
+      <scroll-view scroll-y="true" style="height: 75%;" bindscrolltolower="testData">
+        <view wx:for="{{test_list}}" wx:key="test_list">
           <view>物料编码：{{item.materialcode}} </view>
           <view>物料名称：{{item.materialname}} </view>
           <view>构 件 号：{{item.preproductid}}</view>
           <text>\n</text>
         </view>
       </scroll-view>
-      <view class="functionItem4" bindtap="jiaodao">
-        <text class="main">质检</text>
+      <!-- </view> -->
+      <view class="functionItem4" bindtap="test">
+        <text class="main">检验</text>
       </view>
     </view>
   </view>

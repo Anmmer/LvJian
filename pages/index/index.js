@@ -80,22 +80,57 @@ Page({
     canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
   },
   onLoad() {
-    let arr = []
-    let fauthority = wx.getStorageSync('fauthority')
-    for (let val of fauthority) {
-      arr.push(this.data.authority[val.pc_id - 1])
-    }
-    this.setData({
-      gezi: arr,
-      userName: wx.getStorageSync('userName')
-    })
-    this.setNavigation();
-    if (wx.getUserProfile) {
-      this.setData({
-        canIUseGetUserProfile: true
+    let on_or_off
+    console.log(1111)
+    let pro = new Promise((resolve, reject) => {
+      wx.request({
+        url: 'http://101.132.73.7:8989/DuiMa/GetDefaultSet',
+        data: null,
+        method: 'POST',
+        header: {
+          "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        success(res) {
+          console.log(res)
+          if (res.data.data !== undefined) {
+            res.data.data.forEach((item) => {
+              if (item.name == 'concealed_process') {
+                on_or_off = item.on_or_off;
+              }
+            })
+            wx.setStorageSync('on_or_off', on_or_off)
+            resolve()
+          }
+        }
       })
-    }
-    this.checkLogin()
+    })
+    pro.then(() => {
+      let arr = []
+      let fauthority = wx.getStorageSync('fauthority')
+      for (let val of fauthority) {
+        arr.push(this.data.authority[val.pc_id - 1])
+      }
+      if (on_or_off == '1') {
+        arr.splice(3, 0, {
+          icon: "/pages/image/kecheng3.png",
+          wenzi: "隐蔽性检验",
+          linktype: "navigateTo",
+          url: "/pages/coverTest/coverTest",
+          img: "/pages/image/kecheng3.png"
+        })
+      }
+      this.setData({
+        gezi: arr,
+        userName: wx.getStorageSync('userName')
+      })
+      this.setNavigation();
+      if (wx.getUserProfile) {
+        this.setData({
+          canIUseGetUserProfile: true
+        })
+      }
+      this.checkLogin()
+    })
   },
   onShow: function () {
     this.getTabBar().init();
