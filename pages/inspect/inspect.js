@@ -7,6 +7,7 @@ Page({
   data: {
     pourMadeNumber: 0,
     checkNumber: 0,
+    inspect_list: [],
     pageCur: 1,
     pageMax: 10
   },
@@ -38,7 +39,7 @@ Page({
       success(res) {
         that.setData({
           checkNumber: res.data.cnt,
-          inspect_list: that.data.inspectData.concant(res.data.data)
+          inspect_list: that.data.inspect_list.concat(res.data.data)
         })
       }
     })

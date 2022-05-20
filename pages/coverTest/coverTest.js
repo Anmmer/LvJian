@@ -49,7 +49,6 @@ Page({
     let that = this
     wx.getSystemInfo({
       success: function (res) {
-        console.log(res.model)
         if (res.model == 'iPhone X') {
           startBarHeight = 44
         }

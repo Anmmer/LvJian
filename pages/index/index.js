@@ -81,7 +81,6 @@ Page({
   },
   onLoad() {
     let on_or_off
-    console.log(1111)
     let pro = new Promise((resolve, reject) => {
       wx.request({
         url: 'http://101.132.73.7:8989/DuiMa/GetDefaultSet',
@@ -91,7 +90,6 @@ Page({
           "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
         },
         success(res) {
-          console.log(res)
           if (res.data.data !== undefined) {
             res.data.data.forEach((item) => {
               if (item.name == 'concealed_process') {

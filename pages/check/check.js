@@ -54,11 +54,26 @@ Page({
           if (res.data.data.length != 0) {
             // 生产状态
             let pop_pageDate = res.data.data
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '待质检'
-            }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
-              pop_pageDate[0].state = '质检完成'
+            if (wx.getStorageSync('on_or_off') == '1') {
+              if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
+                pop_pageDate[0].state = '待质检'
+              }
+              if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
+                pop_pageDate[0].state = '质检完成'
+              }
+              if (pop_pageDate[0]['covert_test'] === 2 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
+                pop_pageDate[0].state = '质检不合格'
+              }
+            } else {
+              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
+                pop_pageDate[0].state = '待质检'
+              }
+              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
+                pop_pageDate[0].state = '质检完成'
+              }
+              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
+                pop_pageDate[0].state = '质检不合格'
+              }
             }
             Toast('扫码成功！');
             that.setData({
@@ -104,10 +119,6 @@ Page({
     this.setData({
       activeId
     });
-    console.log(this.data.activeId)
-  },
-  inspectNo() {
-
   },
   onClose() {
     this.setData({
@@ -181,7 +192,7 @@ Page({
   },
   submitInfo(e) {
     var that = this
-    if (this.data.state !== '待质检') {
+    if (this.data.state !== '待质检' || this.data.state !== '质检不合格') {
       wx.showToast({
         title: '未处于质检状态!',
         icon: 'none',

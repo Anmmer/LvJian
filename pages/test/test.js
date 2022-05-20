@@ -10,6 +10,11 @@ Page({
     materialcode: '',
     pid: '',
     state: '',
+    items: [],
+    mainActiveIndex: 0,
+    activeId: [],
+    show: false,
+    patch_library: ''
   },
   // 扫码函数
   scanCode(e) {
@@ -55,6 +60,9 @@ Page({
             if (pop_pageDate[0]['covert_test'] === 1) {
               pop_pageDate[0].state = '检验完成'
             }
+            if (pop_pageDate[0]['covert_test'] === 2) {
+              pop_pageDate[0].state = '检验不合格'
+            }
             Toast('扫码成功！');
             that.setData({
               state: pop_pageDate[0].state,
@@ -75,7 +83,7 @@ Page({
   },
   submitInfo(e) {
     var that = this
-    if (this.data.state !== '待检验') {
+    if (this.data.state !== '待检验' || this.data.state !== '检验不合格') {
       wx.showToast({
         title: '未处于检验状态!',
         icon: 'none',
@@ -117,28 +125,8 @@ Page({
         })
       }).catch(() => {
         // on cancel
-        let arr = [];
-        arr.push(this.data.pid)
-        wx.request({
-          url: 'http://101.132.73.7:8989/DuiMa/ConcealedProcess',
-          data: {
-            index: '0',
-            pids: JSON.stringify(arr),
-          },
-          method: 'POST',
-          header: {
-            "content-type": 'application/x-www-form-urlencoded'
-          },
-          success(res) {
-            // 成功后
-            Toast.success('检验成功！');
-            that.setData({
-              state: '',
-              pid: "",
-              plannumber: "",
-              materialcode: '',
-            })
-          }
+        this.setData({
+          show: true
         })
       });
 
@@ -151,11 +139,115 @@ Page({
       })
     }
   },
+  getFailContent() {
+    let that = this;
+    wx.request({
+      url: 'http://101.132.73.7:8989/DuiMa/GetFailContent',
+      data: null,
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        that.setData({
+          items: res.data.data
+        })
+      }
+    })
+  },
+  onClickNav({
+    detail = {}
+  }) {
+    this.setData({
+      mainActiveIndex: detail.index || 0
+    });
+  },
+
+  onClickItem({
+    detail = {}
+  }) {
+    const {
+      activeId
+    } = this.data;
+
+    const index = activeId.indexOf(detail.id);
+    if (index > -1) {
+      activeId.splice(index, 1);
+    } else {
+      activeId.push(detail.id);
+    }
+
+    this.setData({
+      activeId
+    });
+  },
+  onClose() {
+    this.setData({
+      show: false,
+      activeId: [],
+      patch_library: ''
+    })
+  },
+  onSave() {
+    let that = this
+    if (this.data.patch_library == '') {
+      wx.showToast({
+        title: '请输入修补库地址!',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
+    if (this.data.activeId.length == 0) {
+      wx.showToast({
+        title: '请选择不合格原因!',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
+    let arr = [];
+    let str = '';
+    arr.push(this.data.pid)
+    for (let id of this.data.activeId) {
+      for (let o of this.data.items) {
+        for (let o_child of o.children) {
+          if (o_child.id == id) {
+            str += o_child.text + "，"
+            break
+          }
+        }
+      }
+    }
+    wx.request({
+      url: 'http://101.132.73.7:8989/DuiMa/ConcealedProcess',
+      data: {
+        index: '0',
+        covert_test_failure_reason: str,
+        pids: JSON.stringify(arr)
+      },
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      success(res) {
+        // 成功后
+        Toast.success('检验成功！');
+        that.setData({
+          state: '',
+          pid: "",
+          plannumber: "",
+          materialcode: '',
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     this.setNavigation();
+    this.getFailContent();
   },
   fanhui: function () {
     wx.navigateBack()

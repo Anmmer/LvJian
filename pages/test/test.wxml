@@ -22,5 +22,18 @@
       <van-toast id="van-toast" />
       <van-dialog id="van-dialog" />
     </view>
+    <van-popup show="{{ show }}" position="bottom" close-on-click-overlay="false">
+      <view style="display: flex; height: 44px;justify-content: space-between;line-height: 10px">
+        <view style="color: #969799;font-size:14px;padding:16px;" bindtap="onClose">取消</view>
+        <view style="color: #576b95;font-size:14px;padding:16px" bindtap="onSave">确认</view>
+      </view>
+      <view>
+        <van-cell-group>
+          <van-field value="{{patch_library}}" label="修补库" placeholder = "请输入修补库地址" bind:change="onChange" />
+          <van-field label="选择原因" disabled border="{{ false }}" />
+        </van-cell-group>
+      </view>
+      <van-tree-select items="{{ items }}" main-active-index="{{ mainActiveIndex }}" active-id="{{ activeId }}" bind:click-nav="onClickNav" bind:click-item="onClickItem" />
+    </van-popup>
   </view>
 </view>
