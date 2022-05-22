@@ -57,22 +57,22 @@ Page({
             if (wx.getStorageSync('on_or_off') == '1') {
               if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
                 pop_pageDate[0].state = '待质检'
-              }
-              if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
+              } else if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
                 pop_pageDate[0].state = '质检完成'
-              }
-              if (pop_pageDate[0]['covert_test'] === 2 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
+              } else if (pop_pageDate[0]['covert_test'] === 2 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
                 pop_pageDate[0].state = '质检不合格'
+              } else {
+                pop_pageDate[0].state = '未处于质检状态'
               }
             } else {
               if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
                 pop_pageDate[0].state = '待质检'
-              }
-              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
+              } else if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
                 pop_pageDate[0].state = '质检完成'
-              }
-              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
+              } else if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
                 pop_pageDate[0].state = '质检不合格'
+              } else {
+                pop_pageDate[0].state = '未处于质检状态'
               }
             }
             Toast('扫码成功！');

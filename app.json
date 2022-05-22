@@ -44,6 +44,7 @@
     "pages/producelook/producelook",
     "pages/producelookDetail/producelookDetail",
     "pages/check/check",
+    "pages/coverTest/coverTest",
     "pages/test/test",
     "pages/plan/plan",
     "pages/planDetail/planDetail",

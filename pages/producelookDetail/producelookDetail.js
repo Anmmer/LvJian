@@ -68,6 +68,20 @@ Page({
             pop_pageDate[i].state = '质检不合格'
             pop_pageDate[i].style = "background-color: red;"
           }
+          if (wx.getStorageSync('on_or_off') == '1') {
+            if (pop_pageDate[i]['covert_test'] === 1 && pop_pageDate[i]['inspect'] === 0 && pop_pageDate[i]['pourmade'] === 0) {
+              pop_pageDate[i].state = '待浇捣'
+              pop_pageDate[i].style = "background-color: #d9d91a;"
+            }
+            if (pop_pageDate[i]['covert_test'] === 0) {
+              pop_pageDate[i].state = '待检验'
+              pop_pageDate[i].style = "background-color: grey;"
+            }
+            if (pop_pageDate[i]['covert_test'] === 2) {
+              pop_pageDate[i].state = '检验不合格'
+              pop_pageDate[i].style = "background-color: #a94442;"
+            }
+          }
         }
         that.setData({
           preproductList: pop_pageDate,

@@ -51,14 +51,24 @@ Page({
           if (res.data.data.length != 0) {
             // 生产状态
             let pop_pageDate = res.data.data
-            that.data.disabled = ''
-            if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '待浇捣'
+            if (wx.getStorageSync('on_or_off') == '1') {
+              if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
+                pop_pageDate[0].state = '待浇捣'
+              } else if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
+                pop_pageDate[0].state = '浇捣完成'
+              } else {
+                pop_pageDate[0].state = '未处于浇捣状态'
+              }
+            } else {
+              if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
+                pop_pageDate[0].state = '待浇捣'
+              } else if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
+                pop_pageDate[0].state = '浇捣完成'
+              } else {
+                pop_pageDate[0].state = '未处于浇捣状态'
+              }
             }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '浇捣完成'
-              that.data.disabled = 'disabled'
-            }
+
             Toast('扫码成功！');
             that.setData({
               state: pop_pageDate[0].state,
@@ -84,7 +94,7 @@ Page({
   },
   submitInfo(e) {
     var that = this
-    if(this.data.state!=='待浇捣'){
+    if (this.data.state !== '待浇捣') {
       wx.showToast({
         title: '未处于浇捣状态!',
         icon: 'none',
@@ -93,14 +103,6 @@ Page({
       return
     }
     if (this.data.pid != '') {
-      if (this.data.disabled == 'disabled') {
-        wx.showToast({
-          title: '已浇捣!',
-          icon: 'none',
-          duration: 1000
-        })
-        return
-      }
       let arr = [];
       arr.push(this.data.pid)
       wx.request({

@@ -81,62 +81,69 @@ Page({
       })
     }
   },
+  onChange(event) {
+    // event.detail 为当前输入的值
+    this.setData({
+      patch_library: event.detail
+    })
+  },
   submitInfo(e) {
     var that = this
-    if (this.data.state !== '待检验' || this.data.state !== '检验不合格') {
+    if (this.data.state == '待检验' || this.data.state == '检验不合格') {
+      if (this.data.pid != null) {
+        Dialog.confirm({
+          title: '检验确认！',
+          confirmButtonText: '合格',
+          cancelButtonText: '不合格'
+        }).then(() => {
+          // on confirm
+          let arr = [];
+          arr.push(this.data.pid)
+          wx.request({
+            url: 'http://101.132.73.7:8989/DuiMa/ConcealedProcess',
+            data: {
+              index: '1',
+              covert_test: '1',
+              pids: JSON.stringify(arr),
+            },
+            method: 'POST',
+            header: {
+              "content-type": 'application/x-www-form-urlencoded'
+            },
+            success(res) {
+              // 成功后
+              Toast.success('检验成功！');
+              that.setData({
+                state: '',
+                pid: "",
+                plannumber: "",
+                materialcode: '',
+                materialname: ''
+              })
+            }
+          })
+        }).catch(() => {
+          // on cancel
+          this.setData({
+            show: true
+          })
+        });
+
+      } else {
+        // 没有materialcode
+        wx.showToast({
+          title: '二维码中无物料编号!',
+          icon: 'none',
+          duration: 1000
+        })
+      }
+    } else {
       wx.showToast({
         title: '未处于检验状态!',
         icon: 'none',
         duration: 1000
       })
       return
-    }
-    if (this.data.pid != null) {
-      Dialog.confirm({
-        title: '检验确认！',
-        confirmButtonText: '合格',
-        cancelButtonText: '不合格'
-      }).then(() => {
-        // on confirm
-        let arr = [];
-        arr.push(this.data.pid)
-        wx.request({
-          url: 'http://101.132.73.7:8989/DuiMa/ConcealedProcess',
-          data: {
-            index: '1',
-            covert_test: '1',
-            pids: JSON.stringify(arr),
-          },
-          method: 'POST',
-          header: {
-            "content-type": 'application/x-www-form-urlencoded'
-          },
-          success(res) {
-            // 成功后
-            Toast.success('检验成功！');
-            that.setData({
-              state: '',
-              pid: "",
-              plannumber: "",
-              materialcode: '',
-              materialname: ''
-            })
-          }
-        })
-      }).catch(() => {
-        // on cancel
-        this.setData({
-          show: true
-        })
-      });
-
-    } else {
-      // 没有materialcode
-      wx.showToast({
-        title: '请先扫描一个未完工构件的二维码!',
-        icon: 'none',
-        duration: 1000
-      })
     }
   },
   getFailContent() {
@@ -238,6 +245,9 @@ Page({
           pid: "",
           plannumber: "",
           materialcode: '',
+          show: false,
+          activeId: [],
+          patch_library: ''
         })
       }
     })
