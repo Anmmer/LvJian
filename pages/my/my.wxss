@@ -9,6 +9,13 @@
   color: #fff;
   font-size: 40rpx;
 }
+.usernamebt{
+  background-color: #1E90FF; 
+  color:#000;
+  font-size: 34rpx;
+  width: 180rpx !important;
+}
+
 .containerq {
   /* border: #1E90FF solid 1rpx; */
   width: 90%;

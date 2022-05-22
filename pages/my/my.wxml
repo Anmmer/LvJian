@@ -15,22 +15,27 @@
         <view class="userinfo-avatar" bindtap="bindViewTap">
           <open-data type="userAvatarUrl"></open-data>
         </view>
-        <view class="detail">
-          <open-data type="userNickName"></open-data>
-          <view class="carid">角 色  ：{{gp_name}}</view>
-          <view class="carid">用户名：{{userName}}</view>
-        </view>
+
 
       </block>
       <block wx:elif="{{!hasUserInfo}}">
         <view class="userinfo-avatar" bindtap="getUserProfile">
           <open-data type="userAvatarUrl"></open-data>
         </view>
-        <button class="usernamebt" open-type="getUserInfo" bindtap="getUserProfile"> 登录 </button>
+        <view class="detail">
+          <open-data type="userNickName"></open-data>
+          <view class="carid">角 色 ：{{gp_name}}</view>
+          <view class="carid">用户名：{{userName}}</view>
+        </view>
       </block>
       <block wx:else>
         <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+        <!-- <text class="userinfo-nickname">{{userInfo.nickName}}</text> -->
+        <view class="detail">
+          <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+          <view class="carid">角 色 ：{{gp_name}}</view>
+          <view class="carid">用户名：{{userName}}</view>
+        </view>
       </block>
       <!-- <button class="login" bindtap="login">未登录</button> -->
     </view>
@@ -41,5 +46,3 @@
   <view style="height: 280px;"></view>
   <van-button plain type="primary" bindtap="loginOut" size="small">退出登录</van-button>
 </view>
-
-
