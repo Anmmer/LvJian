@@ -24,6 +24,7 @@ Page({
       url: 'http://101.132.73.7:8989/DuiMa/GetPreProduct',
       data: {
         isPrint: "true",
+        testState: "0",
         pageCur: this.data.pageCur,
         pageMax: this.data.pageMax
       },

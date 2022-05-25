@@ -29,7 +29,6 @@
       </view>
       <view>
         <van-cell-group>
-          <van-field value="{{patch_library}}" label="修补库" placeholder = "请输入修补库地址" bind:change="onChange" />
           <van-field label="选择原因" disabled border="{{ false }}" />
         </van-cell-group>
       </view>

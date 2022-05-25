@@ -197,14 +197,6 @@ Page({
   },
   onSave() {
     let that = this
-    if (this.data.patch_library == '') {
-      wx.showToast({
-        title: '请输入修补库地址!',
-        icon: 'none',
-        duration: 1000
-      })
-      return
-    }
     if (this.data.activeId.length == 0) {
       wx.showToast({
         title: '请选择不合格原因!',
@@ -246,8 +238,7 @@ Page({
           plannumber: "",
           materialcode: '',
           show: false,
-          activeId: [],
-          patch_library: ''
+          activeId: []
         })
       }
     })
