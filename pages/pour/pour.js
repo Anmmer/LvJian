@@ -8,6 +8,7 @@ Page({
     pourMadeNumber: 0,
     checkNumber: 0,
     pour_list: [],
+    pageAll: 0,
     pageCur: 1,
     pageMax: 10
   },
@@ -17,6 +18,11 @@ Page({
   onLoad: function (options) {
     this.setNavigation();
     this.pourData();
+  },
+  pourDataPages() {
+    if (this.data.pageCur <= this.data.pageAll) {
+      this.pourData()
+    }
   },
   pourData() {
     var that = this
@@ -40,6 +46,7 @@ Page({
         that.setData({
           pour_list: that.data.pour_list.concat(res.data.data),
           pourMadeNumber: res.data.cnt,
+          pageAll: res.data.pageAll,
           pageCur: that.data.pageCur + 1
         })
       }

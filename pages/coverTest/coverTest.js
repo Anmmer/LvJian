@@ -8,6 +8,7 @@ Page({
     testMadeNumber: 0,
     checkNumber: 0,
     test_list: [],
+    pageAll: 0,
     pageCur: 1,
     pageMax: 10
   },
@@ -17,6 +18,12 @@ Page({
   onLoad: function (options) {
     this.setNavigation();
     this.testData();
+  },
+  testDataPages() {
+    console.log(this.data.pageCur)
+    if (this.data.pageCur <= this.data.pageAll) {
+      this.testData()
+    }
   },
   testData() {
     var that = this
@@ -36,6 +43,7 @@ Page({
         that.setData({
           test_list: that.data.test_list.concat(res.data.data),
           testMadeNumber: res.data.cnt,
+          pageAll: res.data.pageAll,
           pageCur: that.data.pageCur + 1
         })
       }

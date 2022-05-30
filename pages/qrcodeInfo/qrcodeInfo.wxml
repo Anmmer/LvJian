@@ -27,8 +27,8 @@
             <view>物料编码：{{item.materialcode}} </view>
             <view>物料名称：{{item.materialname}} </view>
             <view>生产状态：{{item.state}}</view>
-            <view>隐蔽检验不合格原因：{{item.covert_test_failure_reason}}</view>
-            <view>质检不合格原因：{{item.failure_reason}}</view>
+            <view style="{{item.style1}}">隐蔽检验不合格原因：{{item.covert_test_failure_reason}}</view>
+            <view style="{{item.style2}}">质检不合格原因：{{item.failure_reason}}</view>
           </view>
         </view>
       </view>

@@ -40,6 +40,8 @@ Page({
             // 生产状态
             let pop_pageDate = res.data.data
             if (wx.getStorageSync('on_or_off') == '1') {
+              pop_pageDate[0].style1 = 'display:none'
+              pop_pageDate[0].style2 = 'display:none'
               if (pop_pageDate[0]['covert_test'] == 0) {
                 pop_pageDate[0].state = '已打印'
               }
@@ -47,6 +49,7 @@ Page({
                 pop_pageDate[0].state = '隐蔽性检验通过'
               }
               if (pop_pageDate[0]['covert_test'] == 2) {
+                pop_pageDate[0].style1 = 'display:block'
                 pop_pageDate[0].state = '隐蔽性未通过'
               }
               if (pop_pageDate[0]['pourmade'] == 1) {
@@ -56,6 +59,7 @@ Page({
                 pop_pageDate[0].state = '质检合格'
               }
               if (pop_pageDate[0]['inspect'] == 2) {
+                pop_pageDate[0].style2 = 'display:block'
                 pop_pageDate[0].state = '质检不合格'
               }
             } else {
@@ -73,6 +77,7 @@ Page({
                 pop_pageDate[0].state = '质检完成'
               }
             }
+            console.log(that.data.dataArray)
             that.setData({
               dataArray: pop_pageDate
             })

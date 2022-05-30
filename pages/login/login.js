@@ -13,12 +13,33 @@ Page({
     wx.showLoading({
       title: '加载中',
     })
-    setTimeout(() => {
-      this.getDate()
-    }, 1000)
-
+    let promise = new Promise((resolve, reject) => {
+      // 登录
+      wx.login({
+        success: res => {
+          // 发送 res.code 到后台换取 openId
+          wx.request({
+            url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + app.globalData.appid + '&secret=' + app.globalData.secret + '&js_code=' + res.code + '&grant_type=authorization_code',
+            method: "GET",
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            success(res) {
+              if (res.errMsg == 'request:ok') {
+                wx.setStorageSync('openid', res.data.openid)
+                console.log(res.data.openid)
+              }
+              resolve();
+            }
+          })
+        }
+      })
+    })
+    promise.then(() => {
+      this.getData()
+    })
   },
-  getDate() {
+  getData() {
     let that = this
     // 检测是否有工号在Storage中，并检查时间戳
     wx.getStorage({
@@ -67,6 +88,7 @@ Page({
         wx.hideLoading({
           success: (res) => {},
         })
+        console.log(wx.getStorageSync('openid'))
         if (wx.getStorageSync('openid') !== '') {
           Dialog.confirm({
             title: '使用微信号登录',
@@ -78,7 +100,6 @@ Page({
             // on cancel
           });
         }
-
       }
     })
   },
@@ -230,5 +251,8 @@ Page({
         console.log(res)
       }
     })
+  },
+  login() {
+
   }
 })

@@ -8,6 +8,7 @@ Page({
     pourMadeNumber: 0,
     checkNumber: 0,
     inspect_list: [],
+    pageAll: 0,
     pageCur: 1,
     pageMax: 10
   },
@@ -17,6 +18,11 @@ Page({
   onLoad: function (options) {
     this.setNavigation();
     this.inspectData();
+  },
+  inspectDataPages() {
+    if (this.data.pageCur <= this.data.pageAll) {
+      this.inspectData()
+    }
   },
   inspectData() {
     var that = this
@@ -39,7 +45,9 @@ Page({
       success(res) {
         that.setData({
           checkNumber: res.data.cnt,
-          inspect_list: that.data.inspect_list.concat(res.data.data)
+          pageAll: res.data.pageAll,
+          inspect_list: that.data.inspect_list.concat(res.data.data),
+          pageCur: that.data.pageCur + 1
         })
       }
     })

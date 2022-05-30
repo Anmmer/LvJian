@@ -192,15 +192,17 @@ Page({
   },
   submitInfo(e) {
     var that = this
-    if (this.data.state !== '待质检' || this.data.state !== '质检不合格') {
+    console.log(this.data.pid)
+    if (this.data.pid == null || this.data.pid == '') {
+      // 没有materialcode
       wx.showToast({
-        title: '未处于质检状态!',
+        title: '请先扫描一个未完工构件的二维码!',
         icon: 'none',
         duration: 1000
       })
       return
     }
-    if (this.data.pid != null) {
+    if (this.data.state == '待质检' || this.data.state == '质检不合格') {
       Dialog.confirm({
         title: '质检确认！',
         confirmButtonText: '合格',
@@ -236,11 +238,9 @@ Page({
           show: true
         })
       });
-
     } else {
-      // 没有materialcode
       wx.showToast({
-        title: '请先扫描一个未完工构件的二维码!',
+        title: '未处于质检状态!',
         icon: 'none',
         duration: 1000
       })

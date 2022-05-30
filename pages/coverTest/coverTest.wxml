@@ -11,7 +11,7 @@
       <text class="daipan">待检验数量：{{testMadeNumber}}\n</text>
       <text class="daipan">待检验明细：</text>
       <!-- <view class="detail"> -->
-      <scroll-view scroll-y="true" style="height: 75%;" bindscrolltolower="testData">
+      <scroll-view scroll-y="true" style="height: 75%;" bindscrolltolower="testDataPages">
         <view wx:for="{{test_list}}" wx:key="test_list">
           <view>物料编码：{{item.materialcode}} </view>
           <view>物料名称：{{item.materialname}} </view>
