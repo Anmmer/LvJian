@@ -45,7 +45,7 @@ Page({
         icon: "/pages/image/kecheng4.png",
         wenzi: "修补库",
         linktype: "navigateTo",
-        url: "",
+        url: "/pages/patchlibrary/patchlibrary",
         img: "/pages/image/kecheng4.png"
       },
       {
