@@ -1,0 +1,25 @@
+<!--processConfirm.wxml-->
+<view>
+  <view class='navigation'>
+    <view class='startBar' style='height:{{startBarHeight}}px'></view>
+    <view class='navgation' style='height:{{navgationHeight}}px'>
+      <view class="wenzi" bindtap="fanhui">返回</view>
+    </view>
+  </view>
+  <view style="margin-top:{{startBarHeight+navgationHeight+10}}px">
+    <view class="mid">
+      <view class="tiaomu1"> <text class="mark">|</text> 修补</view>
+      <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin: 0 auto;" mode="scanCode" bindscancode="scanCode"></camera>
+      <view style="width:100%;height:10px"></view>
+      <van-cell-group>
+        <van-field value="{{plannumber}}" label="计划编号" disabled border="{{ false }}" />
+        <van-field value="{{materialcode}}" label="物料编码" disabled border="{{ false }}" />
+        <van-field value="{{materialname}}" label="物料名称" disabled border="{{ false }}" />
+        <van-field value="{{state}}" label="生产状态" disabled border="{{ false }}" />
+      </van-cell-group>
+      <button bindtap="submitInfo" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">修补</button>
+      <van-toast id="van-toast" />
+      <van-dialog id="van-dialog" />
+    </view>
+  </view>
+</view>

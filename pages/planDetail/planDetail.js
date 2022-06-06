@@ -5,7 +5,7 @@ Page({
     activeNames: [],
     plannumber: '',
     pages: 0,
-    pagesMax: 10,
+    pagesMax: 15,
   },
   onLoad: function (options) {
     wx.showLoading({

@@ -50,7 +50,8 @@
     "pages/planDetail/planDetail",
     "custom-tab-bar/index",
     "pages/my/my",
-    "pages/patchlibrary/patchlibrary"
+    "pages/patchlibrary/patchlibrary",
+    "pages/patchCheck/patchCheck"
   ],
   "window": {
     "backgroundTextStyle": "light",
