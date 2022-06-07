@@ -53,7 +53,7 @@ Page({
                 pop_pageDate[0].state = '待质检'
               } else if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
                 pop_pageDate[0].state = '质检完成'
-              } else if (pop_pageDate[0]['covert_test'] === 2 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
+              } else if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
                 pop_pageDate[0].state = '质检不合格'
               } else {
                 pop_pageDate[0].state = '未处于质检状态'
@@ -115,7 +115,7 @@ Page({
           },
           success(res) {
             // 成功后
-            Toast.success('质检成功！');
+            Toast.success('修补成功！');
             that.setData({
               state: '',
               pid: "",
@@ -138,7 +138,6 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
-    this.getFailContent();
   },
   fanhui: function () {
     wx.navigateBack()
