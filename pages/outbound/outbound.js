@@ -14,79 +14,82 @@ Page({
     // 对扫码结果进行分析
     // 1. 通过字符串正则表达式提取构件号
     var resultstr = e.detail.result.toString()
-    var strs = resultstr.split("\n")
-    // for循环从strs中找到构件号或者货位号
-    for (var i = 0; i < strs.length; i++) {
-      var idx = strs[i].indexOf(":")
-      var fieldname = strs[i].substring(0, idx)
-      if (fieldname.indexOf("物料编码") >= 0) {
-        // 这是一个构件标签
-        var materialcode = strs[i].substring(idx + 1)
-        console.log("扫描到构件'" + materialcode + "'")
-        if (this.data.products.find(val => val.materialcode == materialcode) !== undefined) {
-          wx.showToast({
-            title: '扫描结果已存在!',
-            icon: 'none',
-            duration: 1500
-          })
-          return
-        }
-        console.log("扫描到构件'" + materialcode + "'")
-        // 获取构件目前生产状态
-        wx.request({
-          url: 'http://101.132.73.7:8989/DuiMa/GetPreProductWarehouse',
-          data: {
-            materialcode: materialcode,
-          },
-          method: 'POST',
-          header: {
-            "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
-          },
-          success(res) {
-            if (res.data.data.length != 0) {
-              // 生产状态
-              let pop_pageDate = res.data.data
-              if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
-                pop_pageDate[0].state = '待浇捣'
-              }
-              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
-                pop_pageDate[0].state = '待质检'
-              }
-              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
-                pop_pageDate[0].state = '质检合格'
-              }
-              if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
-                pop_pageDate[0].state = '质检不合格'
-              }
-              console.log(pop_pageDate)
-              if (pop_pageDate[0].state != '质检合格') {
-                wx.showToast({
-                  title: '不符合入库条件，无法入库!',
-                  icon: 'none',
-                  duration: 1500
-                })
-                return
-              }
-              that.data.products.push(pop_pageDate[0])
-              that.setData({
-                product: pop_pageDate[0],
-                products: that.data.products
-              })
-            } else {
-              // 该构件已入库，提醒
-              wx.showToast({
-                title: '不符合出库条件，无法出库!',
-                icon: 'none',
-                duration: 1000
-              })
-            }
-          },
-          error(msg) {
-            console.log(msg)
-          }
-        })
-      }
+    var materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)[1]
+    if (!materialcode) {
+      return
     }
+    // for循环从strs中找到构件号或者货位号
+    // for (var i = 0; i < strs.length; i++) {
+    // var idx = strs[i].indexOf(":")
+    // var fieldname = strs[i].substring(0, idx)
+    // if (fieldname.indexOf("物料编码") >= 0) {
+    //   // 这是一个构件标签
+    //   var materialcode = strs[i].substring(idx + 1)
+    //   console.log("扫描到构件'" + materialcode + "'")
+    if (this.data.products.find(val => val.materialcode == materialcode) !== undefined) {
+      wx.showToast({
+        title: '扫描结果已存在!',
+        icon: 'none',
+        duration: 1500
+      })
+      return
+    }
+    console.log("扫描到构件'" + materialcode + "'")
+    // 获取构件目前生产状态
+    wx.request({
+      url: 'http://101.132.73.7:8989/DuiMa/GetPreProductWarehouse',
+      data: {
+        materialcode: materialcode,
+      },
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      success(res) {
+        if (res.data.data.length != 0) {
+          // 生产状态
+          let pop_pageDate = res.data.data
+          if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
+            pop_pageDate[0].state = '待浇捣'
+          }
+          if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
+            pop_pageDate[0].state = '待质检'
+          }
+          if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
+            pop_pageDate[0].state = '质检合格'
+          }
+          if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
+            pop_pageDate[0].state = '质检不合格'
+          }
+          console.log(pop_pageDate)
+          if (pop_pageDate[0].state != '质检合格') {
+            wx.showToast({
+              title: '不符合入库条件，无法入库!',
+              icon: 'none',
+              duration: 1500
+            })
+            return
+          }
+          that.data.products.push(pop_pageDate[0])
+          that.setData({
+            product: pop_pageDate[0],
+            products: that.data.products
+          })
+        } else {
+          // 该构件已入库，提醒
+          wx.showToast({
+            title: '不在库中!',
+            icon: 'none',
+            duration: 1000
+          })
+        }
+      },
+      error(msg) {
+        console.log(msg)
+      }
+    })
+    // }
+    // }
   },
   deleteItem(event) {
     var list = this.data.products
@@ -130,7 +133,7 @@ Page({
               duration: 1000
             })
             return
-          }else{
+          } else {
             wx.showToast({
               title: '出库成功',
               icon: 'none',

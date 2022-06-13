@@ -10,9 +10,6 @@ Page({
     productstmp: []
   },
   scanCode(e) {
-    this.setData({
-      result: e.detail.result
-    })
     var that = this
     // 对扫码结果进行分析
     // 1. 通过字符串正则表达式提取构件号
@@ -22,9 +19,9 @@ Page({
     for (var i = 0; i < strs.length; i++) {
       var idx = strs[i].indexOf(":")
       var fieldname = strs[i].substring(0, idx)
-      if (fieldname.indexOf("物料编码") >= 0) {
+      let marerialcode = resultstr.match(/code=(\d+)&id=(\d+)/)[1]
+      if (!marerialcode) {
         // 这是一个构件标签
-        var materialcode = strs[i].substring(idx + 1)
         console.log("扫描到构件'" + materialcode + "'")
         if (that.data.warehouse_id == "") {
           // 还未扫描货位

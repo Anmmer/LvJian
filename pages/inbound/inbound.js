@@ -20,12 +20,12 @@ Page({
     // 1. 通过字符串正则表达式提取物料编码
     var resultstr = e.detail.result.toString()
     var strs = resultstr.split("\n")
+    var materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)[1]
     // for循环从strs中找到构件号或者货位号
-    var materialcode = null
     for (var i = 0; i < strs.length; i++) {
       var idx = strs[i].indexOf(":")
       var fieldname = strs[i].substring(0, idx)
-      if (fieldname.indexOf("物料编码") >= 0) {
+      if (!materialcode) {
         if (this.data.warehouse_id == '') {
           wx.showToast({
             title: '请先扫描库房二维码!',
@@ -35,7 +35,6 @@ Page({
           return
         }
         // 这是一个构件标签
-        var materialcode = strs[i].substring(idx + 1)
         if (this.data.materialcodes.find(val => val == materialcode) !== undefined) {
           wx.showToast({
             title: '扫描结果已存在!',

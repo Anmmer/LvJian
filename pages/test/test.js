@@ -25,16 +25,8 @@ Page({
     // 对扫码结果进行分析
     // 1. 通过字符串正则表达式提取构件号
     var resultstr = e.detail.result.toString()
-    var strs = resultstr.split("\n")
-    // for循环从strs中找到构件号
-    var materialcode = null
-    for (var i = 0; i < strs.length; i++) {
-      var idx = strs[i].indexOf(":")
-      var fieldname = strs[i].substring(0, idx)
-      if (fieldname.indexOf("物料编码") >= 0) {
-        materialcode = strs[i].substring(idx + 1)
-      }
-    }
+    var materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)[1]
+    if(!materialcode)return
     that.setData({
       materialcode: materialcode
     })
