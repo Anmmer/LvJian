@@ -19,6 +19,9 @@ Page({
     // 1. 通过字符串正则表达式提取物料编码
     var resultstr = e.detail.result.toString()
     var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)[1]
+    if (materialcode == this.data.materialcode) {
+      return
+    }
     var id = resultstr.match(/code='(\d+)'&id=(\d+)/)[2]
     // for循环从strs中找到物料编码
     // var materialcode = null

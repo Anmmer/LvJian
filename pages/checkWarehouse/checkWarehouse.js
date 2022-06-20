@@ -20,7 +20,7 @@ Page({
       var idx = strs[i].indexOf(":")
       var fieldname = strs[i].substring(0, idx)
       let marerialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)[1]
-      if (!marerialcode) {
+      if (marerialcode) {
         // 这是一个构件标签
         console.log("扫描到构件'" + materialcode + "'")
         if (that.data.warehouse_id == "") {

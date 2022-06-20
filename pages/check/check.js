@@ -23,7 +23,7 @@ Page({
     // 1. 通过字符串正则表达式提取构件号
     var resultstr = e.detail.result.toString()
     var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)[1]
-    if (!materialcode) return
+    if (!materialcode || materialcode == this.data.materialcode) return
     that.setData({
       materialcode: materialcode
     })
