@@ -35,7 +35,7 @@ Page({
       data.isTest = 'true'
     }
     wx.request({
-      url: 'http://101.132.73.7:8989/DuiMa/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
       data: data,
       method: 'POST',
       header: {

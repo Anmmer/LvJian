@@ -37,7 +37,7 @@ Page({
     })
     var that = this
     wx.request({
-      url: 'http://101.132.73.7:8989/DuiMa/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
       data: {
         plannumber: id,
         // pageCur: that.data.pages,
@@ -62,7 +62,7 @@ Page({
     var that = this
     that.data.pages += 1
     wx.request({
-      url: 'http://101.132.73.7:8989/DuiMa/GetPlan',
+      url: 'https://mes.ljzggroup.com/DuiMa/GetPlan',
       data: {
         // productState: 0,
         pageCur: that.data.pages,

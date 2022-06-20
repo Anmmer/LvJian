@@ -18,10 +18,9 @@ Page({
     // 对扫码结果进行分析
     // 1. 通过字符串正则表达式提取物料编码
     var resultstr = e.detail.result.toString()
-    var materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)[1]
-    var id = resultstr.match(/code=(\d+)&id=(\d+)/)[2]
+    var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)[1]
+    var id = resultstr.match(/code='(\d+)'&id=(\d+)/)[2]
     // for循环从strs中找到物料编码
-    console.log(id)
     // var materialcode = null
     // for (var i = 0; i < strs.length; i++) {
     //   var idx = strs[i].indexOf(":")
@@ -55,7 +54,7 @@ Page({
     })
     let pro = new Promise((resolve, reject) => {
       wx.request({
-        url: "http://101.132.73.7:8989/DuiMa/QuerySQL",
+        url: "https://mes.ljzggroup.com/DuiMa/QuerySQL",
         method: 'post',
         header: {
           "content-type": 'application/x-www-form-urlencoded'
@@ -99,7 +98,7 @@ Page({
     let that = this
     let pro = new Promise((resolve, reject) => {
       wx.request({
-        url: "http://101.132.73.7:8989/DuiMa/QuerySQL",
+        url: "https://mes.ljzggroup.com/DuiMa/QuerySQL",
         method: 'post',
         header: {
           "content-type": 'application/x-www-form-urlencoded'
@@ -135,7 +134,7 @@ Page({
   getData() {
     let that = this
     wx.request({
-      url: 'http://101.132.73.7:8989/DuiMa/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
       data: {
         materialcode: this.data.materialcode
       },

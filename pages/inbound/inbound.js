@@ -20,7 +20,7 @@ Page({
     // 1. 通过字符串正则表达式提取物料编码
     var resultstr = e.detail.result.toString()
     var strs = resultstr.split("\n")
-    var materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)[1]
+    var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)[1]
     // for循环从strs中找到构件号或者货位号
     for (var i = 0; i < strs.length; i++) {
       var idx = strs[i].indexOf(":")
@@ -48,7 +48,7 @@ Page({
         // 获取构件目前生产状态
         var that = this
         wx.request({
-          url: 'http://101.132.73.7:8989/DuiMa/GetPreProduct',
+          url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
           data: {
             materialcode: materialcode,
             pourState: '1',
@@ -155,7 +155,7 @@ Page({
       }
       // 可以上传
       wx.request({
-        url: 'http://101.132.73.7:8989/DuiMa/InOutWarehouse',
+        url: 'https://mes.ljzggroup.com/DuiMa/InOutWarehouse',
         data: {
           warehouseId: this.data.warehouse_id,
           productIds: JSON.stringify(arr),

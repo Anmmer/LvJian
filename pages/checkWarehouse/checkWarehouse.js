@@ -19,7 +19,7 @@ Page({
     for (var i = 0; i < strs.length; i++) {
       var idx = strs[i].indexOf(":")
       var fieldname = strs[i].substring(0, idx)
-      let marerialcode = resultstr.match(/code=(\d+)&id=(\d+)/)[1]
+      let marerialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)[1]
       if (!marerialcode) {
         // 这是一个构件标签
         console.log("扫描到构件'" + materialcode + "'")
@@ -59,7 +59,7 @@ Page({
         var warehouseId = strs[i].substring(idx + 1)
         console.log("扫描到货位，其货位号为" + warehouseId)
         wx.request({
-          url: 'http://101.132.73.7:8989/DuiMa/GetPreProductWarehouse',
+          url: 'https://mes.ljzggroup.com/DuiMa/GetPreProductWarehouse',
           data: {
             warehouseId: warehouseId
           },

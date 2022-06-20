@@ -14,7 +14,7 @@ Page({
     // 对扫码结果进行分析
     // 1. 通过字符串正则表达式提取构件号
     var resultstr = e.detail.result.toString()
-    var materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)[1]
+    var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)[1]
     if (!materialcode) {
       return
     }
@@ -37,7 +37,7 @@ Page({
     console.log("扫描到构件'" + materialcode + "'")
     // 获取构件目前生产状态
     wx.request({
-      url: 'http://101.132.73.7:8989/DuiMa/GetPreProductWarehouse',
+      url: 'https://mes.ljzggroup.com/DuiMa/GetPreProductWarehouse',
       data: {
         materialcode: materialcode,
       },
@@ -114,7 +114,7 @@ Page({
       }
       // 可以上传
       wx.request({
-        url: 'http://101.132.73.7:8989/DuiMa/InOutWarehouse',
+        url: 'https://mes.ljzggroup.com/DuiMa/InOutWarehouse',
         data: {
           productIds: JSON.stringify(arr),
           type: "0", // 0出库
