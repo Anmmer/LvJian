@@ -43,7 +43,7 @@
   width: 128rpx;
   height: 128rpx;
   margin: 20rpx;
-  border-radius: 50%;
+  border-radius: 20%;
   color: #fff;
 }
 

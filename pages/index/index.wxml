@@ -12,22 +12,23 @@
 <view class="top" style="margin-top:{{startBarHeight+navgationHeight}}px">
   <view class="containerq">
     <view class="userinfo">
-      <block wx:if="{{canIUseOpenData}}">
+      <!-- <block wx:if="{{canIUseOpenData}}">
         <view class="userinfo-avatar" bindtap="bindViewTap">
           <open-data type="userAvatarUrl"></open-data>
         </view>
         <open-data class="username" type="userNickName"></open-data>
       </block>
-      <block wx:elif="{{!hasUserInfo}}">
-        <view class="userinfo-avatar" bindtap="getUserProfile">
-          <open-data type="userAvatarUrl"></open-data>
+      <block wx:elif="{{!hasUserInfo}}"> -->
+        <view class="userinfo-avatar">
+          <image src="../image/qr.jpg" style="width: 128rpx;height: 128rpx;" ></image>
+          <!-- <open-data type="userAvatarUrl"></open-data> -->
         </view>
         <!-- <button class="usernamebt" open-type="getUserInfo" bindtap="getUserProfile"> 登录 </button> -->
-      </block>
+      <!-- </block>
       <block wx:else>
         <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
         <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      </block>
+      </block> -->
     </view>
   </view>
 </view>
