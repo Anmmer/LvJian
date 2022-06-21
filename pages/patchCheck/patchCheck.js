@@ -19,10 +19,24 @@ Page({
     // 对扫码结果进行分析
     // 1. 通过字符串正则表达式提取构件号
     var resultstr = e.detail.result.toString()
-    var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)[1]
-    if(!materialcode){
-      return
+    var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)
+    if (!materialcode) {
+      materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)
     }
+    if (materialcode) {
+      materialcode = materialcode[1]
+    } else {
+      var strs = resultstr.split("\n")
+      // for循环从strs中找到构件号
+      for (var i = 0; i < strs.length; i++) {
+        var idx = strs[i].indexOf(":")
+        var fieldname = strs[i].substring(0, idx)
+        if (fieldname.indexOf("物料编码") >= 0) {
+          materialcode = strs[i].substring(idx + 1)
+        }
+      }
+    }
+    if (!materialcode || materialcode == this.data.materialcode) return
     that.setData({
       materialcode: materialcode
     })
@@ -121,7 +135,7 @@ Page({
         })
     } else {
       wx.showToast({
-        title: '未处于质检状态!',
+        title: '未处于修补状态!',
         icon: 'none',
         duration: 1000
       })
