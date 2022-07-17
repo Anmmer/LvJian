@@ -112,6 +112,7 @@ Page({
             data: {
               index: '1',
               covert_test: '1',
+              covert_test_user: wx.getStorageSync('userName'),
               pids: JSON.stringify(arr),
             },
             method: 'POST',
@@ -203,6 +204,12 @@ Page({
       patch_library: ''
     })
   },
+  onChange1(event) {
+    // event.detail 为当前输入的值
+    this.setData({
+      covert_test_remark: event.detail
+    })
+  },
   onSave() {
     let that = this
     if (this.data.activeId.length == 0) {
@@ -231,6 +238,8 @@ Page({
       data: {
         index: '0',
         covert_test_failure_reason: str,
+        covert_test_remark: this.data.covert_test_remark,
+        covert_test_user: wx.getStorageSync('userName'),
         pids: JSON.stringify(arr)
       },
       method: 'POST',
