@@ -53,12 +53,22 @@ Page({
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
-        that.setData({
-          checkNumber: res.data.cnt,
-          pageAll: res.data.pageAll,
-          inspect_list: that.data.inspect_list.concat(res.data.data),
-          pageCur: that.data.pageCur + 1
-        })
+        if (e == undefined) {
+          that.setData({
+            checkNumber: res.data.cnt,
+            pageAll: res.data.pageAll,
+            inspect_list: that.data.inspect_list.concat(res.data.data),
+            pageCur: that.data.pageCur + 1
+          })
+        } else {
+          that.setData({
+            checkNumber: res.data.cnt,
+            pageAll: res.data.pageAll,
+            inspect_list: res.data.data,
+            pageCur: 1
+          })
+        }
+
       }
     })
   },

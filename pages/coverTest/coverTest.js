@@ -49,12 +49,21 @@ Page({
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
-        that.setData({
-          test_list: that.data.test_list.concat(res.data.data),
-          testMadeNumber: res.data.cnt,
-          pageAll: res.data.pageAll,
-          pageCur: that.data.pageCur + 1
-        })
+        if (e == undefined) {
+          that.setData({
+            test_list: that.data.test_list.concat(res.data.data),
+            testMadeNumber: res.data.cnt,
+            pageAll: res.data.pageAll,
+            pageCur: that.data.pageCur + 1
+          })
+        } else {
+          that.setData({
+            test_list: res.data.data,
+            testMadeNumber: res.data.cnt,
+            pageAll: res.data.pageAll,
+            pageCur: 1
+          })
+        }
       }
     })
   },

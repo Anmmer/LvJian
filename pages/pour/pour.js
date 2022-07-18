@@ -53,12 +53,22 @@ Page({
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
-        that.setData({
-          pour_list: that.data.pour_list.concat(res.data.data),
-          pourMadeNumber: res.data.cnt,
-          pageAll: res.data.pageAll,
-          pageCur: that.data.pageCur + 1
-        })
+        if (e == undefined) {
+          that.setData({
+            pour_list: that.data.pour_list.concat(res.data.data),
+            pourMadeNumber: res.data.cnt,
+            pageAll: res.data.pageAll,
+            pageCur: that.data.pageCur + 1
+          })
+        } else {
+          that.setData({
+            pour_list: res.data.data,
+            pourMadeNumber: res.data.cnt,
+            pageAll: res.data.pageAll,
+            pageCur: 1
+          })
+        }
+
       }
     })
   },
