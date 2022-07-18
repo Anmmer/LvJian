@@ -17,21 +17,30 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
-    this.testData();
+    // this.testData();
   },
   testDataPages() {
-    console.log(this.data.pageCur)
     if (this.data.pageCur <= this.data.pageAll) {
       this.testData()
     }
   },
-  testData() {
+  testData(e) {
     var that = this
+    if (e !== undefined) {
+      this.setData({
+        line: e.detail.value.line,
+        materialname: e.detail.value.materialname,
+        materialcode: e.detail.value.materialcode
+      })
+    }
     wx.request({
       url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
       data: {
         isPrint: "true",
         testState: "0",
+        line: this.data.line,
+        materialname: this.data.materialname,
+        materialcode: this.data.materialcode,
         pageCur: this.data.pageCur,
         pageMax: this.data.pageMax
       },

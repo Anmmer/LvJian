@@ -17,18 +17,28 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
-    this.inspectData();
+    // this.inspectData();
   },
   inspectDataPages() {
     if (this.data.pageCur <= this.data.pageAll) {
       this.inspectData()
     }
   },
-  inspectData() {
+  inspectData(e) {
     var that = this
+    if (e !== undefined) {
+      this.setData({
+        line: e.detail.value.line,
+        materialname: e.detail.value.materialname,
+        materialcode: e.detail.value.materialcode
+      })
+    }
     let data = {
       inspectState: "0",
       pourState: "1",
+      line: this.data.line,
+      materialname: this.data.materialname,
+      materialcode: this.data.materialcode,
       pageCur: this.data.pageCur,
       pageMax: this.data.pageMax
     }
