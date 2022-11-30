@@ -8,6 +8,8 @@ Page({
     warehouse_name: "",
     materialcodes: [],
     products: [],
+    show: false,
+    columns: [],
     ready: true
   },
   // 扫码函数
@@ -56,7 +58,7 @@ Page({
         // 获取构件目前生产状态
         var that = this
         wx.request({
-          url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
+          url: 'http://localhost:8989/DuiMa/GetPreProduct',
           data: {
             materialcode: materialcode,
             pourState: '1',
@@ -116,8 +118,21 @@ Page({
         var warehouseId = strs[i].substring(idx + 1)
         console.log("扫描到货位'" + warehouseId + "'")
         if (this.data.warehouse_id == "") {
-          this.setData({
-            warehouse_id: warehouseId
+          wx.request({
+            url: 'http://localhost:8989/DuiMa/GetFactory',
+            data: {
+              id: warehouseId
+            },
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            },
+            success(res) {
+              this.setData({
+                warehouse_name: res.data[0].name,
+                warehouse_id: res.data[0].id,
+              })
+            }
           })
         } else {
           wx.showToast({
@@ -127,18 +142,27 @@ Page({
           })
           return
         }
-      } else if (fieldname.trim().indexOf("货位名") >= 0) {
-        // 显示货位名
-        var warehouseName = strs[i].substring(idx + 1)
-        console.log("扫描到货位'" + warehouseName + "'")
-        if (this.data.warehouse_name == "") {
-          this.setData({
-            warehouse_name: warehouseName,
-            ready: true
-          })
-        }
       }
     }
+  },
+  onConfirm(event) {
+    const {
+      value
+    } = event.detail;
+    this.setData({
+      method: value.name,
+      show: false
+    })
+  },
+  onCancel() {
+    this.setData({
+      show: false
+    })
+  },
+  showPopup() {
+    this.setData({
+      show: true
+    })
   },
   deleteItem(event) {
     var list = this.data.products
@@ -153,9 +177,37 @@ Page({
       products: []
     })
   },
+  getInWarehouseMethod() {
+    let that = this
+    wx.request({
+      url: 'http://localhost:8989/DuiMa/GetInOutWarehouseMethod',
+      data: {
+        type: '1'
+      },
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      success(res) {
+        that.setData({
+          columns: res.data.data,
+        })
+      }
+    })
+
+
+  },
   submitAll(event) {
     var that = this
     // 提交并清空
+    if (this.data.method == void 0) {
+      wx.showToast({
+        title: '请选择入库方式',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
@@ -163,13 +215,14 @@ Page({
       }
       // 可以上传
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMa/InOutWarehouse',
+        url: 'http://localhost:8989/DuiMa/InOutWarehouse',
         data: {
-          warehouseId: this.data.warehouse_id,
-          productIds: JSON.stringify(arr),
+          in_warehouse_id: this.data.warehouse_id,
+          ids: JSON.stringify(arr),
           type: "1",
           userId: wx.getStorageSync('userId'),
-          userName: wx.getStorageSync('userName')
+          method: this.data.method,
+          name: wx.getStorageSync('userName')
         },
         method: 'POST',
         header: {
@@ -214,6 +267,7 @@ Page({
       icon: 'none',
       duration: 2500
     })
+    this.getInWarehouseMethod()
   },
 
   setNavigation() {

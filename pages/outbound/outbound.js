@@ -7,6 +7,7 @@ Page({
     warehouse_name: "",
     products: [],
     product: {},
+    show: false
   },
   // 扫码函数
   scanCode(e) {
@@ -105,6 +106,43 @@ Page({
     // }
     // }
   },
+  onConfirm(event) {
+    const {
+      value
+    } = event.detail;
+    this.setData({
+      method: value.name,
+      show: false
+    })
+  },
+  onCancel() {
+    this.setData({
+      show: false
+    })
+  },
+  showPopup() {
+    this.setData({
+      show: true
+    })
+  },
+  getInWarehouseMethod() {
+    let that = this
+    wx.request({
+      url: 'http://localhost:8989/DuiMa/GetInOutWarehouseMethod',
+      data: {
+        type: '2'
+      },
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      success(res) {
+        that.setData({
+          columns: res.data.data,
+        })
+      }
+    })
+  },
   deleteItem(event) {
     var list = this.data.products
     // 删除制定的构件
@@ -121,6 +159,14 @@ Page({
   submitAll(event) {
     var that = this
     // 提交并清空
+    if (this.data.method == void 0) {
+      wx.showToast({
+        title: '请选择出库方式',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
@@ -130,10 +176,11 @@ Page({
       wx.request({
         url: 'https://mes.ljzggroup.com/DuiMa/InOutWarehouse',
         data: {
-          productIds: JSON.stringify(arr),
-          type: "0", // 0出库
+          ids: JSON.stringify(arr),
+          type: "2", // 出库
           userId: wx.getStorageSync('userId'),
-          userName: wx.getStorageSync('userName')
+          userName: wx.getStorageSync('userName'),
+          method: this.data.method
         },
         method: 'POST',
         header: {
@@ -178,6 +225,7 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
+    this.getInWarehouseMethod()
   },
 
   setNavigation() {
