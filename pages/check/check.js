@@ -8,6 +8,7 @@ Page({
     result: '',
     items: [],
     mainActiveIndex: 0,
+    inspect_remark: '',
     activeId: [],
     show: false,
     patch_library: '',
@@ -168,6 +169,8 @@ Page({
       data: {
         pids: JSON.stringify(arr),
         patch_library: this.data.patch_library,
+        inspect_remark: this.data.inspect_remark,
+        inspect_user: wx.getStorageSync('userName'),
         failure_reason: str
       },
       method: 'POST',
@@ -193,6 +196,12 @@ Page({
     // event.detail 为当前输入的值
     this.setData({
       patch_library: event.detail
+    })
+  },
+  onChange1(event) {
+    // event.detail 为当前输入的值
+    this.setData({
+      inspect_remark: event.detail
     })
   },
   submitInfo(e) {

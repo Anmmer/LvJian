@@ -29,6 +29,7 @@
       </view>
       <view>
         <van-cell-group>
+          <van-field value="{{covert_test_remark}}" label="备注" placeholder = "备注" bind:change="onChange1" />
           <van-field label="选择原因" disabled border="{{ false }}" />
         </van-cell-group>
       </view>

@@ -17,18 +17,28 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
-    this.pourData();
+    // this.pourData();
   },
   pourDataPages() {
     if (this.data.pageCur <= this.data.pageAll) {
       this.pourData()
     }
   },
-  pourData() {
+  pourData(e) {
     var that = this
+    if (e !== undefined) {
+      this.setData({
+        line: e.detail.value.line,
+        materialname: e.detail.value.materialname,
+        materialcode: e.detail.value.materialcode
+      })
+    }
     let data = {
       pourState: "0",
       inspectState: "0",
+      line: this.data.line,
+      materialname: this.data.materialname,
+      materialcode: this.data.materialcode,
       pageCur: this.data.pageCur,
       pageMax: this.data.pageMax
     }
@@ -43,12 +53,22 @@ Page({
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
-        that.setData({
-          pour_list: that.data.pour_list.concat(res.data.data),
-          pourMadeNumber: res.data.cnt,
-          pageAll: res.data.pageAll,
-          pageCur: that.data.pageCur + 1
-        })
+        if (e == undefined) {
+          that.setData({
+            pour_list: that.data.pour_list.concat(res.data.data),
+            pourMadeNumber: res.data.cnt,
+            pageAll: res.data.pageAll,
+            pageCur: that.data.pageCur + 1
+          })
+        } else {
+          that.setData({
+            pour_list: res.data.data,
+            pourMadeNumber: res.data.cnt,
+            pageAll: res.data.pageAll,
+            pageCur: 1
+          })
+        }
+
       }
     })
   },

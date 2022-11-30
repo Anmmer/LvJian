@@ -36,7 +36,7 @@ Page({
       },
       {
         icon: "/pages/image/kecheng3.png",
-        wenzi: "质检",
+        wenzi: "成品检验",
         linktype: "navigateTo",
         url: "/pages/inspect/inspect",
         img: "/pages/image/kecheng3.png"
