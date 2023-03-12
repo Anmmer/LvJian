@@ -118,9 +118,7 @@ Page({
           console.log(msg)
         }
       })
-    }
-
-    if (warehouseId) {
+    } else if (warehouseId) {
       // 这是货位标签
       console.log("扫描到货位'" + warehouseId + "'")
       if (this.data.warehouse_id == "") {
@@ -139,7 +137,8 @@ Page({
           },
           success(res) {
             this.setData({
-              warehouse_name: res.data.data[0].name
+              warehouse_name: res.data.data[0].name,
+              path: res.data.data[0].path
             })
           }
         })
@@ -151,8 +150,56 @@ Page({
         })
         return
       }
-
+      if (fieldname.trim().indexOf("货位号") >= 0) {
+        // 这是货位标签
+        var warehouseId = strs[i].substring(idx + 1)
+        console.log("扫描到货位'" + warehouseId + "'")
+        if (this.data.warehouse_id == "") {
+          wx.request({
+            url: 'http://localhost:8989/DuiMa/GetFactory',
+            data: {
+              id: warehouseId
+            },
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            },
+            success(res) {
+              this.setData({
+                warehouse_name: res.data[0].name,
+                warehouse_id: res.data[0].id,
+              })
+            }
+          })
+        } else {
+          wx.showToast({
+            title: '您已扫描过库房号',
+            icon: 'none',
+            duration: 1000
+          })
+          return
+        }
+      }
     }
+  },
+  onConfirm(event) {
+    const {
+      value
+    } = event.detail;
+    this.setData({
+      method: value.name,
+      show: false
+    })
+  },
+  onCancel() {
+    this.setData({
+      show: false
+    })
+  },
+  showPopup() {
+    this.setData({
+      show: true
+    })
   },
   deleteItem(event) {
     var list = this.data.products
@@ -167,6 +214,26 @@ Page({
       products: []
     })
   },
+  getInWarehouseMethod() {
+    let that = this
+    wx.request({
+      url: 'http://localhost:8989/DuiMa/GetInOutWarehouseMethod',
+      data: {
+        type: '1'
+      },
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      success(res) {
+        that.setData({
+          columns: res.data.data,
+        })
+      }
+    })
+
+
+  },
   submitAll(event) {
     var that = this
     if (!this.data.in_warehouse_method) {
@@ -178,6 +245,14 @@ Page({
       return
     }
     // 提交并清空
+    if (this.data.method == void 0) {
+      wx.showToast({
+        title: '请选择入库方式',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
@@ -187,7 +262,6 @@ Page({
       wx.request({
         url: 'https://mes.ljzggroup.com/DuiMaTest/InOutWarehouse',
         data: {
-          in_warehouse_id: this.data.warehouse_id,
           ids: JSON.stringify(arr),
           type: "1",
           userId: wx.getStorageSync('userId'),
@@ -276,6 +350,7 @@ Page({
       icon: 'none',
       duration: 2500
     })
+    this.getInWarehouseMethod()
   },
 
   setNavigation() {

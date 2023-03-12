@@ -109,6 +109,43 @@ Page({
     // }
     // }
   },
+  onConfirm(event) {
+    const {
+      value
+    } = event.detail;
+    this.setData({
+      method: value.name,
+      show: false
+    })
+  },
+  onCancel() {
+    this.setData({
+      show: false
+    })
+  },
+  showPopup() {
+    this.setData({
+      show: true
+    })
+  },
+  getInWarehouseMethod() {
+    let that = this
+    wx.request({
+      url: 'http://localhost:8989/DuiMa/GetInOutWarehouseMethod',
+      data: {
+        type: '2'
+      },
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      success(res) {
+        that.setData({
+          columns: res.data.data,
+        })
+      }
+    })
+  },
   deleteItem(event) {
     var list = this.data.products
     // 删除制定的构件
@@ -133,6 +170,14 @@ Page({
       return
     }
     // 提交并清空
+    if (this.data.method == void 0) {
+      wx.showToast({
+        title: '请选择出库方式',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
@@ -146,7 +191,8 @@ Page({
           type: "2", // 2出库
           method: this.data.out_warehouse_method,
           userId: wx.getStorageSync('userId'),
-          userName: wx.getStorageSync('userName')
+          userName: wx.getStorageSync('userName'),
+          method: this.data.method
         },
         method: 'POST',
         header: {
