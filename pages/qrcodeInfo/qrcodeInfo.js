@@ -60,7 +60,6 @@ Page({
     }
     if (materialcode) {
       this.setData({
-        result: resultstr,
         materialcode: materialcode
       })
       this.getData_1()
