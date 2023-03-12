@@ -35,7 +35,7 @@ Page({
       data.isTest = 'true'
     }
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
       data: data,
       method: 'POST',
       header: {
@@ -84,10 +84,18 @@ Page({
   onShow: function () {
 
   },
-  jiaodao() {
+  jiaodao1() {
     wx.navigateTo({
       url: "../patchCheck/patchCheck",
     })
+  },
+  jiaodao2() {
+
+    wx.navigateTo({
+      url: "../patchInWarehouse/patchInWarehouse",
+    })
+
+
   },
   // check() {
   //   wx.navigateTo({

@@ -131,7 +131,7 @@ Page({
     if (openid !== '') {
       let pro = new Promise((resolve, reject) => {
         wx.request({
-          url: 'https://mes.ljzggroup.com/DuiMa/AutoLogin',
+          url: 'https://mes.ljzggroup.com/DuiMaTest/AutoLogin',
           data: {
             openid: openid
           },
@@ -150,7 +150,7 @@ Page({
       })
       pro.then(() => {
         wx.request({
-          url: 'https://mes.ljzggroup.com/DuiMa/GetAuthority',
+          url: 'https://mes.ljzggroup.com/DuiMaTest/GetAuthority',
           data: {
             userId: wx.getStorageSync('userId')
           },
@@ -187,7 +187,7 @@ Page({
   // 系统登陆函数
   systemLogin: function (data) {
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/LoginCheck',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/LoginCheck',
       data: {
         user_phone: data.detail.value.user_phone,
         userPwd: data.detail.value.password,
@@ -204,7 +204,7 @@ Page({
           var userId = res.data.userId
           // 登陆成功，获取权限
           wx.request({
-            url: 'https://mes.ljzggroup.com/DuiMa/GetAuthority',
+            url: 'https://mes.ljzggroup.com/DuiMaTest/GetAuthority',
             data: {
               userId: userId
             },

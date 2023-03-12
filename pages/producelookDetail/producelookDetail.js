@@ -36,7 +36,7 @@ Page({
     })
     var that = this
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
       data: {
         plannumber: id,
         // pageCur: that.data.pages,
@@ -94,7 +94,7 @@ Page({
     var that = this
     that.data.pages += 1
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/GetPlan',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPlan',
       data: {
         // productState: 0,
         pageCur: that.data.pages,

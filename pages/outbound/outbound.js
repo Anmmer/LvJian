@@ -7,6 +7,7 @@ Page({
     warehouse_name: "",
     products: [],
     product: {},
+    show: false
   },
   // 扫码函数
   scanCode(e) {
@@ -15,11 +16,14 @@ Page({
     // 1. 通过字符串正则表达式提取构件号
     var resultstr = e.detail.result.toString()
     var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)
+    var warehouseIdMatch = resultstr.match(/warehouseId='(\d+)'/)
     if (!materialcode) {
       materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)
     }
     if (materialcode) {
       materialcode = materialcode[1]
+    } else if (warehouseIdMatch) {
+      warehouseId = warehouseIdMatch[1]
     } else {
       var strs = resultstr.split("\n")
       // for循环从strs中找到构件号
@@ -51,7 +55,7 @@ Page({
     console.log("扫描到构件'" + materialcode + "'")
     // 获取构件目前生产状态
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/GetPreProductWarehouse',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProductWarehouse',
       data: {
         materialcode: materialcode,
       },
@@ -120,6 +124,14 @@ Page({
   },
   submitAll(event) {
     var that = this
+    if (!this.data.out_warehouse_method) {
+      wx.showToast({
+        title: '请选择出库方式',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     // 提交并清空
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
@@ -128,10 +140,11 @@ Page({
       }
       // 可以上传
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMa/InOutWarehouse',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/InOutWarehouse',
         data: {
-          productIds: JSON.stringify(arr),
-          type: "0", // 0出库
+          ids: JSON.stringify(arr),
+          type: "2", // 2出库
+          method: this.data.out_warehouse_method,
           userId: wx.getStorageSync('userId'),
           userName: wx.getStorageSync('userName')
         },
@@ -173,11 +186,51 @@ Page({
     }
   },
 
+  getOutWarehouseMethod() {
+    let that = this
+    wx.request({
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetInOutWarehouseMethod',
+      data: {
+        type: "2",
+      },
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      success(res) {
+        that.setData({
+          columns: res.data.data.map((item) => {
+            return item.name
+          })
+        })
+      }
+    })
+  },
+
+  show() {
+    this.setData({
+      show: true
+    })
+  },
+  onCancel() {
+    this.setData({
+      show: false
+    })
+  },
+
+  onConfirm(event) {
+    this.setData({
+      out_warehouse_method: event.detail.value,
+      show: false
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     this.setNavigation();
+    this.getOutWarehouseMethod()
   },
 
   setNavigation() {

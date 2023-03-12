@@ -44,7 +44,7 @@ Page({
       // 获取构件目前生产状态
       var that = this
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
         data: {
           materialcode: materialcode,
         },
@@ -111,7 +111,7 @@ Page({
       let arr = [];
       arr.push(this.data.pid)
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMa/Pour',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/Pour',
         data: {
           pids: JSON.stringify(arr)
         },

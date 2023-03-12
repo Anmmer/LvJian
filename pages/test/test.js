@@ -50,7 +50,7 @@ Page({
       // 获取构件目前生产状态
       var that = this
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
         data: {
           materialcode: materialcode,
         },
@@ -108,7 +108,7 @@ Page({
           let arr = [];
           arr.push(this.data.pid)
           wx.request({
-            url: 'https://mes.ljzggroup.com/DuiMa/ConcealedProcess',
+            url: 'https://mes.ljzggroup.com/DuiMaTest/ConcealedProcess',
             data: {
               index: '1',
               covert_test: '1',
@@ -158,7 +158,7 @@ Page({
   getFailContent() {
     let that = this;
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/GetFailContent',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetFailContent',
       data: null,
       method: 'POST',
       header: {
@@ -234,7 +234,7 @@ Page({
       }
     }
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/ConcealedProcess',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/ConcealedProcess',
       data: {
         index: '0',
         covert_test_failure_reason: str,

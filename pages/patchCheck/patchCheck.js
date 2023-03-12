@@ -7,7 +7,7 @@ Page({
   data: {
     plannumber: '',
     materialcode: '',
-    pid: '',
+    materialcode: '',
     state: '',
   },
   // 扫码函数
@@ -44,7 +44,7 @@ Page({
       // 获取构件目前生产状态
       var that = this
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
         data: {
           materialcode: materialcode,
         },
@@ -63,7 +63,9 @@ Page({
                 pop_pageDate[0].state = '质检完成'
               } else if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
                 pop_pageDate[0].state = '质检不合格'
-              } else {
+              } else if(pop_pageDate[0].stock_status==='2'){
+                pop_pageDate[0].state = '已出库'
+              } else{
                 pop_pageDate[0].state = '未处于修补状态'
               }
             } else {
@@ -73,7 +75,9 @@ Page({
                 pop_pageDate[0].state = '质检完成'
               } else if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
                 pop_pageDate[0].state = '质检不合格'
-              } else {
+              }else if(pop_pageDate[0].stock_status==='2'){
+                pop_pageDate[0].state = '已出库'
+              }  else {
                 pop_pageDate[0].state = '未处于修补状态'
               }
             }
@@ -82,7 +86,7 @@ Page({
               state: pop_pageDate[0].state,
               plannumber: pop_pageDate[0].plannumber,
               materialname: pop_pageDate[0].materialname,
-              pid: pop_pageDate[0].pid
+              materialcode: pop_pageDate[0].materialcode
             })
           }
         }
@@ -97,8 +101,8 @@ Page({
   },
   submitInfo(e) {
     var that = this
-    console.log(this.data.pid)
-    if (this.data.pid == null || this.data.pid == '') {
+    console.log(this.data.materialcode)
+    if (this.data.materialcode == null || this.data.materialcode == '') {
       // 没有materialcode
       wx.showToast({
         title: '请先扫描一个未完工构件的二维码!',
@@ -107,15 +111,15 @@ Page({
       })
       return
     }
-    if (this.data.state == '质检不合格') {
+    if (this.data.state == '质检不合格' || this.data.state == '已出库') {
      
         // on confirm
         let arr = [];
-        arr.push(this.data.pid)
+        arr.push(this.data.materialcode)
         wx.request({
-          url: 'https://mes.ljzggroup.com/DuiMa/Inspect',
+          url: 'https://mes.ljzggroup.com/DuiMaTest/Inspect',
           data: {
-            pids: JSON.stringify(arr),
+            materialcodes: JSON.stringify(arr),
           },
           method: 'POST',
           header: {
@@ -126,7 +130,7 @@ Page({
             Toast.success('修补成功！');
             that.setData({
               state: '',
-              pid: "",
+              materialcode: "",
               plannumber: "",
               materialcode: '',
               materialname: ''

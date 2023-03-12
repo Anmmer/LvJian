@@ -6,13 +6,14 @@
       <view class="wenzi" bindtap="fanhui">返回</view>
     </view>
   </view>
-  <view style="margin-top:{{startBarHeight+navgationHeight}}px">
+  <view style="margin-top:{{startBarHeight+navgationHeight+10}}px">
     <view class="mid">
       <view class="tiaomu1"> <text class="mark">|</text> 出库</view>
       <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin:0 auto" mode="scanCode" bindscancode="scanCode"></camera>
       <van-cell-group>
+        <van-field value="{{out_warehouse_method}}" placeholder="点击选择出库方式" readonly="true" bindtap="show" label="出库方式" border="{{ false }}" />
         <van-panel title="扫描构建:">
-          <view>
+          <view class="items">
             <view>物料编码：{{product.materialcode}} </view>
             <view>物料名称：{{product.materialname}} </view>
             <view>生产状态：{{product.state}}</view>
@@ -32,6 +33,9 @@
           </view>
         </van-panel>
       </van-cell-group>
+      <van-popup position="bottom" show="{{ show }}">
+        <van-picker show-toolbar title="入库方式" columns="{{ columns }}" bind:cancel="onCancel" bind:confirm="onConfirm" />
+      </van-popup>
       <button bindtap="submitAll" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">出库</button>
       <!-- <view style="width:80%">
         <text>扫描到的构件有:

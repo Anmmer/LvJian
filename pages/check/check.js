@@ -48,7 +48,7 @@ Page({
       // 获取构件目前生产状态
       var that = this
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
         data: {
           materialcode: materialcode,
         },
@@ -165,7 +165,7 @@ Page({
       }
     }
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/InspectNo',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/InspectNo',
       data: {
         pids: JSON.stringify(arr),
         patch_library: this.data.patch_library,
@@ -226,7 +226,7 @@ Page({
         let arr = [];
         arr.push(this.data.pid)
         wx.request({
-          url: 'https://mes.ljzggroup.com/DuiMa/Inspect',
+          url: 'https://mes.ljzggroup.com/DuiMaTest/Inspect',
           data: {
             pids: JSON.stringify(arr),
           },
@@ -263,7 +263,7 @@ Page({
   getFailContent() {
     let that = this;
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/GetFailContent',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetFailContent',
       data: null,
       method: 'POST',
       header: {

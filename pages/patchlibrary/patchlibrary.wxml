@@ -19,8 +19,13 @@
           <text>\n</text>
         </view>
       </scroll-view>
-      <view class="functionItem4" bindtap="jiaodao">
-        <text class="main">修补</text>
+      <view style="display: flex;">
+        <view class="functionItem4" bindtap="jiaodao1">
+          <text class="main">修补</text>
+        </view>
+        <view class="functionItem4" bindtap="jiaodao2">
+          <text class="main">入库</text>
+        </view>
       </view>
     </view>
   </view>

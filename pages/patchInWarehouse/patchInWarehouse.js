@@ -8,8 +8,8 @@ Page({
     warehouse_name: "",
     materialcodes: [],
     products: [],
-    columns: [],
-    show: false,
+    patch_library: '',
+    inspect_remark: '',
     ready: true
   },
   // 扫码函数
@@ -169,14 +169,6 @@ Page({
   },
   submitAll(event) {
     var that = this
-    if (!this.data.in_warehouse_method) {
-      wx.showToast({
-        title: '请选择入库方式',
-        icon: 'none',
-        duration: 1000
-      })
-      return
-    }
     // 提交并清空
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
@@ -185,14 +177,13 @@ Page({
       }
       // 可以上传
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaTest/InOutWarehouse',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/InspectNo',
         data: {
-          in_warehouse_id: this.data.warehouse_id,
-          ids: JSON.stringify(arr),
-          type: "1",
+          pids: JSON.stringify(arr),
+          patch_library: this.data.patch_library,
+          inspect_remark: this.data.inspect_remark,
           userId: wx.getStorageSync('userId'),
-          userName: wx.getStorageSync('userName'),
-          method: this.data.in_warehouse_method
+          inspect_user: wx.getStorageSync('userName'),
         },
         method: 'POST',
         header: {

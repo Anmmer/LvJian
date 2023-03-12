@@ -34,7 +34,7 @@ Page({
       })
     }
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
       data: {
         isPrint: "true",
         testState: "0",

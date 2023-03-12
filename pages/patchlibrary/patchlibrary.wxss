@@ -31,7 +31,7 @@
 }
 .functionItem4 {
   height: 100rpx;
-  width: 60%;
+  width: 49%;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;

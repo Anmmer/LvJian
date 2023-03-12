@@ -84,7 +84,7 @@ Page({
     let on_or_off
     let pro = new Promise((resolve, reject) => {
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMa/GetDefaultSet',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/GetDefaultSet',
         data: null,
         method: 'POST',
         header: {

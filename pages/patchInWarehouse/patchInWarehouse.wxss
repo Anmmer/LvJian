@@ -1,22 +1,4 @@
-.productItem {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-}
-
-::-webkit-scrollbar {
-  display: none;
-}
-
-.items {
-  width: 90%;
-  margin: 0 auto;
-  padding: 5px;
-}
-
-.wenzi {
+/* pages/check/check.wxss */.wenzi{
   /* border:1rpx solid black; */
   height: 100%;
   width: 90%;
@@ -26,8 +8,7 @@
   color: #fff;
   font-size: 40rpx;
 }
-
-.title {
+.title{
   width: 100%;
   height: 100rpx;
   line-height: 100rpx;

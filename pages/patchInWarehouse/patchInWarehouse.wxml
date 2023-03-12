@@ -1,4 +1,4 @@
-<!--inbound.wxml-->
+<!--processConfirm.wxml-->
 <view>
   <view class='navigation'>
     <view class='startBar' style='height:{{startBarHeight}}px'></view>
@@ -6,14 +6,15 @@
       <view class="wenzi" bindtap="fanhui">返回</view>
     </view>
   </view>
-  <view style="margin-top:{{startBarHeight+navgationHeight}}px">
+  <view style="margin-top:{{startBarHeight+navgationHeight+10}}px">
     <view class="mid">
-      <view class="tiaomu1"> <text class="mark">|</text> 入库(先扫库房码，再扫构建码)</view>
+      <view class="tiaomu1"> <text class="mark">|</text> 修补入库(先扫库房码，再扫构建码)</view>
       <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin: 0 auto;" mode="scanCode" bindscancode="scanCode"></camera>
       <van-cell-group>
         <van-field value="{{warehouse_id}}" label="库位号" disabled border="{{ false }}" />
         <van-field value="{{warehouse_name}}" label="库位名" disabled border="{{ false }}" />
-        <van-field value="{{in_warehouse_method}}" placeholder="点击选择入库方式" readonly="true" bindtap="show" label="入库方式" border="{{ false }}" />
+        <van-field value="{{patch_library}}" placeholder="请输入地址" label="地址" border="{{ false }}" />
+        <van-field value="{{inspect_remark}}" placeholder="请输入备注" label="备注" border="{{ false }}" />
         <van-panel title="入库构建:">
           <view>
             <view wx:for="{{products}}" wx:key="products">
@@ -24,30 +25,9 @@
             </view>
           </view>
         </van-panel>
-        <van-popup position="bottom" show="{{ show }}" >
-          <van-picker show-toolbar title="入库方式" columns="{{ columns }}" bind:cancel="onCancel" bind:confirm="onConfirm" />
-        </van-popup>
       </van-cell-group>
       <button bindtap="submitAll" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">入库</button>
       <van-toast id="van-toast" />
-      <!-- <view style="width:80%">
-        <text>库位:{{warehouse_id}} {{warehouse_name}}
-        </text>
-        <text>扫描到的构件有:
-        </text>
-        <view style="height:200px;width:100%;overflow-y:auto;">
-          <view wx:for="{{products}}">
-            <view class="items">
-              <view><text> {{index+1}}. {{item}}</text></view><button data-id="{{index}}" style="width:100px" bindtap="deleteItem">删除</button>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view style="width:100%;height:20px;"></view>
-      <view class="productItem">
-        <button bindtap="deleteAll">清空扫描到的构件</button>
-        <button bindtap="submitAll">入库</button>
-      </view> -->
     </view>
   </view>
 </view>

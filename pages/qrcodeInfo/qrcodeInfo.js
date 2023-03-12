@@ -83,7 +83,7 @@ Page({
     })
     let pro = new Promise((resolve, reject) => {
       wx.request({
-        url: "https://mes.ljzggroup.com/DuiMa/QuerySQL",
+        url: "https://mes.ljzggroup.com/DuiMaTest/QuerySQL",
         method: 'post',
         header: {
           "content-type": 'application/x-www-form-urlencoded'
@@ -127,7 +127,7 @@ Page({
     let that = this
     let pro = new Promise((resolve, reject) => {
       wx.request({
-        url: "https://mes.ljzggroup.com/DuiMa/QuerySQL",
+        url: "https://mes.ljzggroup.com/DuiMaTest/QuerySQL",
         method: 'post',
         header: {
           "content-type": 'application/x-www-form-urlencoded'
@@ -163,7 +163,7 @@ Page({
   getData() {
     let that = this
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
       data: {
         materialcode: this.data.materialcode
       },
@@ -254,7 +254,7 @@ Page({
   getData_1() {
     let that = this
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMa/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
       data: {
         materialcode: this.data.materialcode
       },
