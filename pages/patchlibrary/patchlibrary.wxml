@@ -10,8 +10,8 @@
       <view class="tiaomu1"> <text class="mark">|</text> 修补库</view>
       <text class="daipan">修补库数量：{{checkNumber}}\n</text>
       <text class="daipan">修补库明细：</text>
-      <scroll-view scroll-y="true" style="height: 75%;" bindscrolltolower="inspectDataPages">
-        <view wx:for="{{inspect_list}}" wx:key="inspect_list">
+      <scroll-view scroll-y="true" style="height: 82%;" bindscrolltolower="inspectDataPages">
+        <view style="width: 95%;margin: 0 auto;padding: 10rpx 0;" wx:for="{{inspect_list}}" wx:key="inspect_list">
           <view>物料编码：{{item.materialcode}} </view>
           <view>物料名称：{{item.materialname}} </view>
           <view>构 件 号：{{item.preproductid}}</view>
@@ -19,7 +19,7 @@
           <text>\n</text>
         </view>
       </scroll-view>
-      <view style="display: flex;">
+      <view style="display: flex; position: absolute; bottom: 40rpx; width: 94%;">
         <view class="functionItem4" bindtap="jiaodao1">
           <text class="main">修补</text>
         </view>

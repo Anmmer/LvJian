@@ -21,8 +21,9 @@ Page({
     // 对扫码结果进行分析
     // 1. 通过字符串正则表达式提取物料编码
     var resultstr = e.detail.result.toString()
+    console.log(resultstr)
     var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)
-    var warehouseIdMatch = resultstr.match(/warehouseId='(\d+)'/)
+    var warehouseIdMatch = resultstr.match(/warehouseId=(\w+)&id=/)
     var warehouseId = null
     if (!materialcode) {
       materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)
@@ -31,6 +32,7 @@ Page({
       materialcode = materialcode[1]
     } else if (warehouseIdMatch) {
       warehouseId = warehouseIdMatch[1]
+      console.log(warehouseId)
     } else {
       var strs = resultstr.split("\n")
       // for循环从strs中找到构件号
@@ -125,10 +127,13 @@ Page({
         this.setData({
           warehouse_id: warehouseId
         })
+
         wx.request({
           url: 'https://mes.ljzggroup.com/DuiMaTest/GetFactory',
           data: {
             id: warehouseId,
+            pageCur: '1',
+            pageMax: '10',
             type: '3',
           },
           method: 'POST',
@@ -136,7 +141,7 @@ Page({
             "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
           },
           success(res) {
-            this.setData({
+            that.setData({
               warehouse_name: res.data.data[0].name,
               path: res.data.data[0].path
             })
@@ -150,22 +155,25 @@ Page({
         })
         return
       }
-      if (fieldname.trim().indexOf("货位号") >= 0) {
+      if (fieldname.indexOf("货位号") >= 0) {
         // 这是货位标签
         var warehouseId = strs[i].substring(idx + 1)
         console.log("扫描到货位'" + warehouseId + "'")
         if (this.data.warehouse_id == "") {
           wx.request({
-            url: 'http://localhost:8989/DuiMa/GetFactory',
+            url: 'https://mes.ljzggroup.com/DuiMa/GetFactory',
             data: {
-              id: warehouseId
+              id: warehouseId,
+              pageCur: '1',
+              pageMax: '10',
+              type: '3',
             },
             method: 'POST',
             header: {
               'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
             },
             success(res) {
-              this.setData({
+              that.setData({
                 warehouse_name: res.data[0].name,
                 warehouse_id: res.data[0].id,
               })
@@ -187,7 +195,7 @@ Page({
       value
     } = event.detail;
     this.setData({
-      method: value.name,
+      in_warehouse_method: value.name,
       show: false
     })
   },
@@ -217,7 +225,7 @@ Page({
   getInWarehouseMethod() {
     let that = this
     wx.request({
-      url: 'http://localhost:8989/DuiMa/GetInOutWarehouseMethod',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetInOutWarehouseMethod',
       data: {
         type: '1'
       },
@@ -244,15 +252,7 @@ Page({
       })
       return
     }
-    // 提交并清空
-    if (this.data.method == void 0) {
-      wx.showToast({
-        title: '请选择入库方式',
-        icon: 'none',
-        duration: 1000
-      })
-      return
-    }
+
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
@@ -274,22 +274,17 @@ Page({
         },
         success(res) {
           // 清空所有
-          if (res.data.msg !== '') {
-            Dialog.confirm({
-              title: '入库提示',
-              message: res.data.msg
-            }).then(() => {
-              // on confirm
-            }).catch(() => {
-              // on cancel
-            });
+          if (res.data.msg) {
+            Toast(res.data.msg)
           }
-          Toast('入库成功！');
-          that.setData({
-            products: [],
-            warehouse_id: "",
-            warehouse_name: ""
-          })
+          if (res.data.flag) {
+            that.setData({
+              products: [],
+              warehouse_id: "",
+              warehouse_name: ""
+            })
+          }
+
         }
       })
     } else {
@@ -301,26 +296,6 @@ Page({
     }
   },
 
-  getOutWarehouseMethod() {
-    let that = this
-    wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetInOutWarehouseMethod',
-      data: {
-        type: "1",
-      },
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      success(res) {
-        that.setData({
-          columns: res.data.data.map((item) => {
-            return item.name
-          })
-        })
-      }
-    })
-  },
   show() {
     this.setData({
       show: true
@@ -344,7 +319,6 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
-    this.getOutWarehouseMethod()
     wx.showToast({
       title: '请先扫描库房二维码',
       icon: 'none',

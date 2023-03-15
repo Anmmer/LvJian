@@ -15,7 +15,8 @@ Page({
     // 1. 通过字符串正则表达式提取构件号
     var resultstr = e.detail.result.toString()
     var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)
-    var warehouseIdMatch = resultstr.match(/warehouseId='(\d+)'/)
+    var warehouseIdMatch = resultstr.match(/warehouseId=(\w+)&id=/)
+    var warehouseId = null
     if (!materialcode) {
       materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)
     }
@@ -34,7 +35,7 @@ Page({
         }
       }
     }
-    if (marerialcode) {
+    if (materialcode) {
       // 这是一个构件标签
       console.log("扫描到构件'" + materialcode + "'")
       if (that.data.warehouse_id == "") {
@@ -53,7 +54,7 @@ Page({
             wx.request({
               url: 'https://mes.ljzggroup.com/DuiMaTest/InOutWarehouse',
               data: {
-                ids: JSON.stringify(arr),
+                ids: JSON.stringify([materialcode]),
                 type: "4", // 4盘库
                 userId: wx.getStorageSync('userId'),
                 userName: wx.getStorageSync('userName')
@@ -63,11 +64,11 @@ Page({
                 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
               },
               success(res) {
-                this.data.products.splice(i, 1);
+                that.data.products.splice(i, 1);
                 console.log(materialcode)
-                console.log(this.data.products)
-                this.setData({
-                  products: this.data.products
+                console.log(that.data.products)
+                that.setData({
+                  products: that.data.products
                 })
                 wx.showToast({
                   title: 'ok!',
@@ -87,10 +88,13 @@ Page({
     } else if (warehouseId) {
       // 扫到一个库
       console.log("扫描到货位，其货位号为" + warehouseId)
+      this.setData({
+        warehouse_id: warehouseId
+      })
       wx.request({
         url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProductWarehouse',
         data: {
-          warehouseId: warehouseId
+          warehouseId: warehouseId,
         },
         method: "POST",
         header: {
@@ -100,6 +104,14 @@ Page({
           console.log(res.data)
           // 
           var jsonobj = res.data.data
+          if (!res.data.data.length) {
+            wx.showToast({
+              title: '该仓库暂无构建',
+              icon: 'none',
+              duration: 1500
+            })
+            return
+          }
           for (let i = 0; i < jsonobj.length; i++) {
             if (jsonobj[i]['pourmade'] === 0 && jsonobj[i]['inspect'] === 0) {
               jsonobj[i].state = '待浇捣'
@@ -115,8 +127,8 @@ Page({
             }
           }
           that.setData({
-            warehouse_name: jsonobj[0].warehouse_name,
-            warehouse_id: warehouseId,
+            name: jsonobj[0].name,
+            path: jsonobj[0].path,
             products: jsonobj
           })
         }

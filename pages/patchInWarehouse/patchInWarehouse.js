@@ -22,7 +22,7 @@ Page({
     // 1. 通过字符串正则表达式提取物料编码
     var resultstr = e.detail.result.toString()
     var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)
-    var warehouseIdMatch = resultstr.match(/warehouseId='(\d+)'/)
+    var warehouseIdMatch = resultstr.match(/warehouseId=(\d+)/)
     var warehouseId = null
     if (!materialcode) {
       materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)

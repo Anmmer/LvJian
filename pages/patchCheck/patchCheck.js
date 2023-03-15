@@ -7,7 +7,6 @@ Page({
   data: {
     plannumber: '',
     materialcode: '',
-    materialcode: '',
     state: '',
   },
   // 扫码函数
@@ -63,9 +62,9 @@ Page({
                 pop_pageDate[0].state = '质检完成'
               } else if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
                 pop_pageDate[0].state = '质检不合格'
-              } else if(pop_pageDate[0].stock_status==='2'){
+              } else if (pop_pageDate[0].stock_status === '2') {
                 pop_pageDate[0].state = '已出库'
-              } else{
+              } else {
                 pop_pageDate[0].state = '未处于修补状态'
               }
             } else {
@@ -75,9 +74,9 @@ Page({
                 pop_pageDate[0].state = '质检完成'
               } else if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
                 pop_pageDate[0].state = '质检不合格'
-              }else if(pop_pageDate[0].stock_status==='2'){
+              } else if (pop_pageDate[0].stock_status === '2') {
                 pop_pageDate[0].state = '已出库'
-              }  else {
+              } else {
                 pop_pageDate[0].state = '未处于修补状态'
               }
             }
@@ -111,23 +110,27 @@ Page({
       })
       return
     }
-    if (this.data.state == '质检不合格' || this.data.state == '已出库') {
-     
-        // on confirm
-        let arr = [];
-        arr.push(this.data.materialcode)
-        wx.request({
-          url: 'https://mes.ljzggroup.com/DuiMaTest/Inspect',
-          data: {
-            materialcodes: JSON.stringify(arr),
-          },
-          method: 'POST',
-          header: {
-            "content-type": 'application/x-www-form-urlencoded'
-          },
-          success(res) {
-            // 成功后
-            Toast.success('修补成功！');
+    if (this.data.state == '质检不合格') {
+
+      // on confirm
+      let arr = [];
+      arr.push(this.data.materialcode)
+      wx.request({
+        url: 'https://mes.ljzggroup.com/DuiMaTest/Inspect',
+        data: {
+          pids: JSON.stringify(arr),
+          inspect_user: wx.getStorageSync('userName'),
+        },
+        method: 'POST',
+        header: {
+          "content-type": 'application/x-www-form-urlencoded'
+        },
+        success(res) {
+          // 成功后
+          if (res.data.message) {
+            Toast.success(res.data.data.message);
+          }
+          if (res.data.flag) {
             that.setData({
               state: '',
               materialcode: "",
@@ -136,7 +139,9 @@ Page({
               materialname: ''
             })
           }
-        })
+
+        }
+      })
     } else {
       wx.showToast({
         title: '未处于修补状态!',

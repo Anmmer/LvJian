@@ -11,17 +11,17 @@
       <view class="tiaomu1"> <text class="mark">|</text> 库存信息</view>
       <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin:0 auto" mode="scanCode" bindscancode="scanCode"></camera>
       <van-cell-group>
-        <van-field value="{{warehouse_id}}" label="库房编号" disabled border="{{ false }}" />
-        <van-field value="{{warehouse_name}}" label="库房名称" disabled border="{{ false }}" />
+        <van-field value="{{name}}" label="库房名称" disabled border="{{ false }}" />
+        <van-field value="{{path}}" label="库房地址" disabled border="{{ false }}" />
         <van-panel title="库房构建({{products.length}}个):">
-          <view>
+          <scroll-view scroll-y="true" style="height: 400rpx;" bindscrolltolower="inspectDataPages">
             <view wx:for="{{products}}" wx:key='products'>
               <view>物料编码：{{item.materialcode}} </view>
               <view>物料名称：{{item.materialname}} </view>
               <view>生产状态：{{item.state}}</view>
               <text>\n</text>
             </view>
-          </view>
+          </scroll-view>
         </van-panel>
       </van-cell-group>
     </view>

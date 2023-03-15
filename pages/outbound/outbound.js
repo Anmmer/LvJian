@@ -16,14 +16,12 @@ Page({
     // 1. 通过字符串正则表达式提取构件号
     var resultstr = e.detail.result.toString()
     var materialcode = resultstr.match(/code='(\d+)'&id=(\d+)/)
-    var warehouseIdMatch = resultstr.match(/warehouseId='(\d+)'/)
+
     if (!materialcode) {
       materialcode = resultstr.match(/code=(\d+)&id=(\d+)/)
     }
     if (materialcode) {
       materialcode = materialcode[1]
-    } else if (warehouseIdMatch) {
-      warehouseId = warehouseIdMatch[1]
     } else {
       var strs = resultstr.split("\n")
       // for循环从strs中找到构件号
@@ -126,24 +124,6 @@ Page({
   showPopup() {
     this.setData({
       show: true
-    })
-  },
-  getInWarehouseMethod() {
-    let that = this
-    wx.request({
-      url: 'http://localhost:8989/DuiMa/GetInOutWarehouseMethod',
-      data: {
-        type: '2'
-      },
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      success(res) {
-        that.setData({
-          columns: res.data.data,
-        })
-      }
     })
   },
   deleteItem(event) {

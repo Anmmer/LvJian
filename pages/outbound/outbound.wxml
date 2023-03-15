@@ -11,7 +11,6 @@
       <view class="tiaomu1"> <text class="mark">|</text> 出库</view>
       <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin:0 auto"
         mode="scanCode" bindscancode="scanCode"></camera>
-        border="{{ false }}" />
       <van-cell-group>
         <van-field value="{{out_warehouse_method}}" placeholder="点击选择出库方式" readonly="true" bindtap="show" label="出库方式" border="{{ false }}" />
         <van-panel title="扫描构建:">

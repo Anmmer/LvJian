@@ -14,7 +14,7 @@
         <van-field value="{{warehouse_name}}" label="库位名" disabled border="{{ false }}" />
         <van-field value="{{path}}" label="库位地址" disabled border="{{ false }}" />
         <van-field value="{{in_warehouse_method}}" placeholder="点击选择入库方式" readonly="true" bindtap="show" label="入库方式" border="{{ false }}" />
-        <van-panel title="入库构建:">
+        <van-panel title="入库构建({{products.length}}个):">
           <view>
             <view wx:for="{{products}}" wx:key="products">
               <view>物料编码：{{item.materialcode}} </view>
