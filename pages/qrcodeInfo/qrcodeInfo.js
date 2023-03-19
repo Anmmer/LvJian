@@ -215,7 +215,7 @@ Page({
           }
 
           that.setData({
-            dataArray: pop_pageDate
+            obj: pop_pageDate
           })
 
           if (typeof (res.data.warehouse_name) != "undefined") {
@@ -328,12 +328,13 @@ Page({
       }
     })
   },
-  getOtherData() {
+  getOtherData(obj) {
     let fieldNames = {
       print_obj: "STRING",
     }
+    let that = this
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/QuerySQL',
       data: {
         sqlStr: "select print_obj from print_obj where `index` = (select qc_id from default_qc where id = 3);",
         fieldNames: JSON.stringify(fieldNames),
@@ -345,14 +346,16 @@ Page({
         "content-type": 'application/x-www-form-urlencoded'
       },
       success(res) {
-        let jsonobj = JSON.parse(res.data)
+        let jsonobj = res.data.data0
         jsonobj = JSON.parse(jsonobj[0].print_obj)
+        console.log(jsonobj)
+        console.log(obj)
         Object.assign(obj, jsonobj)
-        getComputeData(obj)
+        that.getComputeData(obj)
       }
     })
   },
-  getComputeData() {
+  getComputeData(obj) {
     let that = this
     let fieldNames = {
       build_type: "STRING",
@@ -367,9 +370,9 @@ Page({
       unit_consumption: "STRING",
     }
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaTest/QuerySQL',
       data: {
-        sqlStr: "select b.build_type,b.standard,b.fangliang,b.building_no,b.floor_no,c.plantime time ,DATE_ADD(c.plantime,INTERVAL 5 DAY) plantime,b.concretegrade,d.unit_consumption from preproduct b,plan c,planname d where  b.plannumber = c.plannumber and c.planname = d.planname  and b.materialcode = " + materialcode + ";",
+        sqlStr: "select b.build_type,b.standard,b.fangliang,b.building_no,b.floor_no,c.plantime time ,DATE_ADD(c.plantime,INTERVAL 5 DAY) plantime,b.concretegrade,d.unit_consumption from preproduct b,plan c,planname d where  b.plannumber = c.plannumber and c.planname = d.planname  and b.materialcode = " + that.data.materialcode + ";",
         fieldNames: JSON.stringify(fieldNames),
         pageCur: 1,
         pageMax: 1000
@@ -379,11 +382,14 @@ Page({
         "content-type": 'application/x-www-form-urlencoded'
       },
       success(res) {
-        let jsonobj = res.data0[0]
+        let jsonobj = res.data.data0[0]
         let tmp = that.data.qrstyle.qRCode.qRCodeContent
         let str_body = ''
+        console.log(jsonobj)
+        console.log(that.data.fieldmap)
+        console.log(tmp)
         for (let j = 0; j < tmp.length; j++) {
-          str_body += fieldmap[tmp[j]] + ":" + obj[tmp[j]] + "\n"
+          str_body += that.data.fieldmap[tmp[j]] + ":" + obj[tmp[j]] + "\n"
         }
         str_body += "构件种类" + ":" + jsonobj.build_type + "\n"
         // str_body += "<tr><td>" + "构件尺寸(mm)" + "</td><td>" + jsonobj.standard + "</td></tr>"
@@ -397,7 +403,7 @@ Page({
         str_body += "混凝土用砂量(T)" + ":" + (jsonobj.fangliang * 0.85).toFixed(2) + "\n"
         str_body += "混凝土用石量(T)" + ":" + (jsonobj.fangliang * 1.0).toFixed(2) + "\n"
         that.setData({
-          str_body: str_body
+          result: str_body
         });
       }
     })
