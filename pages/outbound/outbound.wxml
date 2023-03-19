@@ -9,20 +9,23 @@
   <view style="margin-top:{{startBarHeight+navgationHeight+10}}px">
     <view class="mid">
       <view class="tiaomu1"> <text class="mark">|</text> 出库</view>
-      <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin:0 auto"
-        mode="scanCode" bindscancode="scanCode"></camera>
+      <view style="display: flex;">
+        <view></view>
+        <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin:0 auto" mode="scanCode" bindscancode="scanCode"></camera>
+      </view>
+
       <van-cell-group>
         <van-field value="{{out_warehouse_method}}" placeholder="点击选择出库方式" readonly="true" bindtap="show" label="出库方式" border="{{ false }}" />
-        <van-panel title="扫描构建:">
+        <!-- <van-panel title="扫描构建:">
           <view class="items">
             <view>物料编码：{{product.materialcode}} </view>
             <view>物料名称：{{product.materialname}} </view>
             <view>生产状态：{{product.state}}</view>
             <view>所在库房{{product.warehouse_name}}</view>
           </view>
-        </van-panel>
-        <van-panel title="出库构建({{products.length}}个):">
-          <view>
+        </van-panel> -->
+        <van-panel title="出库构件({{products.length}}个):">
+          <scroll-view scroll-y="true" style="height: 400rpx;">
             <view wx:for="{{products}}" wx:key="products">
               <view class="items">
                 <view>物料编码：{{item.materialcode}} </view>
@@ -31,13 +34,25 @@
                 <button data-id="{{index}}" style="width:100px" bindtap="deleteItem">删除</button>
               </view>
             </view>
-          </view>
+          </scroll-view>
         </van-panel>
       </van-cell-group>
       <van-popup position="bottom" show="{{ show }}">
         <van-picker show-toolbar title="出库方式" columns="{{ columns }}" bind:cancel="onCancel" bind:confirm="onConfirm" />
       </van-popup>
       <button bindtap="submitAll" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">出库</button>
+      <van-popup custom-style="border-radius: 20rpx" show="{{ success_show }}" bind:close="successOnClose">
+        <view style="margin:20rpx;display: flex;flex-direction: column;align-items: center;border-radius: 10rpx;">
+          <van-icon name="passed" size="10rem" color="#07c160" />
+          <view>操作成功</view>
+        </view>
+      </van-popup>
+      <van-popup custom-style="border-radius: 20rpx" show="{{ fail_show }}" bind:close="failOnClose">
+        <view style="margin:20rpx;display: flex;flex-direction: column;align-items: center;border-radius: 10rpx;">
+          <van-icon name="close" size="10rem" color="#f10c0c" />
+          <view>操作失败</view>
+        </view>
+      </van-popup>
       <!-- <view style="width:80%">
         <text>扫描到的构件有:
         </text>

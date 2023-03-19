@@ -37,10 +37,8 @@ Page({
         }
       }
     }
-
-    if (!materialcode || materialcode == this.data.materialcode) {
-      return
-    }
+    console.log(materialcode)
+    console.log(id)
 
     // for循环从strs中找到物料编码
     // var materialcode = null
@@ -74,7 +72,8 @@ Page({
   // 获取样式
   getStyle(qrcodeid) {
     let fieldNames = {
-      qrcode_content: "STRING"
+      qrcode_content: "STRING",
+      qrcode_name: "STRING"
     }
     let that = this
     this.setData({
@@ -88,7 +87,7 @@ Page({
           "content-type": 'application/x-www-form-urlencoded'
         },
         data: {
-          sqlStr: "select qrcode_content from qrcode where qrcode_id=" + qrcodeid + ";",
+          sqlStr: "select qrcode_content,qrcode_name from qrcode where qrcode_id=" + qrcodeid + ";",
           fieldNames: JSON.stringify(fieldNames),
           pageCur: 1,
           pageMax: 1000
@@ -101,7 +100,8 @@ Page({
           }
 
           that.setData({
-            qrstyle: JSON.parse(datatmp.qrcode_content)
+            qrstyle: JSON.parse(datatmp.qrcode_content),
+            qrcode_name: datatmp.qrcode_name
           })
           resolve()
         },
@@ -233,15 +233,20 @@ Page({
         //设置构件信息
         let obj = res.data.data[0];
         let tmp = that.data.qrstyle.qRCode.qRCodeContent
-        let str_body = ''
         let fieldmap = that.data.fieldmap
-        for (let j = 0; j < tmp.length; j++) {
-          str_body += fieldmap[tmp[j]] + ':' + obj[tmp[j]] + "\n"
+        if (that.data.qrcode_name == '打印模板（上海）') {
+          that.getOtherData(obj)
+        } else {
+          let str_body = ''
+          for (let j = 0; j < tmp.length; j++) {
+            str_body += fieldmap[tmp[j]] + ':' + obj[tmp[j]] + "\n"
+          }
+          that.setData({
+            result: str_body,
+            state: 0
+          })
         }
-        that.setData({
-          result: str_body,
-          state: 0
-        })
+
       },
       error(message) {
         that.setData({
@@ -320,6 +325,80 @@ Page({
           }
           //that.setData({dataArray:res.data})
         }
+      }
+    })
+  },
+  getOtherData() {
+    let fieldNames = {
+      print_obj: "STRING",
+    }
+    wx.request({
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+      data: {
+        sqlStr: "select print_obj from print_obj where `index` = (select qc_id from default_qc where id = 3);",
+        fieldNames: JSON.stringify(fieldNames),
+        pageCur: 1,
+        pageMax: 1000
+      },
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        let jsonobj = JSON.parse(res.data)
+        jsonobj = JSON.parse(jsonobj[0].print_obj)
+        Object.assign(obj, jsonobj)
+        getComputeData(obj)
+      }
+    })
+  },
+  getComputeData() {
+    let that = this
+    let fieldNames = {
+      build_type: "STRING",
+      standard: "STRING",
+      fangliang: "STRING",
+      fangliang: "STRING",
+      building_no: "STRING",
+      floor_no: "STRING",
+      time: "STRING",
+      plantime: "STRING",
+      concretegrade: "STRING",
+      unit_consumption: "STRING",
+    }
+    wx.request({
+      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+      data: {
+        sqlStr: "select b.build_type,b.standard,b.fangliang,b.building_no,b.floor_no,c.plantime time ,DATE_ADD(c.plantime,INTERVAL 5 DAY) plantime,b.concretegrade,d.unit_consumption from preproduct b,plan c,planname d where  b.plannumber = c.plannumber and c.planname = d.planname  and b.materialcode = " + materialcode + ";",
+        fieldNames: JSON.stringify(fieldNames),
+        pageCur: 1,
+        pageMax: 1000
+      },
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        let jsonobj = res.data0[0]
+        let tmp = that.data.qrstyle.qRCode.qRCodeContent
+        let str_body = ''
+        for (let j = 0; j < tmp.length; j++) {
+          str_body += fieldmap[tmp[j]] + ":" + obj[tmp[j]] + "\n"
+        }
+        str_body += "构件种类" + ":" + jsonobj.build_type + "\n"
+        // str_body += "<tr><td>" + "构件尺寸(mm)" + "</td><td>" + jsonobj.standard + "</td></tr>"
+        // str_body += "<tr><td>" + "构件重量(T)" + "</td><td>" + (jsonobj.fangliang * 2.4).toFixed(2) + "</td></tr>"
+        str_body += "使用部位" + ":" + jsonobj.building_no + jsonobj.floor_no + "\n"
+        str_body += "构件制作日期" + ":" + jsonobj.time + "\n"
+        str_body += "构件出厂检验日期" + ":" + jsonobj.plantime + "\n"
+        str_body += "构件出出厂日期" + ":" + jsonobj.plantime + "\n"
+        str_body += "钢筋用量(kg)" + ":" + (jsonobj.fangliang * jsonobj.unit_consumption).toFixed(2) + "\n"
+        str_body += "混凝土强度等级" + ":" + jsonobj.concretegrade + "\n"
+        str_body += "混凝土用砂量(T)" + ":" + (jsonobj.fangliang * 0.85).toFixed(2) + "\n"
+        str_body += "混凝土用石量(T)" + ":" + (jsonobj.fangliang * 1.0).toFixed(2) + "\n"
+        that.setData({
+          str_body: str_body
+        });
       }
     })
   },

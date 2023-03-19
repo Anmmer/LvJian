@@ -10,7 +10,10 @@ Page({
     materialcode: '',
     disabled: '',
     state: '',
-    errormsg: ''
+    errormsg: '',
+    success_show: false,
+    fail_show: false,
+    color_style: "#fff", //07c160
   },
   // 扫码函数
   scanCode(e) {
@@ -35,7 +38,6 @@ Page({
         }
       }
     }
-    if (!materialcode || materialcode == this.data.materialcode) return
     console.log(materialcode)
     that.setData({
       materialcode: materialcode
@@ -57,7 +59,7 @@ Page({
             // 生产状态
             let pop_pageDate = res.data.data
             if (wx.getStorageSync('on_or_off') == '1') {
-              if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
+              if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 0) {
                 pop_pageDate[0].state = '待浇捣'
               } else if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
                 pop_pageDate[0].state = '浇捣完成'
@@ -75,6 +77,9 @@ Page({
             }
 
             Toast('扫码成功！');
+            that.setData({
+              color_style: '#07c160'
+            })
             that.setData({
               state: pop_pageDate[0].state,
               plannumber: pop_pageDate[0].plannumber,
@@ -97,6 +102,16 @@ Page({
       show: false
     });
   },
+  successOnClose() {
+    this.setData({
+      success_show: false
+    })
+  },
+  failOnClose() {
+    this.setData({
+      fail_show: false
+    })
+  },
   submitInfo(e) {
     var that = this
     if (this.data.state !== '待浇捣') {
@@ -113,7 +128,8 @@ Page({
       wx.request({
         url: 'https://mes.ljzggroup.com/DuiMaTest/Pour',
         data: {
-          pids: JSON.stringify(arr)
+          pids: JSON.stringify(arr),
+          pourmade_user: wx.getStorageSync('userName')
         },
         method: 'POST',
         header: {
@@ -121,13 +137,21 @@ Page({
         },
         success(res) {
           // 成功后
-          Toast.success('浇捣成功！');
-          that.setData({
-            state: '',
-            pid: "",
-            plannumber: "",
-            materialcode: '',
-          })
+          if (res.data.flag) {
+            that.setData({
+              success_show: true,
+              color_style: '#fff',
+              state: '',
+              pid: "",
+              plannumber: "",
+              materialcode: '',
+            })
+          } else {
+            that.setData({
+              fail_show: true
+            })
+          }
+
         }
       })
     } else {

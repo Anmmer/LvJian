@@ -7,63 +7,70 @@ Page({
     userName: null,
     gezi: [],
     authority: [{
-        icon: "/pages/image/kecheng1.png",
+        icon: "/pages/image/sm.png",
         wenzi: "扫码",
         linktype: "navigateTo",
         url: "/pages/qrcodeInfo/qrcodeInfo",
         img: "/pages/image/kecheng1.png"
       },
       {
-        icon: "/pages/image/kecheng2.png",
+        icon: "/pages/image/cx.png",
         wenzi: "计划查询",
         linktype: "navigateTo",
         url: "/pages/plan/plan",
         img: "/pages/image/kecheng2.png"
       },
       {
-        icon: "/pages/image/kecheng3.png",
+        icon: "/pages/image/sc.png",
         wenzi: "生产查询",
         linktype: "navigateTo",
         url: "/pages/producelook/producelook",
         img: "/pages/image/kecheng3.png"
       },
       {
-        icon: "/pages/image/kecheng3.png",
+        icon: "/pages/image/jd.png",
         wenzi: "浇捣",
         linktype: "navigateTo",
         url: "/pages/pour/pour",
         img: "/pages/image/kecheng3.png"
       },
       {
-        icon: "/pages/image/kecheng3.png",
+        icon: "/pages/image/zj.png",
         wenzi: "成品检验",
         linktype: "navigateTo",
         url: "/pages/inspect/inspect",
-        img: "/pages/image/kecheng3.png"
+        img: "/pages/image/zj.png"
       },
       {
-        icon: "/pages/image/kecheng4.png",
+        icon: "/pages/image/xb.png",
         wenzi: "修补库",
         linktype: "navigateTo",
         url: "/pages/patchlibrary/patchlibrary",
         img: "/pages/image/kecheng4.png"
       },
       {
-        icon: "/pages/image/kecheng5.png",
+        icon: "/pages/image/bf.png",
+        wenzi: "报废库",
+        linktype: "navigateTo",
+        url: "/pages/warehouseScrap/warehouseScrap",
+        img: "/pages/image/kecheng4.png"
+      },
+      {
+        icon: "/pages/image/rk.png",
         wenzi: "扫码入库",
         linktype: "navigateTo",
         url: "/pages/inbound/inbound",
         img: "/pages/image/kecheng5.png"
       },
       {
-        icon: "/pages/image/kecheng5.png",
+        icon: "/pages/image/ck.png",
         wenzi: "扫码出库",
         linktype: "navigateTo",
         url: "/pages/outbound/outbound",
         img: "/pages/image/kecheng5.png"
       },
       {
-        icon: "/pages/image/kecheng5.png",
+        icon: "/pages/image/pk.png",
         wenzi: "盘点库存",
         linktype: "navigateTo",
         url: "/pages/checkWarehouse/checkWarehouse",
@@ -106,12 +113,13 @@ Page({
     pro.then(() => {
       let arr = []
       let fauthority = wx.getStorageSync('fauthority')
+      console.log(fauthority)
       for (let val of fauthority) {
         arr.push(this.data.authority[val.pc_id - 1])
       }
       if (on_or_off == '1') {
         arr.splice(3, 0, {
-          icon: "/pages/image/kecheng3.png",
+          icon: "/pages/image/jy.png",
           wenzi: "隐蔽性检验",
           linktype: "navigateTo",
           url: "/pages/coverTest/coverTest",

@@ -20,7 +20,10 @@ Page({
     // this.inspectData();
   },
   inspectDataPages() {
-    if (this.data.pageCur <= this.data.pageAll) {
+    if (this.data.pageCur < this.data.pageAll) {
+      this.setData({
+        pageCur: this.data.pageCur + 1
+      })
       this.inspectData()
     }
   },
@@ -29,6 +32,7 @@ Page({
     if (e !== undefined) {
       this.setData({
         line: e.detail.value.line,
+        pageCur: 1,
         materialname: e.detail.value.materialname,
         materialcode: e.detail.value.materialcode
       })
@@ -36,6 +40,8 @@ Page({
     let data = {
       inspectState: "0",
       pourState: "1",
+      isPrint: true,
+      isPour: true,
       line: this.data.line,
       materialname: this.data.materialname,
       materialcode: this.data.materialcode,
@@ -58,14 +64,12 @@ Page({
             checkNumber: res.data.cnt,
             pageAll: res.data.pageAll,
             inspect_list: that.data.inspect_list.concat(res.data.data),
-            pageCur: that.data.pageCur + 1
           })
         } else {
           that.setData({
             checkNumber: res.data.cnt,
             pageAll: res.data.pageAll,
             inspect_list: res.data.data,
-            pageCur: 1
           })
         }
 

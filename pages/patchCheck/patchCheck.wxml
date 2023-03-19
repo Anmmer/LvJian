@@ -18,6 +18,18 @@
         <van-field value="{{state}}" label="生产状态" disabled border="{{ false }}" />
       </van-cell-group>
       <button bindtap="submitInfo" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">修补</button>
+      <van-popup custom-style="border-radius: 20rpx" show="{{ success_show }}" bind:close="successOnClose">
+        <view style="margin:20rpx;display: flex;flex-direction: column;align-items: center;border-radius: 10rpx;">
+          <van-icon name="passed" size="10rem" color="#07c160" />
+          <view>操作成功</view>
+        </view>
+      </van-popup>
+      <van-popup custom-style="border-radius: 20rpx" show="{{ fail_show }}" bind:close="failOnClose">
+        <view style="margin:20rpx;display: flex;flex-direction: column;align-items: center;border-radius: 10rpx;">
+          <van-icon name="close" size="10rem" color="#f10c0c" />
+          <view>操作失败</view>
+        </view>
+      </van-popup>
       <van-toast id="van-toast" />
       <van-dialog id="van-dialog" />
     </view>

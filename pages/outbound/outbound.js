@@ -7,7 +7,9 @@ Page({
     warehouse_name: "",
     products: [],
     product: {},
-    show: false
+    show: false,
+    success_show: false,
+    fail_show: false,
   },
   // 扫码函数
   scanCode(e) {
@@ -22,17 +24,18 @@ Page({
     }
     if (materialcode) {
       materialcode = materialcode[1]
-    } else {
-      var strs = resultstr.split("\n")
-      // for循环从strs中找到构件号
-      for (var i = 0; i < strs.length; i++) {
-        var idx = strs[i].indexOf(":")
-        var fieldname = strs[i].substring(0, idx)
-        if (fieldname.indexOf("物料编码") >= 0) {
-          materialcode = strs[i].substring(idx + 1)
-        }
-      }
     }
+    // else {
+    //   var strs = resultstr.split("\n")
+    //   // for循环从strs中找到构件号
+    //   for (var i = 0; i < strs.length; i++) {
+    //     var idx = strs[i].indexOf(":")
+    //     var fieldname = strs[i].substring(0, idx)
+    //     if (fieldname.indexOf("物料编码") >= 0) {
+    //       materialcode = strs[i].substring(idx + 1)
+    //     }
+    //   }
+    // }
     if (!materialcode || materialcode == this.data.materialcode) return
     // for循环从strs中找到构件号或者货位号
     // for (var i = 0; i < strs.length; i++) {
@@ -46,7 +49,7 @@ Page({
       wx.showToast({
         title: '扫描结果已存在!',
         icon: 'none',
-        duration: 1500
+        duration: 500
       })
       return
     }
@@ -80,13 +83,13 @@ Page({
           console.log(pop_pageDate)
           if (pop_pageDate[0].state != '质检合格') {
             wx.showToast({
-              title: '不符合入库条件，无法入库!',
+              title: '不符合出库条件，无法出库!',
               icon: 'none',
-              duration: 1500
+              duration: 500
             })
             return
           }
-          that.data.products.push(pop_pageDate[0])
+          that.data.products.unshift(pop_pageDate[0])
           that.setData({
             product: pop_pageDate[0],
             products: that.data.products
@@ -94,7 +97,7 @@ Page({
         } else {
           // 该构件已入库，提醒
           wx.showToast({
-            title: '不在库中!',
+            title: '该构建不在库中!',
             icon: 'none',
             duration: 1000
           })
@@ -112,7 +115,7 @@ Page({
       value
     } = event.detail;
     this.setData({
-      method: value.name,
+      out_warehouse_method: value.name,
       show: false
     })
   },
@@ -149,15 +152,6 @@ Page({
       })
       return
     }
-    // 提交并清空
-    if (this.data.method == void 0) {
-      wx.showToast({
-        title: '请选择出库方式',
-        icon: 'none',
-        duration: 1000
-      })
-      return
-    }
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
@@ -169,38 +163,29 @@ Page({
         data: {
           ids: JSON.stringify(arr),
           type: "2", // 2出库
-          method: this.data.out_warehouse_method,
+          method: that.data.out_warehouse_method,
           userId: wx.getStorageSync('userId'),
           userName: wx.getStorageSync('userName'),
-          method: this.data.method
         },
         method: 'POST',
         header: {
           'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         },
         success(res) {
-          if (res.data.msg !== '') {
-            wx.showToast({
-              title: res.data.msg,
-              icon: 'none',
-              duration: 1000
+          // 清空所有
+          if (res.data.flag) {
+            that.setData({
+              success_show: true,
+              products: [],
+              warehouse_id: "",
+              warehouse_name: ""
             })
-            return
           } else {
-            wx.showToast({
-              title: '出库成功',
-              icon: 'none',
-              duration: 1000
+            that.setData({
+              fail_show: true
             })
           }
-          // 清空所有
-          console.log(res.data)
-          var list = []
-          that.setData({
-            products: [],
-            warehouse_id: "",
-            warehouse_name: ""
-          })
+
         }
       })
     } else {
@@ -248,6 +233,16 @@ Page({
     this.setData({
       out_warehouse_method: event.detail.value,
       show: false
+    })
+  },
+  successOnClose() {
+    this.setData({
+      success_show: false
+    })
+  },
+  failOnClose() {
+    this.setData({
+      fail_show: false
     })
   },
 

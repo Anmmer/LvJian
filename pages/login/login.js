@@ -47,8 +47,8 @@ Page({
       success(res) {
         var lastLoginTime = new Date(res.data.LastLoginTime)
         var currentTime = new Date()
-        //if(currentTime.getTime()-lastLoginTime.getTime() > 1) {
-        if (currentTime.getTime() - lastLoginTime.getTime() > 7 * 24 * 60 * 60 * 1000) {
+        if(currentTime.getTime()-lastLoginTime.getTime() > 1) {
+        // if (currentTime.getTime() - lastLoginTime.getTime() > 7 * 24 * 60 * 60 * 1000) {
           // 登陆过期
           wx.hideLoading({
             success: (res) => {},

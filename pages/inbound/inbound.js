@@ -9,6 +9,8 @@ Page({
     materialcodes: [],
     products: [],
     columns: [],
+    success_show: false,
+    fail_show: false,
     show: false,
     ready: true
   },
@@ -33,16 +35,6 @@ Page({
     } else if (warehouseIdMatch) {
       warehouseId = warehouseIdMatch[1]
       console.log(warehouseId)
-    } else {
-      var strs = resultstr.split("\n")
-      // for循环从strs中找到构件号
-      for (var i = 0; i < strs.length; i++) {
-        var idx = strs[i].indexOf(":")
-        var fieldname = strs[i].substring(0, idx)
-        if (fieldname.indexOf("物料编码") >= 0) {
-          materialcode = strs[i].substring(idx + 1)
-        }
-      }
     }
     if (materialcode) {
       // 这是一个构件标签
@@ -50,7 +42,7 @@ Page({
         wx.showToast({
           title: '请先扫描库房二维码!',
           icon: 'none',
-          duration: 1500
+          duration: 500
         })
         return
       }
@@ -58,11 +50,10 @@ Page({
         wx.showToast({
           title: '扫描结果已存在!',
           icon: 'none',
-          duration: 1500
+          duration: 500
         })
         return
       }
-      this.data.materialcodes.push(materialcode)
       console.log("扫描到构件'" + materialcode + "'")
       // 获取构件目前生产状态
       var that = this
@@ -70,9 +61,6 @@ Page({
         url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
         data: {
           materialcode: materialcode,
-          pourState: '1',
-          inspectState: '1',
-          isPrint: 'true'
         },
         method: 'POST',
         header: {
@@ -98,19 +86,20 @@ Page({
               wx.showToast({
                 title: '不符合入库条件，无法入库!',
                 icon: 'none',
-                duration: 1500
+                duration: 1000
               })
               return
             }
             let arr = that.data.products
-            arr.push(pop_pageDate[0])
+            that.data.materialcodes.push(materialcode)
+            arr.unshift(pop_pageDate[0])
             that.setData({
               products: arr
             })
           } else {
             // 该构件已入库，提醒
             wx.showToast({
-              title: '不符合入库条件，无法入库!',
+              title: '暂无数据!',
               icon: 'none',
               duration: 1000
             })
@@ -210,11 +199,14 @@ Page({
     })
   },
   deleteItem(event) {
-    var list = this.data.products
+    let list = this.data.products
+    let materialcodes = this.data.materialcodes
     // 删除制定的构件
     list.splice(event.currentTarget.dataset.id, 1)
+    materialcodes.splice(event.currentTarget.dataset.id, 1)
     this.setData({
-      products: list
+      products: list,
+      materialcodes: materialcodes
     })
   },
   deleteAll(event) {
@@ -235,7 +227,9 @@ Page({
       },
       success(res) {
         that.setData({
-          columns: res.data.data,
+          columns: res.data.data.map((item) => {
+            return item.name
+          }),
         })
       }
     })
@@ -264,9 +258,9 @@ Page({
         data: {
           ids: JSON.stringify(arr),
           type: "1",
-          userId: wx.getStorageSync('userId'),
+          in_warehouse_id: that.data.warehouse_id,
           userName: wx.getStorageSync('userName'),
-          method: this.data.in_warehouse_method
+          method: that.data.in_warehouse_method
         },
         method: 'POST',
         header: {
@@ -274,15 +268,16 @@ Page({
         },
         success(res) {
           // 清空所有
-          if (res.data.msg) {
-            Toast(res.data.msg)
-          }
+          console.log(res)
           if (res.data.flag) {
             that.setData({
+              success_show: true,
               products: [],
               warehouse_id: "",
               warehouse_name: ""
             })
+          } else {
+            Toast(res.data.msg);
           }
 
         }
@@ -295,7 +290,16 @@ Page({
       })
     }
   },
-
+  successOnClose() {
+    this.setData({
+      success_show: false
+    })
+  },
+  failOnClose() {
+    this.setData({
+      fail_show: false
+    })
+  },
   show() {
     this.setData({
       show: true

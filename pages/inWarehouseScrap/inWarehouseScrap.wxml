@@ -8,12 +8,11 @@
   </view>
   <view style="margin-top:{{startBarHeight+navgationHeight+10}}px">
     <view class="mid">
-      <view class="tiaomu1"> <text class="mark">|</text> 修补入库</view>
+      <view class="tiaomu1"> <text class="mark">|</text> 报废入库</view>
       <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin: 0 auto;" mode="scanCode" bindscancode="scanCode"></camera>
       <van-cell-group>
-        <van-field value="{{patch_library}}" placeholder="请输入地址" label="地址" border="{{ false }}" />
-        <van-field value="{{inspect_remark}}" placeholder="请输入备注" label="备注" border="{{ false }}" />
-        <van-panel title="入库构件{{products.length}}个:">
+        <van-field value="{{remark}}" placeholder="请输入备注" label="备注" border="{{ false }}" />
+        <van-panel title="入库构建{{products.length}}个:">
           <scroll-view scroll-y="true" style="height: 400rpx;">
             <view wx:for="{{products}}" wx:key="products">
               <view>物料编码：{{item.materialcode}} </view>

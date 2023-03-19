@@ -11,7 +11,7 @@ Page({
     success_show: false,
     fail_show: false,
     patch_library: '',
-    inspect_remark: '',
+    remark: '',
     ready: true
   },
   // 扫码函数
@@ -46,14 +46,6 @@ Page({
     }
     if (materialcode) {
       // 这是一个构件标签
-      if (this.data.warehouse_id == '') {
-        wx.showToast({
-          title: '请先扫描库房二维码!',
-          icon: 'none',
-          duration: 500
-        })
-        return
-      }
       if (this.data.materialcodes.find(val => val == materialcode)) {
         wx.showToast({
           title: '扫描结果已存在!',
@@ -70,9 +62,6 @@ Page({
         url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
         data: {
           materialcode: materialcode,
-          pourState: '1',
-          inspectState: '1',
-          isPrint: 'true'
         },
         method: 'POST',
         header: {
@@ -94,7 +83,7 @@ Page({
             if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
               pop_pageDate[0].state = '质检不合格'
             }
-            if (pop_pageDate[0].state != '质检合格') {
+            if (pop_pageDate[0].state != '质检不合格') {
               wx.showToast({
                 title: '不符合入库条件，无法入库!',
                 icon: 'none',
@@ -122,39 +111,39 @@ Page({
       })
     }
 
-    if (warehouseId) {
-      // 这是货位标签
-      console.log("扫描到货位'" + warehouseId + "'")
-      if (this.data.warehouse_id == "") {
-        this.setData({
-          warehouse_id: warehouseId
-        })
-        wx.request({
-          url: 'https://mes.ljzggroup.com/DuiMaTest/GetFactory',
-          data: {
-            id: warehouseId,
-            type: '3',
-          },
-          method: 'POST',
-          header: {
-            "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
-          },
-          success(res) {
-            this.setData({
-              warehouse_name: res.data.data[0].name
-            })
-          }
-        })
-      } else {
-        wx.showToast({
-          title: '您已扫描过库房号',
-          icon: 'none',
-          duration: 1000
-        })
-        return
-      }
+    // if (warehouseId) {
+    //   // 这是货位标签
+    //   console.log("扫描到货位'" + warehouseId + "'")
+    //   if (this.data.warehouse_id == "") {
+    //     this.setData({
+    //       warehouse_id: warehouseId
+    //     })
+    //     wx.request({
+    //       url: 'https://mes.ljzggroup.com/DuiMaTest/GetFactory',
+    //       data: {
+    //         id: warehouseId,
+    //         type: '3',
+    //       },
+    //       method: 'POST',
+    //       header: {
+    //         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
+    //       },
+    //       success(res) {
+    //         this.setData({
+    //           warehouse_name: res.data.data[0].name
+    //         })
+    //       }
+    //     })
+    //   } else {
+    //     wx.showToast({
+    //       title: '您已扫描过库房号',
+    //       icon: 'none',
+    //       duration: 1000
+    //     })
+    //     return
+    //   }
 
-    }
+    // }
   },
   deleteItem(event) {
     var list = this.data.products
@@ -182,19 +171,20 @@ Page({
   submitAll(event) {
     var that = this
     // 提交并清空
-    if (this.data.warehouse_id != null && this.data.products.length != 0) {
+    if (this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
         arr.push(val.materialcode)
       }
       // 可以上传
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaTest/InspectNo',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/WarehouseScrapInOut',
         data: {
           pids: JSON.stringify(arr),
-          patch_library: this.data.patch_library,
-          inspect_remark: this.data.inspect_remark,
-          inspect_user: wx.getStorageSync('userName'),
+          type: "1",
+          scrap_library: "报废库",
+          scrap_remark: this.data.remark,
+          scrap_user: wx.getStorageSync('userName'),
         },
         method: 'POST',
         header: {
@@ -202,6 +192,9 @@ Page({
         },
         success(res) {
           // 清空所有
+          if (res.data.message) {
+            Toast.success(res.data.message);
+          }
           if (res.data.flag) {
             that.setData({
               success_show: true,

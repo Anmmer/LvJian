@@ -20,7 +20,10 @@ Page({
     // this.pourData();
   },
   pourDataPages() {
-    if (this.data.pageCur <= this.data.pageAll) {
+    if (this.data.pageCur < this.data.pageAll) {
+      this.setData({
+        pageCur: this.data.pageCur + 1
+      })
       this.pourData()
     }
   },
@@ -29,6 +32,7 @@ Page({
     if (e !== undefined) {
       this.setData({
         line: e.detail.value.line,
+        pageCur: 1,
         materialname: e.detail.value.materialname,
         materialcode: e.detail.value.materialcode
       })
@@ -53,19 +57,17 @@ Page({
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
-        if (e == undefined) {
+        if (!e) {
           that.setData({
             pour_list: that.data.pour_list.concat(res.data.data),
             pourMadeNumber: res.data.cnt,
             pageAll: res.data.pageAll,
-            pageCur: that.data.pageCur + 1
           })
         } else {
           that.setData({
             pour_list: res.data.data,
             pourMadeNumber: res.data.cnt,
             pageAll: res.data.pageAll,
-            pageCur: 1
           })
         }
 
@@ -106,7 +108,6 @@ Page({
 
   },
   jiaodao() {
-    console.log("出库")
     wx.navigateTo({
       url: "../processConfirm/processConfirm",
     })

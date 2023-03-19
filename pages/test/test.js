@@ -14,7 +14,10 @@ Page({
     mainActiveIndex: 0,
     activeId: [],
     show: false,
-    patch_library: ''
+    patch_library: '',
+    success_show: false,
+    fail_show: false,
+    color_style: "#fff", //07c160
   },
   // 扫码函数
   scanCode(e) {
@@ -73,6 +76,9 @@ Page({
             }
             Toast('扫码成功！');
             that.setData({
+              color_style: '#07c160'
+            })
+            that.setData({
               state: pop_pageDate[0].state,
               plannumber: pop_pageDate[0].plannumber,
               materialname: pop_pageDate[0].materialname,
@@ -121,14 +127,22 @@ Page({
             },
             success(res) {
               // 成功后
-              Toast.success('检验成功！');
-              that.setData({
-                state: '',
-                pid: "",
-                plannumber: "",
-                materialcode: '',
-                materialname: ''
-              })
+              if (res.data.flag) {
+                that.setData({
+                  success_show: true,
+                  color_style: '#fff',
+                  state: '',
+                  pid: "",
+                  plannumber: "",
+                  materialcode: '',
+                  materialname: ''
+                })
+              } else {
+                that.setData({
+                  fail_show: true
+                })
+
+              }
             }
           })
         }).catch(() => {
@@ -216,7 +230,7 @@ Page({
       wx.showToast({
         title: '请选择不合格原因!',
         icon: 'none',
-        duration: 1000
+        duration: 500
       })
       return
     }
@@ -248,16 +262,33 @@ Page({
       },
       success(res) {
         // 成功后
-        Toast.success('检验成功！');
-        that.setData({
-          state: '',
-          pid: "",
-          plannumber: "",
-          materialcode: '',
-          show: false,
-          activeId: []
-        })
+        if (res.data.flag) {
+          that.setData({
+            success_show: true,
+            color_style: '#fff',
+            state: '',
+            pid: "",
+            plannumber: "",
+            materialcode: '',
+            show: false,
+            activeId: []
+          })
+        } else {
+          that.setData({
+            fail_show: false
+          })
+        }
       }
+    })
+  },
+  successOnClose() {
+    this.setData({
+      success_show: false
+    })
+  },
+  failOnClose() {
+    this.setData({
+      fail_show: false
     })
   },
   /**

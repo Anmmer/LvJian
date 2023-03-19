@@ -8,6 +8,8 @@ Page({
     plannumber: '',
     materialcode: '',
     state: '',
+    success_show: false,
+    fail_show: false,
   },
   // 扫码函数
   scanCode(e) {
@@ -98,6 +100,16 @@ Page({
       })
     }
   },
+  successOnClose() {
+    this.setData({
+      success_show: false
+    })
+  },
+  failOnClose() {
+    this.setData({
+      fail_show: false
+    })
+  },
   submitInfo(e) {
     var that = this
     console.log(this.data.materialcode)
@@ -127,16 +139,18 @@ Page({
         },
         success(res) {
           // 成功后
-          if (res.data.message) {
-            Toast.success(res.data.data.message);
-          }
           if (res.data.flag) {
             that.setData({
+              success_show: true,
               state: '',
               materialcode: "",
               plannumber: "",
               materialcode: '',
               materialname: ''
+            })
+          } else {
+            that.setData({
+              fail_show: true
             })
           }
 
@@ -144,7 +158,7 @@ Page({
       })
     } else {
       wx.showToast({
-        title: '未处于修补状态!',
+        title: '请扫描质检不合格构建进行修补!',
         icon: 'none',
         duration: 1000
       })

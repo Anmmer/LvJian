@@ -11,6 +11,9 @@ Page({
     inspect_remark: '',
     activeId: [],
     show: false,
+    success_show: false,
+    fail_show: false,
+    color_style: "#fff", //07c160
     patch_library: '',
     plannumber: '',
     materialcode: '',
@@ -40,7 +43,6 @@ Page({
         }
       }
     }
-    if (!materialcode || materialcode == this.data.materialcode) return
     that.setData({
       materialcode: materialcode
     })
@@ -64,7 +66,7 @@ Page({
               if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
                 pop_pageDate[0].state = '待质检'
               } else if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
-                pop_pageDate[0].state = '质检完成'
+                pop_pageDate[0].state = '质检合格'
               } else if (pop_pageDate[0]['covert_test'] === 1 && pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
                 pop_pageDate[0].state = '质检不合格'
               } else {
@@ -74,13 +76,16 @@ Page({
               if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
                 pop_pageDate[0].state = '待质检'
               } else if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
-                pop_pageDate[0].state = '质检完成'
+                pop_pageDate[0].state = '质检合格'
               } else if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
                 pop_pageDate[0].state = '质检不合格'
               } else {
                 pop_pageDate[0].state = '未处于质检状态'
               }
             }
+            that.setData({
+              color_style: '#07c160'
+            })
             Toast('扫码成功！');
             that.setData({
               state: pop_pageDate[0].state,
@@ -135,6 +140,14 @@ Page({
   },
   onSave() {
     let that = this
+    if (this.data.state !== '待质检') {
+      wx.showToast({
+        title: '未处于待质检状态!',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     if (this.data.patch_library == '') {
       wx.showToast({
         title: '请输入修补库地址!',
@@ -153,7 +166,7 @@ Page({
     }
     let arr = [];
     let str = '';
-    arr.push(this.data.pid)
+    arr.push(this.data.materialcode)
     for (let id of this.data.activeId) {
       for (let o of this.data.items) {
         for (let o_child of o.children) {
@@ -179,17 +192,37 @@ Page({
       },
       success(res) {
         // 成功后
-        Toast.success('质检成功！');
-        that.setData({
-          state: '',
-          pid: "",
-          plannumber: "",
-          materialcode: '',
-          show: false,
-          activeId: [],
-          patch_library: ''
-        })
+        if (res.data.message) {
+          Toast.success(res.data.message);
+        }
+        if (res.data.flag) {
+          that.setData({
+            success_show: true,
+            color_style: '#fff',
+            state: '',
+            pid: "",
+            plannumber: "",
+            materialcode: '',
+            show: false,
+            activeId: [],
+            patch_library: ''
+          })
+        } else {
+          that.setData({
+            fail_show: true
+          })
+        }
       }
+    })
+  },
+  successOnClose() {
+    this.setData({
+      success_show: false
+    })
+  },
+  failOnClose() {
+    this.setData({
+      fail_show: false
     })
   },
   onChange(event) {
@@ -206,8 +239,15 @@ Page({
   },
   submitInfo(e) {
     var that = this
-    console.log(this.data.pid)
-    if (this.data.pid == null || this.data.pid == '') {
+    if (this.data.state !== '待质检') {
+      wx.showToast({
+        title: '未处于待质检状态!',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
+    if (!this.data.materialcode) {
       // 没有materialcode
       wx.showToast({
         title: '请先扫描一个未完工构件的二维码!',
@@ -216,7 +256,7 @@ Page({
       })
       return
     }
-    if (this.data.state == '待质检' || this.data.state == '质检不合格') {
+    if (this.data.state == '待质检') {
       Dialog.confirm({
         title: '质检确认！',
         confirmButtonText: '合格',
@@ -224,11 +264,12 @@ Page({
       }).then(() => {
         // on confirm
         let arr = [];
-        arr.push(this.data.pid)
+        arr.push(this.data.materialcode)
         wx.request({
           url: 'https://mes.ljzggroup.com/DuiMaTest/Inspect',
           data: {
             pids: JSON.stringify(arr),
+            inspect_user: wx.getStorageSync('userName'),
           },
           method: 'POST',
           header: {
@@ -236,14 +277,22 @@ Page({
           },
           success(res) {
             // 成功后
-            Toast.success('质检成功！');
-            that.setData({
-              state: '',
-              pid: "",
-              plannumber: "",
-              materialcode: '',
-              materialname: ''
-            })
+            if (res.data.flag) {
+              that.setData({
+                success_show: true,
+                color_style: '#fff',
+                state: '',
+                pid: "",
+                plannumber: "",
+                materialcode: '',
+                materialname: ''
+              })
+            } else {
+              that.setData({
+                fail_show: true,
+              })
+            }
+
           }
         })
       }).catch(() => {

@@ -5,9 +5,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    testMadeNumber: 0,
+    pourMadeNumber: 0,
     checkNumber: 0,
-    test_list: [],
+    inspect_list: [],
     pageAll: 0,
     pageCur: 1,
     pageMax: 10
@@ -17,56 +17,39 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
-    // this.testData();
+    this.inspectData();
   },
-  testDataPages() {
-    if (this.data.pageCur < this.data.pageAll) {
-      this.setData({
-        pageCur: this.data.pageCur + 1
-      })
-      this.testData()
+  inspectDataPages() {
+    if (this.data.pageCur <= this.data.pageAll) {
+      this.inspectData()
     }
   },
-  testData(e) {
+  inspectData() {
     var that = this
-    if (e) {
-      this.setData({
-        line: e.detail.value.line,
-        materialname: e.detail.value.materialname,
-        materialcode: e.detail.value.materialcode,
-        pageCur: 1
-      })
+    let data = {
+      isPrint: "true",
+      isPour: "true",
+      inspectState: '3',
+      pageCur: this.data.pageCur,
+      pageMax: this.data.pageMax
+    }
+    if (wx.getStorageSync('on_or_off') == '1') {
+      data.isTest = 'true'
     }
     wx.request({
       url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
-      data: {
-        isPrint: "true",
-        testState: "0",
-        line: this.data.line,
-        materialname: this.data.materialname,
-        materialcode: this.data.materialcode,
-        pageCur: this.data.pageCur,
-        pageMax: this.data.pageMax
-      },
+      data: data,
       method: 'POST',
       header: {
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
-        console.log(e)
-        if (!e) {
-          that.setData({
-            test_list: that.data.test_list.concat(res.data.data),
-            testMadeNumber: res.data.cnt,
-            pageAll: res.data.pageAll,
-          })
-        } else {
-          that.setData({
-            test_list: res.data.data,
-            testMadeNumber: res.data.cnt,
-            pageAll: res.data.pageAll,
-          })
-        }
+        that.setData({
+          checkNumber: res.data.cnt,
+          pageAll: res.data.pageAll,
+          inspect_list: that.data.inspect_list.concat(res.data.data),
+          pageCur: that.data.pageCur + 1
+        })
       }
     })
   },
@@ -79,6 +62,7 @@ Page({
     let that = this
     wx.getSystemInfo({
       success: function (res) {
+        console.log(res.model)
         if (res.model == 'iPhone X') {
           startBarHeight = 44
         }
@@ -102,11 +86,24 @@ Page({
   onShow: function () {
 
   },
-  test() {
+  jiaodao1() {
     wx.navigateTo({
-      url: "../test/test",
+      url: "../patchCheck/patchCheck",
     })
   },
+  jiaodao2() {
+
+    wx.navigateTo({
+      url: "../inWarehouseScrap/inWarehouseScrap",
+    })
+
+
+  },
+  // check() {
+  //   wx.navigateTo({
+  //     url: "../check/check",
+  //   })
+  // },
   /**
    * 生命周期函数--监听页面隐藏
    */
@@ -132,7 +129,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    this.testData();
+
   },
 
   /**
