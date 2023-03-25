@@ -8,7 +8,7 @@
   </view>
   <view style="margin-top:{{startBarHeight+navgationHeight}}px">
     <view class="mid">
-      <view class="tiaomu1"> <text class="mark">|</text> 入库(先扫库房码，再扫构建码)</view>
+      <view class="tiaomu1"> <text class="mark">|</text> 入库(先扫库房码，再扫构件码)</view>
       <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin: 0 auto;" mode="scanCode" bindscancode="scanCode"></camera>
       <van-cell-group>
         <van-field value="{{warehouse_name}}" label="库位名" disabled border="{{ false }}" />

@@ -158,7 +158,7 @@ Page({
       })
     } else {
       wx.showToast({
-        title: '请扫描质检不合格构建进行修补!',
+        title: '请扫描质检不合格构件进行修补!',
         icon: 'none',
         duration: 1000
       })

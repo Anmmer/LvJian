@@ -97,7 +97,7 @@ Page({
         } else {
           // 该构件已入库，提醒
           wx.showToast({
-            title: '该构建不在库中!',
+            title: '该构件不在库中!',
             icon: 'none',
             duration: 1000
           })

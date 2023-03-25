@@ -6,41 +6,29 @@
       <view class="wenzi" bindtap="fanhui">返回</view>
     </view>
   </view>
-  <view style="margin-top:{{startBarHeight+navgationHeight+10}}px">
+  <view style="margin-top:{{startBarHeight+navgationHeight}}px">
     <view class="mid">
-      <view class="tiaomu1"> <text class="mark">|</text> 出库</view>
-      <view style="display: flex;">
-        <view></view>
-        <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin:0 auto" mode="scanCode" bindscancode="scanCode"></camera>
-      </view>
-
+      <view class="tiaomu1"> <text class="mark">|</text> 移库(先扫构件码，再扫库房码)</view>
+      <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin: 0 auto;" mode="scanCode" bindscancode="scanCode"></camera>
       <van-cell-group>
-        <van-field value="{{out_warehouse_method}}" placeholder="点击选择出库方式" readonly="true" bindtap="show" label="出库方式" border="{{ false }}" />
-        <!-- <van-panel title="扫描构件:">
-          <view class="items">
-            <view>物料编码：{{product.materialcode}} </view>
-            <view>物料名称：{{product.materialname}} </view>
-            <view>生产状态：{{product.state}}</view>
-            <view>所在库房{{product.warehouse_name}}</view>
-          </view>
-        </van-panel> -->
-        <van-panel title="出库构件({{products.length}}个):">
+        <van-field value="{{warehouse_name}}" label="库位名" disabled border="{{ false }}" />
+        <van-field value="{{path}}" label="库位地址" disabled border="{{ false }}" />
+      
+        <van-panel title="移库库构件({{products.length}}个):">
           <scroll-view scroll-y="true" style="height: 400rpx;">
             <view wx:for="{{products}}" wx:key="products">
-              <view class="items">
-                <view>物料编码：{{item.materialcode}} </view>
-                <view>物料名称：{{item.materialname}} </view>
-                <view>所在货位{{item.path}}</view>
-                <button data-id="{{index}}" style="width:100px" bindtap="deleteItem">删除</button>
+              <view>物料编码：{{item.materialcode}} </view>
+              <view>物料名称：{{item.materialname}} </view>
+              <view>生产状态：{{item.state}} <button data-id="{{index}}" style="width:100px" bindtap="deleteItem">删除</button>
               </view>
+              <text>\n</text>
             </view>
           </scroll-view>
         </van-panel>
+        
       </van-cell-group>
-      <van-popup position="bottom" show="{{ show }}">
-        <van-picker show-toolbar title="出库方式" columns="{{ columns }}" bind:cancel="onCancel" bind:confirm="onConfirm" />
-      </van-popup>
-      <button bindtap="submitAll" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">出库</button>
+
+      <button bindtap="submitAll" style="background-color: #1989fa;margin-top: 20rpx;" type="primary">移库</button>
       <van-popup custom-style="border-radius: 20rpx" show="{{ success_show }}" bind:close="successOnClose">
         <view style="margin:20rpx;display: flex;flex-direction: column;align-items: center;border-radius: 10rpx;">
           <van-icon name="passed" size="10rem" color="#07c160" />
@@ -53,7 +41,10 @@
           <view>操作失败</view>
         </view>
       </van-popup>
+      <van-toast id="van-toast" />
       <!-- <view style="width:80%">
+        <text>库位:{{warehouse_id}} {{warehouse_name}}
+        </text>
         <text>扫描到的构件有:
         </text>
         <view style="height:200px;width:100%;overflow-y:auto;">
@@ -67,7 +58,7 @@
       <view style="width:100%;height:20px;"></view>
       <view class="productItem">
         <button bindtap="deleteAll">清空扫描到的构件</button>
-        <button bindtap="submitAll">出库</button>
+        <button bindtap="submitAll">入库</button>
       </view> -->
     </view>
   </view>

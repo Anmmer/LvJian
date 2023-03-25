@@ -16,8 +16,10 @@ Page({
   },
   // 扫码函数
   scanCode(e) {
+    if (!this.data.ready)
+      return
     this.setData({
-      result: e.detail.result
+      ready: false
     })
     var that = this
     // 对扫码结果进行分析
@@ -44,6 +46,9 @@ Page({
           icon: 'none',
           duration: 500
         })
+        this.setData({
+          ready: true
+        })
         return
       }
       if (this.data.materialcodes.find(val => val == materialcode)) {
@@ -52,13 +57,16 @@ Page({
           icon: 'none',
           duration: 500
         })
+        this.setData({
+          ready: true
+        })
         return
       }
       console.log("扫描到构件'" + materialcode + "'")
       // 获取构件目前生产状态
       var that = this
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/GetInitPreproduct',
         data: {
           materialcode: materialcode,
         },
@@ -67,29 +75,14 @@ Page({
           "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
         },
         success(res) {
+          that.setData({
+            ready: true
+          })
           if (res.data.data.length != 0) {
             // 生产状态
             let pop_pageDate = res.data.data
-            if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '待浇捣'
-            }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '待质检'
-            }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
-              pop_pageDate[0].state = '质检合格'
-            }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
-              pop_pageDate[0].state = '质检不合格'
-            }
-            if (pop_pageDate[0].state != '质检合格') {
-              wx.showToast({
-                title: '不符合入库条件，无法入库!',
-                icon: 'none',
-                duration: 1000
-              })
-              return
-            }
+            
+
             let arr = that.data.products
             that.data.materialcodes.unshift(materialcode)
             arr.unshift(pop_pageDate[0])
@@ -132,7 +125,8 @@ Page({
           success(res) {
             that.setData({
               warehouse_name: res.data.data[0].name,
-              path: res.data.data[0].path
+              path: res.data.data[0].path,
+              ready: true
             })
           }
         })
@@ -142,41 +136,12 @@ Page({
           icon: 'none',
           duration: 1000
         })
+        this.setData({
+          ready: true
+        })
         return
       }
-      if (fieldname.indexOf("货位号") >= 0) {
-        // 这是货位标签
-        var warehouseId = strs[i].substring(idx + 1)
-        console.log("扫描到货位'" + warehouseId + "'")
-        if (this.data.warehouse_id == "") {
-          wx.request({
-            url: 'https://mes.ljzggroup.com/DuiMa/GetFactory',
-            data: {
-              id: warehouseId,
-              pageCur: '1',
-              pageMax: '10',
-              type: '3',
-            },
-            method: 'POST',
-            header: {
-              'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-            success(res) {
-              that.setData({
-                warehouse_name: res.data[0].name,
-                warehouse_id: res.data[0].id,
-              })
-            }
-          })
-        } else {
-          wx.showToast({
-            title: '您已扫描过库房号',
-            icon: 'none',
-            duration: 1000
-          })
-          return
-        }
-      }
+
     }
   },
   onConfirm(event) {

@@ -76,6 +76,20 @@ Page({
         url: "/pages/checkWarehouse/checkWarehouse",
         img: "/pages/image/kecheng5.png"
       },
+      {
+        icon: "/pages/image/pk.png",
+        wenzi: "扫码移库",
+        linktype: "navigateTo",
+        url: "/pages/moveWarehouse/moveWarehouse",
+        img: "/pages/image/kecheng5.png"
+      },
+      {
+        icon: "/pages/image/pk.png",
+        wenzi: "期初导入",
+        linktype: "navigateTo",
+        url: "/pages/initWarehouse/initWarehouse",
+        img: "/pages/image/kecheng5.png"
+      },
 
     ],
     active: 0,
@@ -85,7 +99,7 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     canIUseGetUserProfile: false,
     // canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
-    canIUseOpenData:false,
+    canIUseOpenData: false,
   },
   onLoad() {
     let on_or_off

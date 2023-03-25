@@ -4,6 +4,7 @@ Page({
   data: {
     result: '',
     dataArray: null,
+    id: null,
     storageInfo: null,
     materialcode: '',
     qrstyle: {},
@@ -50,9 +51,12 @@ Page({
     //   }
     // }
     if (materialcode && id) {
-      this.getStyle(id)
+      if (this.data.id !== id) {
+        this.getStyle(id)
+      }
       this.setData({
-        materialcode: materialcode
+        materialcode: materialcode,
+        id: id
       })
       // 请求获取数据
     }
@@ -161,6 +165,8 @@ Page({
   },
   getData() {
     let that = this
+    if (this.data.pop_pageDate[0].materialcode === this.data.materialcode)
+      return
     wx.request({
       url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
       data: {

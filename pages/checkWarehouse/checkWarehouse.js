@@ -124,7 +124,7 @@ Page({
           })
           if (!res.data.data.length) {
             wx.showToast({
-              title: '该仓库暂无构建',
+              title: '该仓库暂无构件',
               icon: 'none',
               duration: 500
             })

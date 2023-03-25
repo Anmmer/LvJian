@@ -145,6 +145,10 @@
   margin: 10rpx auto 30rpx;
   padding-top: 20rpx;
 }
+.zhanwei{
+  height: 200rpx;
+  width: 100%;
+}
 
 .author {
   display: flex;

@@ -6,6 +6,7 @@ Page({
     result: '',
     warehouse_id: "",
     warehouse_name: "",
+    materialcode: '',
     materialcodes: [],
     products: [],
     columns: [],
@@ -16,8 +17,11 @@ Page({
   },
   // 扫码函数
   scanCode(e) {
+
+    if (!this.data.ready)
+      return
     this.setData({
-      result: e.detail.result
+      ready: false
     })
     var that = this
     // 对扫码结果进行分析
@@ -38,19 +42,15 @@ Page({
     }
     if (materialcode) {
       // 这是一个构件标签
-      if (this.data.warehouse_id == '') {
-        wx.showToast({
-          title: '请先扫描库房二维码!',
-          icon: 'none',
-          duration: 500
-        })
-        return
-      }
+
       if (this.data.materialcodes.find(val => val == materialcode)) {
         wx.showToast({
           title: '扫描结果已存在!',
           icon: 'none',
           duration: 500
+        })
+        this.setData({
+          ready: true
         })
         return
       }
@@ -58,7 +58,7 @@ Page({
       // 获取构件目前生产状态
       var that = this
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+        url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProductWarehouse',
         data: {
           materialcode: materialcode,
         },
@@ -67,6 +67,9 @@ Page({
           "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
         },
         success(res) {
+          that.setData({
+            ready: true
+          })
           if (res.data.data.length != 0) {
             // 生产状态
             let pop_pageDate = res.data.data
@@ -82,19 +85,12 @@ Page({
             if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 2) {
               pop_pageDate[0].state = '质检不合格'
             }
-            if (pop_pageDate[0].state != '质检合格') {
-              wx.showToast({
-                title: '不符合入库条件，无法入库!',
-                icon: 'none',
-                duration: 1000
-              })
-              return
-            }
+
             let arr = that.data.products
             that.data.materialcodes.unshift(materialcode)
             arr.unshift(pop_pageDate[0])
             that.setData({
-              products: arr
+              products: arr,
             })
           } else {
             // 该构件已入库，提醒
@@ -110,6 +106,17 @@ Page({
         }
       })
     } else if (warehouseId) {
+      if (!this.data.materialcodes.length) {
+        wx.showToast({
+          title: '请先扫描构件二维码!',
+          icon: 'none',
+          duration: 500
+        })
+        this.setData({
+          ready: true
+        })
+        return
+      }
       // 这是货位标签
       console.log("扫描到货位'" + warehouseId + "'")
       if (this.data.warehouse_id == "") {
@@ -132,8 +139,10 @@ Page({
           success(res) {
             that.setData({
               warehouse_name: res.data.data[0].name,
-              path: res.data.data[0].path
+              path: res.data.data[0].path,
+              ready: true
             })
+
           }
         })
       } else {
@@ -142,40 +151,10 @@ Page({
           icon: 'none',
           duration: 1000
         })
+        this.setData({
+          ready: true
+        })
         return
-      }
-      if (fieldname.indexOf("货位号") >= 0) {
-        // 这是货位标签
-        var warehouseId = strs[i].substring(idx + 1)
-        console.log("扫描到货位'" + warehouseId + "'")
-        if (this.data.warehouse_id == "") {
-          wx.request({
-            url: 'https://mes.ljzggroup.com/DuiMa/GetFactory',
-            data: {
-              id: warehouseId,
-              pageCur: '1',
-              pageMax: '10',
-              type: '3',
-            },
-            method: 'POST',
-            header: {
-              'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-            success(res) {
-              that.setData({
-                warehouse_name: res.data[0].name,
-                warehouse_id: res.data[0].id,
-              })
-            }
-          })
-        } else {
-          wx.showToast({
-            title: '您已扫描过库房号',
-            icon: 'none',
-            duration: 1000
-          })
-          return
-        }
       }
     }
   },
@@ -214,38 +193,10 @@ Page({
       products: []
     })
   },
-  getInWarehouseMethod() {
-    let that = this
-    wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetInOutWarehouseMethod',
-      data: {
-        type: '1'
-      },
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      success(res) {
-        that.setData({
-          columns: res.data.data.map((item) => {
-            return item.name
-          }),
-        })
-      }
-    })
 
-
-  },
   submitAll(event) {
     var that = this
-    if (!this.data.in_warehouse_method) {
-      wx.showToast({
-        title: '请选择入库方式',
-        icon: 'none',
-        duration: 1000
-      })
-      return
-    }
+
 
     if (this.data.warehouse_id != null && this.data.products.length != 0) {
       let arr = []
@@ -257,10 +208,9 @@ Page({
         url: 'https://mes.ljzggroup.com/DuiMaTest/InOutWarehouse',
         data: {
           ids: JSON.stringify(arr),
-          type: "1",
+          type: "3",
           in_warehouse_id: that.data.warehouse_id,
           userName: wx.getStorageSync('userName'),
-          method: that.data.in_warehouse_method
         },
         method: 'POST',
         header: {
@@ -274,7 +224,8 @@ Page({
               success_show: true,
               products: [],
               warehouse_id: "",
-              warehouse_name: ""
+              warehouse_name: "",
+              path: ''
             })
           } else {
             Toast(res.data.msg);
@@ -324,11 +275,10 @@ Page({
   onLoad: function (options) {
     this.setNavigation();
     wx.showToast({
-      title: '请先扫描库房二维码',
+      title: '请先扫描构件二维码',
       icon: 'none',
       duration: 2500
     })
-    this.getInWarehouseMethod()
   },
 
   setNavigation() {

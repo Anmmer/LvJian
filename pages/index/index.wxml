@@ -35,11 +35,11 @@
 <!-- 热门服务 宫格 -->
 <view class="mid">
   <view class="tiaomu1"> <text class="mark">|</text> 热门服务</view>
-  <van-grid square column-num="3" border="{{ true }}">
+  <van-grid style="margin-bottom: 100rpx;" square column-num="3" border="{{ true }}">
     <van-grid-item icon="{{item.icon}}" text="{{item.wenzi}}" wx:for ="{{ gezi }}" wx:key="gezi" link-type="{{item.linktype}}"
       url="{{item.url}}">
     </van-grid-item>
   </van-grid>
+  <view style="height: 200rpx;"></view>
 </view>
 
-<view class="zhanwei"></view>

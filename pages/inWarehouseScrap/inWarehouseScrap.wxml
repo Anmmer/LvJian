@@ -12,7 +12,7 @@
       <camera device-position="back" flash="off" binderror="error" style="width:250px;height:250px;margin: 0 auto;" mode="scanCode" bindscancode="scanCode"></camera>
       <van-cell-group>
         <van-field value="{{remark}}" placeholder="请输入备注" label="备注" border="{{ false }}" />
-        <van-panel title="入库构建{{products.length}}个:">
+        <van-panel title="入库构件{{products.length}}个:">
           <scroll-view scroll-y="true" style="height: 400rpx;">
             <view wx:for="{{products}}" wx:key="products">
               <view>物料编码：{{item.materialcode}} </view>

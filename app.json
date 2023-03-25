@@ -56,7 +56,9 @@
     "pages/patchInWarehouse/patchInWarehouse",
     "pages/warehouseScrap/warehouseScrap",
     "pages/inWarehouseScrap/inWarehouseScrap",
-    "pages/outWarehouseScrap/outWarehouseScrap"
+    "pages/outWarehouseScrap/outWarehouseScrap",
+    "pages/moveWarehouse/moveWarehouse",
+    "pages/initWarehouse/initWarehouse"
   ],
   "window": {
     "backgroundTextStyle": "light",
