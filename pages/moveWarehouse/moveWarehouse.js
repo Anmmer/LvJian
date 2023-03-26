@@ -198,7 +198,7 @@ Page({
     var that = this
 
 
-    if (this.data.warehouse_id != null && this.data.products.length != 0) {
+    if (this.data.warehouse_id && this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
         arr.push(val.materialcode)

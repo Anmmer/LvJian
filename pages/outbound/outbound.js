@@ -81,14 +81,14 @@ Page({
             pop_pageDate[0].state = '质检不合格'
           }
           console.log(pop_pageDate)
-          if (pop_pageDate[0].state != '质检合格') {
-            wx.showToast({
-              title: '不符合出库条件，无法出库!',
-              icon: 'none',
-              duration: 500
-            })
-            return
-          }
+          // if (pop_pageDate[0].state != '质检合格') {
+          //   wx.showToast({
+          //     title: '不符合出库条件，无法出库!',
+          //     icon: 'none',
+          //     duration: 500
+          //   })
+          //   return
+          // }
           that.data.products.unshift(pop_pageDate[0])
           that.setData({
             product: pop_pageDate[0],
@@ -152,7 +152,7 @@ Page({
       })
       return
     }
-    if (this.data.warehouse_id != null && this.data.products.length != 0) {
+    if (this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
         arr.push(val.materialcode)
