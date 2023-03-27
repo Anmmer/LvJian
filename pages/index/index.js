@@ -77,14 +77,14 @@ Page({
         img: "/pages/image/kecheng5.png"
       },
       {
-        icon: "/pages/image/pk.png",
+        icon: "/pages/image/yk.png",
         wenzi: "扫码移库",
         linktype: "navigateTo",
         url: "/pages/moveWarehouse/moveWarehouse",
         img: "/pages/image/kecheng5.png"
       },
       {
-        icon: "/pages/image/pk.png",
+        icon: "/pages/image/dr.png",
         wenzi: "期初导入",
         linktype: "navigateTo",
         url: "/pages/initWarehouse/initWarehouse",

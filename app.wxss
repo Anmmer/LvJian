@@ -24,6 +24,7 @@ page {
  flex-direction: column;
  position: relative;
 }
+
 .mid {
   width: 94%;
   /* border: black 1rpx solid; */

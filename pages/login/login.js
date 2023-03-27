@@ -19,13 +19,16 @@ Page({
         success: res => {
           // 发送 res.code 到后台换取 openId
           wx.request({
-            url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + app.globalData.appid + '&secret=' + app.globalData.secret + '&js_code=' + res.code + '&grant_type=authorization_code',
-            method: "GET",
+            url: "https://mes.ljzggroup.com/DuiMaTest/GetOpenid",
+            data: {
+              code: res.code
+            },
+            method: "POST",
             header: {
               'content-type': 'application/x-www-form-urlencoded'
             },
             success(res) {
-              if (res.errMsg == 'request:ok') {
+              if (res.data.openid) {
                 wx.setStorageSync('openid', res.data.openid)
                 console.log(res.data.openid)
               }
@@ -47,8 +50,8 @@ Page({
       success(res) {
         var lastLoginTime = new Date(res.data.LastLoginTime)
         var currentTime = new Date()
-        if(currentTime.getTime()-lastLoginTime.getTime() > 1) {
-        // if (currentTime.getTime() - lastLoginTime.getTime() > 7 * 24 * 60 * 60 * 1000) {
+        if (currentTime.getTime() - lastLoginTime.getTime() > 1) {
+          // if (currentTime.getTime() - lastLoginTime.getTime() > 7 * 24 * 60 * 60 * 1000) {
           // 登陆过期
           wx.hideLoading({
             success: (res) => {},
