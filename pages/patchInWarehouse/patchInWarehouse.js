@@ -4,7 +4,7 @@ import Toast from '@vant/weapp/toast/toast';
 Page({
   data: {
     result: '',
-    warehouse_id: "",
+
     warehouse_name: "",
     materialcodes: [],
     products: [],
@@ -33,27 +33,10 @@ Page({
       materialcode = materialcode[1]
     } else if (warehouseIdMatch) {
       warehouseId = warehouseIdMatch[1]
-    } else {
-      var strs = resultstr.split("\n")
-      // for循环从strs中找到构件号
-      for (var i = 0; i < strs.length; i++) {
-        var idx = strs[i].indexOf(":")
-        var fieldname = strs[i].substring(0, idx)
-        if (fieldname.indexOf("物料编码") >= 0) {
-          materialcode = strs[i].substring(idx + 1)
-        }
-      }
     }
     if (materialcode) {
       // 这是一个构件标签
-      if (this.data.warehouse_id == '') {
-        wx.showToast({
-          title: '请先扫描库房二维码!',
-          icon: 'none',
-          duration: 500
-        })
-        return
-      }
+     
       if (this.data.materialcodes.find(val => val == materialcode)) {
         wx.showToast({
           title: '扫描结果已存在!',
@@ -62,7 +45,7 @@ Page({
         })
         return
       }
-      this.data.materialcodes.push(materialcode)
+     
       console.log("扫描到构件'" + materialcode + "'")
       // 获取构件目前生产状态
       var that = this
@@ -102,8 +85,9 @@ Page({
               })
               return
             }
+            that.data.materialcodes.unshift(materialcode)
             let arr = that.data.products
-            arr.push(pop_pageDate[0])
+            arr.unshift(pop_pageDate[0])
             that.setData({
               products: arr
             })
@@ -122,46 +106,16 @@ Page({
       })
     }
 
-    if (warehouseId) {
-      // 这是货位标签
-      console.log("扫描到货位'" + warehouseId + "'")
-      if (this.data.warehouse_id == "") {
-        this.setData({
-          warehouse_id: warehouseId
-        })
-        wx.request({
-          url: 'https://mes.ljzggroup.com/DuiMaTest/GetFactory',
-          data: {
-            id: warehouseId,
-            type: '3',
-          },
-          method: 'POST',
-          header: {
-            "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
-          },
-          success(res) {
-            this.setData({
-              warehouse_name: res.data.data[0].name
-            })
-          }
-        })
-      } else {
-        wx.showToast({
-          title: '您已扫描过库房号',
-          icon: 'none',
-          duration: 1000
-        })
-        return
-      }
-
-    }
   },
   deleteItem(event) {
     var list = this.data.products
+    let materialcodes = this.data.materialcodes
     // 删除制定的构件
     list.splice(event.currentTarget.dataset.id, 1)
+    materialcodes.splice(event.currentTarget.dataset.id, 1)
     this.setData({
-      products: list
+      products: list,
+      materialcodes: materialcodes
     })
   },
   deleteAll(event) {
@@ -182,7 +136,7 @@ Page({
   submitAll(event) {
     var that = this
     // 提交并清空
-    if (this.data.warehouse_id != null && this.data.products.length != 0) {
+    if (this.data.products.length != 0) {
       let arr = []
       for (let val of this.data.products) {
         arr.push(val.materialcode)
@@ -218,7 +172,7 @@ Page({
       })
     } else {
       wx.showToast({
-        title: '你还未扫描库房或者未扫描构件',
+        title: '未扫描构件',
         icon: 'none',
         duration: 1000
       })

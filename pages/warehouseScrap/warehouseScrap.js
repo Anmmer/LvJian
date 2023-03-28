@@ -88,7 +88,7 @@ Page({
   },
   jiaodao1() {
     wx.navigateTo({
-      url: "../patchCheck/patchCheck",
+      url: "../outWarehouseScrap/outWarehouseScrap",
     })
   },
   jiaodao2() {

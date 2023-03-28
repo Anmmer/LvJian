@@ -81,7 +81,7 @@ Page({
           if (res.data.data.length != 0) {
             // 生产状态
             let pop_pageDate = res.data.data
-            
+
 
             let arr = that.data.products
             that.data.materialcodes.unshift(materialcode)
@@ -225,7 +225,8 @@ Page({
           type: "1",
           in_warehouse_id: that.data.warehouse_id,
           userName: wx.getStorageSync('userName'),
-          method: that.data.in_warehouse_method
+          method: that.data.in_warehouse_method,
+          isInitInWarehouse: true
         },
         method: 'POST',
         header: {

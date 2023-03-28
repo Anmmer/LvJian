@@ -22,9 +22,9 @@
         </view>
       </scroll-view>
       <view style="display: flex; position: absolute; bottom: 40rpx; width: 94%;">
-        <!-- <view class="functionItem4" bindtap="jiaodao1">
-          <text class="main">出库</text>
-        </view> -->
+        <view class="functionItem4" bindtap="jiaodao1">
+          <text class="main">报废</text>
+        </view>
         <view class="functionItem4" bindtap="jiaodao2">
           <text class="main">入库</text>
         </view>
