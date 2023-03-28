@@ -4,7 +4,7 @@ import Toast from '@vant/weapp/toast/toast';
 Page({
   data: {
     result: '',
-    warehouse_id: "",
+
     warehouse_name: "",
     materialcodes: [],
     products: [],
@@ -18,6 +18,12 @@ Page({
   scanCode(e) {
     this.setData({
       result: e.detail.result
+    })
+    if (!this.data.ready) {
+      return
+    }
+    this.setData({
+      ready: false
     })
     var that = this
     // 对扫码结果进行分析
@@ -52,9 +58,12 @@ Page({
           icon: 'none',
           duration: 500
         })
+        this.setData({
+          ready: true
+        })
         return
       }
-      this.data.materialcodes.push(materialcode)
+      this.data.materialcodes.unshift(materialcode)
       console.log("扫描到构件'" + materialcode + "'")
       // 获取构件目前生产状态
       var that = this
@@ -68,6 +77,9 @@ Page({
           "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
         },
         success(res) {
+          that.setData({
+            ready: false
+          })
           if (res.data.data.length != 0) {
             // 生产状态
             let pop_pageDate = res.data.data
@@ -92,9 +104,9 @@ Page({
               return
             }
             let arr = that.data.products
-            arr.push(pop_pageDate[0])
+            arr.unshift(pop_pageDate[0])
             that.setData({
-              products: arr
+              products: arr,
             })
           } else {
             // 该构件已入库，提醒
@@ -106,6 +118,9 @@ Page({
           }
         },
         error(msg) {
+          that.setData({
+            ready: false
+          })
           console.log(msg)
         }
       })
@@ -146,11 +161,14 @@ Page({
     // }
   },
   deleteItem(event) {
-    var list = this.data.products
+    let list = this.data.products
+    let materialcodes = this.data.materialcodes
     // 删除制定的构件
     list.splice(event.currentTarget.dataset.id, 1)
+    materialcodes.splice(event.currentTarget.dataset.id, 1)
     this.setData({
-      products: list
+      products: list,
+      materialcodes: materialcodes
     })
   },
   deleteAll(event) {
@@ -199,7 +217,7 @@ Page({
             that.setData({
               success_show: true,
               products: [],
-              warehouse_id: "",
+
               warehouse_name: ""
             })
           } else {
@@ -211,7 +229,7 @@ Page({
       })
     } else {
       wx.showToast({
-        title: '你还未扫描库房或者未扫描构件',
+        title: '你还未扫描构件',
         icon: 'none',
         duration: 1000
       })
