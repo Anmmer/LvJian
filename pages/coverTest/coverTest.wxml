@@ -13,6 +13,7 @@
           <van-field label="线别" name="line" placeholder="请输入线别" />
           <van-field label="物料编码" name="materialcode" placeholder="请输入物料编码" />
           <van-field label="物料名称" name="materialname" placeholder="请输入物料名称" />
+          <van-field label="图号" name="drawing_no" placeholder="请输入图号" />
         </van-cell-group>
         <button form-type="submit" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">查询</button>
       </form>
@@ -21,10 +22,17 @@
       <text class="daipan">明细：</text>
       <!-- <view class="detail"> -->
       <scroll-view scroll-y="true" style="height: 50%;" bindscrolltolower="testDataPages">
-        <view wx:for="{{test_list}}" wx:key="test_list">
-          <view>物料编码：{{item.materialcode}} </view>
-          <view>物料名称：{{item.materialname}} </view>
-          <view>构 件 号：{{item.preproductid}}</view>
+        <view wx:for="{{test_list}}" wx:for-item="item" wx:key="test_list">
+          <view style="display: flex;justify-content: space-between;">
+            <view>
+              <view>物料编码：{{item.materialcode}} </view>
+              <view>物料名称：{{item.materialname}} </view>
+              <view>构 件 号：{{item.preproductid}}</view>
+            </view>
+            <view>
+              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item.pid}}" bindtap="submitInfo">检验</button>
+            </view>
+          </view>
           <text>\n</text>
         </view>
       </scroll-view>
@@ -32,6 +40,33 @@
       <view class="functionItem4" bindtap="test">
         <text class="main">检验</text>
       </view>
+      <van-popup custom-style="border-radius: 20rpx" show="{{ success_show }}" bind:close="successOnClose">
+        <view style="margin:20rpx;display: flex;flex-direction: column;align-items: center;border-radius: 10rpx;">
+          <van-icon name="passed" size="10rem" color="#07c160" />
+          <view>操作成功</view>
+        </view>
+      </van-popup>
+      <van-popup custom-style="border-radius: 20rpx" show="{{ fail_show }}" bind:close="failOnClose">
+        <view style="margin:20rpx;display: flex;flex-direction: column;align-items: center;border-radius: 10rpx;">
+          <van-icon name="close" size="10rem" color="#f10c0c" />
+          <view>操作失败</view>
+        </view>
+      </van-popup>
+      <van-toast id="van-toast" />
+      <van-dialog id="van-dialog" />
+      <van-popup show="{{ show }}" position="bottom" close-on-click-overlay="false">
+        <view style="display: flex; height: 44px;justify-content: space-between;line-height: 10px">
+          <view style="color: #969799;font-size:14px;padding:16px;" bindtap="onClose">取消</view>
+          <view style="color: #576b95;font-size:14px;padding:16px" bindtap="onSave">确认</view>
+        </view>
+        <view>
+          <van-cell-group>
+            <van-field value="{{covert_test_remark}}" label="备注" placeholder="备注" bind:change="onChange1" />
+            <van-field label="选择原因" disabled border="{{ false }}" />
+          </van-cell-group>
+        </view>
+        <van-tree-select items="{{ items }}" main-active-index="{{ mainActiveIndex }}" active-id="{{ activeId }}" bind:click-nav="onClickNav" bind:click-item="onClickItem" />
+      </van-popup>
     </view>
   </view>
 </view>

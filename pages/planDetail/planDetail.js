@@ -16,7 +16,8 @@ Page({
       planname: options.planname,
       materialcode: options.materialcode,
       start_date: options.start_date,
-      end_date: options.end_date
+      end_date: options.end_date,
+      drawing_no: options.drawing_no
     })
     this.lookPlan();
   },
@@ -37,7 +38,7 @@ Page({
     })
     var that = this
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProduct',
       data: {
         plannumber: id,
         // pageCur: that.data.pages,
@@ -62,7 +63,7 @@ Page({
     var that = this
     that.data.pages += 1
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPlan',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetPlan',
       data: {
         // productState: 0,
         pageCur: that.data.pages,
@@ -71,6 +72,7 @@ Page({
         startDate: that.data.start_date,
         endDate: that.data.end_date,
         planname: that.data.planname,
+        drawing_no: that.data.drawing_no,
       },
       method: 'POST',
       header: {
@@ -111,7 +113,7 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

@@ -85,7 +85,7 @@ Page({
     })
     let pro = new Promise((resolve, reject) => {
       wx.request({
-        url: "https://mes.ljzggroup.com/DuiMaTest/QuerySQL",
+        url: "https://mes.ljzggroup.com/DuiMaNew/QuerySQL",
         method: 'post',
         header: {
           "content-type": 'application/x-www-form-urlencoded'
@@ -130,7 +130,7 @@ Page({
     let that = this
     let pro = new Promise((resolve, reject) => {
       wx.request({
-        url: "https://mes.ljzggroup.com/DuiMaTest/QuerySQL",
+        url: "https://mes.ljzggroup.com/DuiMaNew/QuerySQL",
         method: 'post',
         header: {
           "content-type": 'application/x-www-form-urlencoded'
@@ -168,7 +168,7 @@ Page({
     if (this.data.pop_pageDate[0].materialcode === this.data.materialcode)
       return
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProduct',
       data: {
         materialcode: this.data.materialcode
       },
@@ -264,7 +264,7 @@ Page({
   getData_1() {
     let that = this
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProduct',
       data: {
         materialcode: this.data.materialcode
       },
@@ -340,7 +340,7 @@ Page({
     }
     let that = this
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/QuerySQL',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/QuerySQL',
       data: {
         sqlStr: "select print_obj from print_obj where `index` = (select qc_id from default_qc where id = 3);",
         fieldNames: JSON.stringify(fieldNames),
@@ -376,7 +376,7 @@ Page({
       unit_consumption: "STRING",
     }
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/QuerySQL',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/QuerySQL',
       data: {
         sqlStr: "select b.build_type,b.standard,b.fangliang,b.building_no,b.floor_no,c.plantime time ,DATE_ADD(c.plantime,INTERVAL 5 DAY) plantime,b.concretegrade,d.unit_consumption from preproduct b,plan c,planname d where  b.plannumber = c.plannumber and c.planname = d.planname  and b.materialcode = " + that.data.materialcode + ";",
         fieldNames: JSON.stringify(fieldNames),
@@ -423,12 +423,10 @@ Page({
     let that = this
     wx.getSystemInfo({
       success: function (res) {
-        console.log(res.model)
-        if (res.model == 'iPhone X') {
-          startBarHeight = 44
-        }
+        console.log(res)
+     
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

@@ -1,6 +1,8 @@
 // pages/produce/produce.js
-Page({
+import Toast from '@vant/weapp/toast/toast';
+import Dialog from '@vant/weapp/dialog/dialog';
 
+Page({
   /**
    * 页面的初始数据
    */
@@ -8,6 +10,14 @@ Page({
     testMadeNumber: 0,
     checkNumber: 0,
     test_list: [],
+    items: [],
+    mainActiveIndex: 0,
+    activeId: [],
+    show: false,
+    patch_library: '',
+    success_show: false,
+    fail_show: false,
+    color_style: "#fff", //07c160
     pageAll: 0,
     pageCur: 1,
     pageMax: 10
@@ -16,6 +26,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getFailContent()
     this.setNavigation();
     // this.testData();
   },
@@ -34,17 +45,19 @@ Page({
         line: e.detail.value.line,
         materialname: e.detail.value.materialname,
         materialcode: e.detail.value.materialcode,
+        drawing_no: e.detail.value.drawing_no,
         pageCur: 1
       })
     }
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProduct',
       data: {
         isPrint: "true",
         testState: "0",
         line: this.data.line,
         materialname: this.data.materialname,
         materialcode: this.data.materialcode,
+        drawing_no: this.data.drawing_no,
         pageCur: this.data.pageCur,
         pageMax: this.data.pageMax
       },
@@ -53,7 +66,7 @@ Page({
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
-        console.log(e)
+
         if (!e) {
           that.setData({
             test_list: that.data.test_list.concat(res.data.data),
@@ -73,6 +86,182 @@ Page({
   fanhui: function () {
     wx.navigateBack()
   },
+  onSave() {
+    let that = this
+    if (this.data.activeId.length == 0) {
+      wx.showToast({
+        title: '请选择不合格原因!',
+        icon: 'none',
+        duration: 500
+      })
+      return
+    }
+    let arr = [];
+    let str = '';
+    arr.push(this.data.id)
+    for (let id of this.data.activeId) {
+      for (let o of this.data.items) {
+        for (let o_child of o.children) {
+          if (o_child.id == id) {
+            str += o_child.text + "，"
+            break
+          }
+        }
+      }
+    }
+    wx.request({
+      url: 'https://mes.ljzggroup.com/DuiMaNew/ConcealedProcess',
+      data: {
+        index: '0',
+        covert_test_failure_reason: str,
+        covert_test_remark: this.data.covert_test_remark,
+        covert_test_user: wx.getStorageSync('userName'),
+        pids: JSON.stringify(arr)
+      },
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      success(res) {
+        // 成功后
+        if (res.data.flag) {
+          that.testData()
+          that.setData({
+            success_show: true,
+            color_style: '#fff',
+            show: false,
+            covert_test_remark: '',
+            activeId: []
+          })
+        } else {
+          that.setData({
+            fail_show: true,
+            show: false
+          })
+        }
+      }
+    })
+  },
+  successOnClose() {
+    this.setData({
+      success_show: false
+    })
+  },
+  failOnClose() {
+    this.setData({
+      fail_show: false
+    })
+  },
+  submitInfo(e) {
+    var that = this
+
+    if (!e.target.dataset.id)
+      return
+    Dialog.confirm({
+      title: '检验确认！',
+      confirmButtonText: '合格',
+      cancelButtonText: '不合格'
+    }).then(() => {
+      // on confirm
+      let arr = [];
+      arr.push(e.target.dataset.id)
+      wx.request({
+        url: 'https://mes.ljzggroup.com/DuiMaNew/ConcealedProcess',
+        data: {
+          index: '1',
+          covert_test: '1',
+          covert_test_user: wx.getStorageSync('userName'),
+          pids: JSON.stringify(arr),
+        },
+        method: 'POST',
+        header: {
+          "content-type": 'application/x-www-form-urlencoded'
+        },
+        success(res) {
+          // 成功后
+          if (res.data.flag) {
+            that.testData()
+            that.setData({
+              success_show: true,
+              color_style: '#fff',
+              state: '',
+              pid: "",
+              plannumber: "",
+              materialcode: '',
+              materialname: ''
+            })
+          } else {
+            that.setData({
+              fail_show: true
+            })
+
+          }
+        }
+      })
+    }).catch(() => {
+      // on cancel
+      this.setData({
+        show: true,
+        id: e.target.dataset.id
+      })
+    });
+
+  },
+  getFailContent() {
+    let that = this;
+    wx.request({
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetFailContent',
+      data: null,
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        that.setData({
+          items: res.data.data
+        })
+      }
+    })
+  },
+  onClickNav({
+    detail = {}
+  }) {
+    this.setData({
+      mainActiveIndex: detail.index || 0
+    });
+  },
+
+  onClickItem({
+    detail = {}
+  }) {
+    const {
+      activeId
+    } = this.data;
+
+    const index = activeId.indexOf(detail.id);
+    if (index > -1) {
+      activeId.splice(index, 1);
+    } else {
+      activeId.push(detail.id);
+    }
+
+    this.setData({
+      activeId
+    });
+  },
+  onClose() {
+    this.setData({
+      show: false,
+      activeId: [],
+      patch_library: ''
+    })
+  },
+  onChange1(event) {
+    // event.detail 为当前输入的值
+    this.setData({
+      covert_test_remark: event.detail
+    })
+  },
   setNavigation() {
     let startBarHeight = 20
     let navgationHeight = 44
@@ -83,7 +272,7 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

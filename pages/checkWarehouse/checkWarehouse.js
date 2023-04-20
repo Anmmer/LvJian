@@ -67,7 +67,7 @@ Page({
             })
             if (this.data.products.length == 0) {
               wx.request({
-                url: 'https://mes.ljzggroup.com/DuiMaTest/InOutWarehouse',
+                url: 'https://mes.ljzggroup.com/DuiMaNew/InOutWarehouse',
                 data: {
                   ids: JSON.stringify(this.data.productstmp.map((item) => {
                     return item.materialcode
@@ -107,7 +107,7 @@ Page({
         warehouse_id: warehouseId,
       })
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProductWarehouse',
+        url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProductWarehouse',
         data: {
           warehouseId: warehouseId,
         },
@@ -188,7 +188,7 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

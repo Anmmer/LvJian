@@ -50,7 +50,7 @@ Page({
       // 获取构件目前生产状态
       var that = this
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+        url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProduct',
         data: {
           materialcode: materialcode,
         },
@@ -178,7 +178,7 @@ Page({
       }
     }
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/InspectNo',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/InspectNo',
       data: {
         pids: JSON.stringify(arr),
         patch_library: this.data.patch_library,
@@ -192,9 +192,6 @@ Page({
       },
       success(res) {
         // 成功后
-        if (res.data.message) {
-          Toast.success(res.data.message);
-        }
         if (res.data.flag) {
           that.setData({
             success_show: true,
@@ -209,7 +206,8 @@ Page({
           })
         } else {
           that.setData({
-            fail_show: true
+            fail_show: true,
+            show: false,
           })
         }
       }
@@ -266,7 +264,7 @@ Page({
         let arr = [];
         arr.push(this.data.materialcode)
         wx.request({
-          url: 'https://mes.ljzggroup.com/DuiMaTest/Inspect',
+          url: 'https://mes.ljzggroup.com/DuiMaNew/Inspect',
           data: {
             pids: JSON.stringify(arr),
             inspect_user: wx.getStorageSync('userName'),
@@ -312,7 +310,7 @@ Page({
   getFailContent() {
     let that = this;
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetFailContent',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetFailContent',
       data: null,
       method: 'POST',
       header: {
@@ -346,7 +344,7 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

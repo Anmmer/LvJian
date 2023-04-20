@@ -39,7 +39,7 @@ Page({
                     startBarHeight = 44
                 }
                 that.setData({
-                    startBarHeight: startBarHeight,
+                    startBarHeight: res.statusBarHeight,
                     navgationHeight: navgationHeight
                 })
             }

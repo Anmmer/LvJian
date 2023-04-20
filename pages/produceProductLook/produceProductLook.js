@@ -34,7 +34,7 @@ Page({
             pages:newPage
         })
         wx.request({
-            url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProductWx',
+            url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProductWx',
             data: {
                 plannumber: that.data.planid,
                 pageCur: that.data.pages,

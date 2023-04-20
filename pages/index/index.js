@@ -105,7 +105,7 @@ Page({
     let on_or_off
     let pro = new Promise((resolve, reject) => {
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaTest/GetDefaultSet',
+        url: 'https://mes.ljzggroup.com/DuiMaNew/GetDefaultSet',
         data: null,
         method: 'POST',
         header: {
@@ -167,7 +167,7 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

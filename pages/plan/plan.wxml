@@ -12,6 +12,7 @@
         <van-cell-group>
           <van-field label="计划名称" name="planname" placeholder="请输入计划名称" />
           <van-field label="物料编码" name="materialcode" placeholder="请输入物料编码" />
+          <van-field label="图号" name="drawing_no" placeholder="请输入图号" />
           <van-field label="开始日期" name="start_date" placeholder="点击选择日期" readonly="true" bindtap="showPopup1"
             value="{{start_date}}" />
           <van-field label="结束日期" name="end_date" placeholder="点击选择日期" readonly="true" bindtap="showPopup2"

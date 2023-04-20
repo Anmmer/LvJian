@@ -49,7 +49,7 @@ Page({
         that.setData({
           userName: wx.getStorageSync('userName'),
           gp_name: wx.getStorageSync('gp_name'),
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

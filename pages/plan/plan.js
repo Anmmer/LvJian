@@ -90,9 +90,9 @@ Page({
   },
   onChange(event) {
     this.setData({
-        checked: event.detail
+      checked: event.detail
     });
-},
+  },
   // 时间 - 确定按钮
   confirmFn2(e) {
     var newTime = new Date(e.detail);
@@ -135,7 +135,8 @@ Page({
       url: '../planDetail/planDetail?planname=' + e.detail.value.planname +
         '&materialcode=' + e.detail.value.materialcode +
         '&start_date=' + e.detail.value.start_date +
-        '&end_date=' + e.detail.value.end_date
+        '&end_date=' + e.detail.value.end_date +
+        '&drawing_no=' + e.detail.value.drawing_no
     })
   },
 
@@ -193,7 +194,7 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

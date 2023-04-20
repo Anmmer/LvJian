@@ -66,7 +66,7 @@ Page({
       // 获取构件目前生产状态
       var that = this
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaTest/GetInitPreproduct',
+        url: 'https://mes.ljzggroup.com/DuiMaNew/GetInitPreproduct',
         data: {
           materialcode: materialcode,
         },
@@ -111,7 +111,7 @@ Page({
         })
 
         wx.request({
-          url: 'https://mes.ljzggroup.com/DuiMaTest/GetFactory',
+          url: 'https://mes.ljzggroup.com/DuiMaNew/GetFactory',
           data: {
             id: warehouseId,
             pageCur: '1',
@@ -182,7 +182,7 @@ Page({
   getInWarehouseMethod() {
     let that = this
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetInOutWarehouseMethod',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetInOutWarehouseMethod',
       data: {
         type: '1'
       },
@@ -219,7 +219,7 @@ Page({
       }
       // 可以上传
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaTest/InOutWarehouse',
+        url: 'https://mes.ljzggroup.com/DuiMaNew/InOutWarehouse',
         data: {
           ids: JSON.stringify(arr),
           type: "1",
@@ -308,7 +308,7 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

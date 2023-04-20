@@ -37,7 +37,7 @@ Page({
       data.isTest = 'true'
     }
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProduct',
       data: data,
       method: 'POST',
       header: {
@@ -67,7 +67,7 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

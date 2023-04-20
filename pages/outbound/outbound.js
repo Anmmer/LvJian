@@ -56,7 +56,7 @@ Page({
     console.log("扫描到构件'" + materialcode + "'")
     // 获取构件目前生产状态
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProductWarehouse',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProductWarehouse',
       data: {
         materialcode: materialcode,
       },
@@ -159,7 +159,7 @@ Page({
       }
       // 可以上传
       wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaTest/InOutWarehouse',
+        url: 'https://mes.ljzggroup.com/DuiMaNew/InOutWarehouse',
         data: {
           ids: JSON.stringify(arr),
           type: "2", // 2出库
@@ -200,7 +200,7 @@ Page({
   getOutWarehouseMethod() {
     let that = this
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetInOutWarehouseMethod',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetInOutWarehouseMethod',
       data: {
         type: "2",
       },
@@ -265,7 +265,7 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }

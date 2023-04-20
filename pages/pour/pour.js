@@ -8,6 +8,8 @@ Page({
     pourMadeNumber: 0,
     checkNumber: 0,
     pour_list: [],
+    success_show: false,
+    fail_show: false,
     pageAll: 0,
     pageCur: 1,
     pageMax: 10
@@ -29,7 +31,7 @@ Page({
   },
   pourData(e) {
     var that = this
-    if (e !== undefined) {
+    if (e) {
       this.setData({
         line: e.detail.value.line,
         pageCur: 1,
@@ -50,7 +52,7 @@ Page({
       data.isTest = 'true'
     }
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaTest/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProduct',
       data: data,
       method: 'POST',
       header: {
@@ -77,6 +79,53 @@ Page({
   fanhui: function () {
     wx.navigateBack()
   },
+  successOnClose() {
+    this.setData({
+      success_show: false
+    })
+  },
+  failOnClose() {
+    this.setData({
+      fail_show: false
+    })
+  },
+  submitInfo(e) {
+    var that = this
+    if (e.target.dataset.id != '') {
+      let arr = [];
+      arr.push(e.target.dataset.id)
+      wx.request({
+        url: 'https://mes.ljzggroup.com/DuiMaNew/Pour',
+        data: {
+          pids: JSON.stringify(arr),
+          pourmade_user: wx.getStorageSync('userName')
+        },
+        method: 'POST',
+        header: {
+          "content-type": 'application/x-www-form-urlencoded'
+        },
+        success(res) {
+          // 成功后
+          if (res.data.flag) {
+            that.pourData()
+            that.setData({
+              success_show: true,
+              color_style: '#fff',
+              state: '',
+              pid: "",
+              plannumber: "",
+              materialcode: '',
+            })
+          } else {
+            that.setData({
+              fail_show: true
+            })
+          }
+
+        }
+      })
+    }
+  },
   setNavigation() {
     let startBarHeight = 20
     let navgationHeight = 44
@@ -88,7 +137,7 @@ Page({
           startBarHeight = 44
         }
         that.setData({
-          startBarHeight: startBarHeight,
+          startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight
         })
       }
