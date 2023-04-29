@@ -13,6 +13,10 @@ Page({
     inspect_list: [],
     mainActiveIndex: 0,
     inspect_remark: '',
+    materialname: '',
+    materialcode: '',
+    line: '',
+    drawing_no: '',
     activeId: [],
     show: false,
     success_show: false,
@@ -41,12 +45,15 @@ Page({
   },
   inspectData(e) {
     var that = this
-    if (e !== undefined) {
+    console.log(e)
+    if (e) {
       this.setData({
         line: e.detail.value.line,
         pageCur: 1,
+        inspect_list: [],
         materialname: e.detail.value.materialname,
-        materialcode: e.detail.value.materialcode
+        materialcode: e.detail.value.materialcode,
+        drawing_no: e.detail.value.drawing_no
       })
     }
     let data = {
@@ -57,6 +64,7 @@ Page({
       line: this.data.line,
       materialname: this.data.materialname,
       materialcode: this.data.materialcode,
+      drawing_no: this.data.drawing_no,
       pageCur: this.data.pageCur,
       pageMax: this.data.pageMax
     }
@@ -64,14 +72,14 @@ Page({
       data.isTest = 'true'
     }
     wx.request({
-      url: 'http://localhost:8989/DuiMa/GetPreProduct',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProduct',
       data: data,
       method: 'POST',
       header: {
         "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
-        if (e) {
+        if (!e) {
           that.setData({
             checkNumber: res.data.cnt,
             pageAll: res.data.pageAll,
@@ -187,7 +195,7 @@ Page({
       }
     }
     wx.request({
-      url: 'http://localhost:8989/DuiMa/InspectNo',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/InspectNo',
       data: {
         pids: JSON.stringify(arr),
         patch_library: this.data.patch_library,
@@ -202,14 +210,16 @@ Page({
       success(res) {
         // 成功后
         if (res.data.flag) {
-          that.inspectData()
           that.setData({
             success_show: true,
             color_style: '#fff',
             show: false,
             activeId: [],
-            patch_library: ''
+            patch_library: '',
+            inspect_list: [],
+            pageCur: 1
           })
+          that.inspectData()
         } else {
           that.setData({
             fail_show: true,
@@ -254,7 +264,7 @@ Page({
       let arr = [];
       arr.push(e.target.dataset.id)
       wx.request({
-        url: 'http://localhost:8989/DuiMa/Inspect',
+        url: 'https://mes.ljzggroup.com/DuiMaNew/Inspect',
         data: {
           pids: JSON.stringify(arr),
           inspect_user: wx.getStorageSync('userName'),
@@ -266,12 +276,15 @@ Page({
         success(res) {
           // 成功后
           if (res.data.flag) {
-            that.inspectData()
+
             that.setData({
               success_show: true,
               color_style: '#fff',
-              show: false
+              show: false,
+              inspect_list: [],
+              pageCur: 1
             })
+            that.inspectData()
           } else {
             that.setData({
               fail_show: true,
@@ -292,7 +305,7 @@ Page({
   getFailContent() {
     let that = this;
     wx.request({
-      url: 'http://localhost:8989/DuiMa/GetFailContent',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetFailContent',
       data: null,
       method: 'POST',
       header: {

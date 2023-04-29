@@ -58,7 +58,10 @@
     "pages/inWarehouseScrap/inWarehouseScrap",
     "pages/outWarehouseScrap/outWarehouseScrap",
     "pages/moveWarehouse/moveWarehouse",
-    "pages/initWarehouse/initWarehouse"
+    "pages/initWarehouse/initWarehouse",
+    "pages/inboundQuery/inboundQuery",
+    "pages/outboundQuery/outboundQuery",
+    "pages/moveWarehouseQuery/moveWarehouseQuery"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -69,8 +72,7 @@
   },
   "tabBar": {
     "custom": true,
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/index/index",
         "text": "主页"
       },

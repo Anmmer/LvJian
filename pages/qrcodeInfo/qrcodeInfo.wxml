@@ -19,11 +19,14 @@
       <!--构件生产情况-->
       <van-panel title="构件生产情况">
         <view style="height:auto;overflow-y:auto; width: 90%;margin: 0 auto; " wx:for="{{dataArray}}" wx:key="dataArray">
-          <view>物料编码：{{item.materialcode}} </view>
-          <view>物料名称：{{item.materialname}} </view>
-          <view>生产状态：{{item.state}}</view>
-          <view style="{{item.style1}}">隐蔽检验不合格原因：{{item.covert_test_failure_reason}}</view>
-          <view style="{{item.style2}}">质检不合格原因：{{item.failure_reason}}</view>
+          <view>浇捣状态：{{item.pourmade}}</view>
+          <view>浇捣日期：{{item.pourtime||''}}</view>
+          <view>浇捣人：{{item.pourmade_user||''}}</view>
+          <view>质检状态：{{item.inspect}}</view>
+          <view>质检日期：{{item.checktime||''}}</view>
+          <view>质检人：{{item.inspect_user||''}}</view>
+          <!-- <view style="{{item.style1}}">隐蔽检验不合格原因：{{item.covert_test_failure_reason}}</view>
+          <view style="{{item.style2}}">质检不合格原因：{{item.failure_reason}}</view> -->
         </view>
       </van-panel>
       <!--构件仓储信息-->
@@ -32,6 +35,18 @@
         </text>
         <text>{{storageInfo}}</text>
       </view> -->
+      <!-- <van-panel title="仓库信息">
+        <view style="height:auto;overflow-y:auto; width: 90%;margin: 0 auto; ">
+          <view>入库状态：{{item.stock_status||''}}</view>
+          <view>入库日期：{{item.create_time||''}}</view>
+          <view>操作人：{{item.user_name||''}}</view>
+          <view>预出库审批：{{item.inspect}}</view>
+          <view>出库状态：{{item.checktime||''}}</view>
+          <view>出库日期：{{item.inspect_user||''}}</view>
+          <view>操作人：{{item.inspect_user||''}}</view>
+         
+        </view>
+      </van-panel> -->
     </view>
   </view>
 </view>

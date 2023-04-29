@@ -4,6 +4,7 @@ Page({
   data: {
     result: '',
     dataArray: null,
+    warehouseInfo: {},
     id: null,
     storageInfo: null,
     materialcode: '',
@@ -65,6 +66,7 @@ Page({
         materialcode: materialcode
       })
       this.getData_1()
+      this.getWarehouseInfo()
     } else {
       wx.showToast({
         title: '识别二维码失败!',
@@ -120,6 +122,31 @@ Page({
       this.getFieldMap();
     })
 
+  },
+  getWarehouseInfo() {
+    let that = this
+    wx.request({
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetWarehouseInfo',
+      data: {
+        materialcode: this.data.materialcode
+      },
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        if (res.data.warehouseInfo) {
+          let warehouseInfo = res.data.warehouseInfo
+          that.setData({
+            dataArray1: warehouseInfo
+          })
+        } else {
+          that.setData({
+            dataArray1: []
+          })
+        }
+      }
+    })
   },
   // 获取字段映射
   getFieldMap() {
@@ -181,44 +208,50 @@ Page({
         if (res.data.data.length != 0) {
           // 生产状态
           let pop_pageDate = res.data.data
-          if (wx.getStorageSync('on_or_off') == '1') {
-            pop_pageDate[0].style1 = 'display:none'
-            pop_pageDate[0].style2 = 'display:none'
-            if (pop_pageDate[0]['covert_test'] == 0) {
-              pop_pageDate[0].state = '已打印'
-            }
-            if (pop_pageDate[0]['covert_test'] == 1) {
-              pop_pageDate[0].state = '隐蔽性检验通过'
-            }
-            if (pop_pageDate[0]['covert_test'] == 2) {
-              pop_pageDate[0].style1 = 'display:block'
-              pop_pageDate[0].state = '隐蔽性未通过'
-            }
-            if (pop_pageDate[0]['pourmade'] == 1) {
-              pop_pageDate[0].state = '已浇捣'
-            }
-            if (pop_pageDate[0]['inspect'] == 1) {
-              pop_pageDate[0].state = '质检合格'
-            }
-            if (pop_pageDate[0]['inspect'] == 2) {
-              pop_pageDate[0].style2 = 'display:block'
-              pop_pageDate[0].state = '质检不合格'
-            }
-          } else {
-            if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '待浇捣'
-            }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '浇捣完成'
-              that.data.disabled = 'disabled'
-            }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '待质检'
-            }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
-              pop_pageDate[0].state = '质检完成'
-            }
+          // if (wx.getStorageSync('on_or_off') == '1') {
+          pop_pageDate[0].style1 = 'display:none'
+          pop_pageDate[0].style2 = 'display:none'
+          if (pop_pageDate[0]['covert_test'] == 0) {
+            pop_pageDate[0].state = '已打印'
           }
+          if (pop_pageDate[0]['covert_test'] == 1) {
+            pop_pageDate[0].state = '隐蔽性检验通过'
+          }
+          if (pop_pageDate[0]['covert_test'] == 2) {
+            pop_pageDate[0].style1 = 'display:block'
+            pop_pageDate[0].state = '隐蔽性未通过'
+          }
+          if (pop_pageDate[0]['pourmade'] == 1) {
+            pop_pageDate[0].pourmade = '已浇捣'
+          }
+          if (pop_pageDate[0]['pourmade'] == 0) {
+            pop_pageDate[0].pourmade = '未浇捣'
+          }
+          if (pop_pageDate[0]['inspect'] == 0) {
+            pop_pageDate[0].inspect = '待质检'
+          }
+          if (pop_pageDate[0]['inspect'] == 1) {
+            pop_pageDate[0].inspect = '质检合格'
+          }
+          if (pop_pageDate[0]['inspect'] == 2) {
+            // pop_pageDate[0].style2 = 'display:block'
+            pop_pageDate[0].inspect = '质检不合格'
+          }
+          // } else {
+          //   if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
+          //     pop_pageDate[0].state = '待浇捣'
+          //   }
+          //   if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
+          //     pop_pageDate[0].state = '浇捣完成'
+          //     that.data.disabled = 'disabled'
+          //   }
+          //   if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
+          //     pop_pageDate[0].state = '待质检'
+          //   }
+          //   if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
+          //     pop_pageDate[0].state = '质检完成'
+          //   }
+          // }
 
           that.setData({
             obj: pop_pageDate
@@ -424,7 +457,7 @@ Page({
     wx.getSystemInfo({
       success: function (res) {
         console.log(res)
-     
+
         that.setData({
           startBarHeight: res.statusBarHeight,
           navgationHeight: navgationHeight

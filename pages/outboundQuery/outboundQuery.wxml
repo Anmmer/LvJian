@@ -1,45 +1,53 @@
-<view style="height: 100%;">
+<view>
   <view class='navigation'>
     <view class='startBar' style='height:{{startBarHeight}}px'></view>
     <view class='navgation' style='height:{{navgationHeight}}px'>
       <view class="wenzi" bindtap="fanhui">返回</view>
     </view>
   </view>
-  <view style="margin-top:{{startBarHeight+navgationHeight+10}}px;height: 83%;">
+  <view style="margin-top:{{startBarHeight+navgationHeight+10}}px;">
     <view class="mid" style="height: 100%;">
-      <view class="tiaomu1"> <text class="mark">|</text> 浇捣信息查询</view>
+      <view class="tiaomu1"> <text class="mark">|</text> 库存信息查询</view>
       <form bindsubmit="pourData">
         <van-cell-group>
-          <van-field label="线别" name="line" placeholder="请输入线别" />
+          <!-- <van-field label="线别" name="line" placeholder="请输入线别" /> -->
           <van-field label="物料编码" name="materialcode" placeholder="请输入物料编码" />
           <van-field label="物料名称" name="materialname" placeholder="请输入物料名称" />
-          <van-field label="图号" name="drawing_no" placeholder="请输入图号" />
+          <van-field label="图号" name="drawing_no" placeholder="请输入物料名称" />
+          <van-field label="项目名称" name="planname" placeholder="请输入物料名称" />
         </van-cell-group>
-        <button form-type="submit" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">查询</button>
+        <vie style="display: flex;">
+          <button form-type="submit" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">查询</button>
+          <button bindtap="jiaodao" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">扫码出库</button>
+        </vie>
+
+        <van-field label="出库方式" value="{{out_warehouse_method}}" bindtap="show" placeholder="点击选择出库方式" />
       </form>
       <view class="tiaomu1"> <text class="mark">|</text> 查询结果</view>
       <text class="daipan">数量：{{pourMadeNumber}}\n</text>
       <text class="daipan">明细：</text>
       <!-- <view class="detail"> -->
-      <scroll-view scroll-y="true" style="height: 50%;" bindscrolltolower="pourDataPages">
+      <scroll-view scroll-y="true" style="height: 640rpx;" bindscrolltolower="pourDataPages">
         <view wx:for="{{pour_list}}" wx:key="pour_list">
           <view style="display: flex;justify-content: space-between;">
             <view>
               <view>物料编码：{{item.materialcode}} </view>
               <view>物料名称：{{item.materialname}} </view>
-              <view>图 号：{{item.preproductid}}</view>
+              <view>构 件 号：{{item.preproductid}}</view>
+              <view>方量：{{item.fangliang}}</view>
             </view>
             <view>
-              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item.pid}}" bindtap="submitInfo">检验</button>
+              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item.materialcode}}" bindtap="submitInfo">出库</button>
             </view>
           </view>
           <text>\n</text>
         </view>
       </scroll-view>
       <!-- </view> -->
-      <view class="functionItem4" bindtap="jiaodao">
-        <text class="main">浇捣</text>
-      </view>
+
+      <van-popup position="bottom" show="{{ show1 }}">
+        <van-picker show-toolbar title="出库方式" columns="{{ columns }}" bind:cancel="onCancel" bind:confirm="onConfirm" />
+      </van-popup>
       <van-popup custom-style="border-radius: 20rpx" show="{{ success_show }}" bind:close="successOnClose">
         <view style="margin:20rpx;display: flex;flex-direction: column;align-items: center;border-radius: 10rpx;">
           <van-icon name="passed" size="10rem" color="#07c160" />

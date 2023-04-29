@@ -19,7 +19,7 @@
             <view wx:for="{{products}}" wx:key="products">
               <view>物料编码：{{item.materialcode}} </view>
               <view>物料名称：{{item.materialname}} </view>
-              <view>生产状态：{{item.state}} <button data-id="{{index}}" style="width:100px" bindtap="deleteItem">删除</button>
+              <view>货位信息：{{item.path}} <button data-id="{{index}}" style="width:100px" bindtap="deleteItem">删除</button>
               </view>
               <text>\n</text>
             </view>

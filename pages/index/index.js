@@ -59,14 +59,14 @@ Page({
         icon: "/pages/image/rk.png",
         wenzi: "扫码入库",
         linktype: "navigateTo",
-        url: "/pages/inbound/inbound",
+        url: "/pages/inboundQuery/inboundQuery",
         img: "/pages/image/kecheng5.png"
       },
       {
         icon: "/pages/image/ck.png",
         wenzi: "扫码出库",
         linktype: "navigateTo",
-        url: "/pages/outbound/outbound",
+        url: "/pages/outboundQuery/outboundQuery",
         img: "/pages/image/kecheng5.png"
       },
       {
@@ -80,7 +80,7 @@ Page({
         icon: "/pages/image/yk.png",
         wenzi: "扫码移库",
         linktype: "navigateTo",
-        url: "/pages/moveWarehouse/moveWarehouse",
+        url: "/pages/moveWarehouseQuery/moveWarehouseQuery",
         img: "/pages/image/kecheng5.png"
       },
       {

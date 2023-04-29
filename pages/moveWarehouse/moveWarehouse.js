@@ -99,10 +99,16 @@ Page({
               icon: 'none',
               duration: 1000
             })
+            that.setData({
+              ready: true
+            })
           }
         },
         error(msg) {
           console.log(msg)
+          that.setData({
+            ready: true
+          })
         }
       })
     } else if (warehouseId) {

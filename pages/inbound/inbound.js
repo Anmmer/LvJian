@@ -16,8 +16,12 @@ Page({
   },
   // 扫码函数
   scanCode(e) {
+    if (!this.data.ready) {
+      return
+    }
     this.setData({
-      result: e.detail.result
+      result: e.detail.result,
+      ready: false
     })
     var that = this
     // 对扫码结果进行分析
@@ -44,6 +48,9 @@ Page({
           icon: 'none',
           duration: 500
         })
+        this.setData({
+          ready: true
+        })
         return
       }
       if (this.data.materialcodes.find(val => val == materialcode)) {
@@ -51,6 +58,9 @@ Page({
           title: '扫描结果已存在!',
           icon: 'none',
           duration: 500
+        })
+        this.setData({
+          ready: true
         })
         return
       }
@@ -90,11 +100,15 @@ Page({
               })
               return
             }
+            that.setData({
+              ready: true
+            })
             let arr = that.data.products
             that.data.materialcodes.unshift(materialcode)
             arr.unshift(pop_pageDate[0])
             that.setData({
-              products: arr
+              products: arr,
+              ready: true
             })
           } else {
             // 该构件已入库，提醒
@@ -103,10 +117,16 @@ Page({
               icon: 'none',
               duration: 1000
             })
+            that.setData({
+              ready: true
+            })
           }
         },
         error(msg) {
           console.log(msg)
+          that.setData({
+            ready: true
+          })
         }
       })
     } else if (warehouseId) {
@@ -134,6 +154,9 @@ Page({
               warehouse_name: res.data.data[0].name,
               path: res.data.data[0].path
             })
+            that.setData({
+              ready: true
+            })
           }
         })
       } else {
@@ -141,6 +164,9 @@ Page({
           title: '您已扫描过库房号',
           icon: 'none',
           duration: 1000
+        })
+        that.setData({
+          ready: true
         })
         return
       }
@@ -166,6 +192,9 @@ Page({
                 warehouse_name: res.data[0].name,
                 warehouse_id: res.data[0].id,
               })
+              that.setData({
+                ready: true
+              })
             }
           })
         } else {
@@ -174,25 +203,15 @@ Page({
             icon: 'none',
             duration: 1000
           })
+          that.setData({
+            ready: true
+          })
           return
         }
       }
     }
   },
-  onConfirm(event) {
-    const {
-      value
-    } = event.detail;
-    this.setData({
-      in_warehouse_method: value.name,
-      show: false
-    })
-  },
-  onCancel() {
-    this.setData({
-      show: false
-    })
-  },
+
   showPopup() {
     this.setData({
       show: true

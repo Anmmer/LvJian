@@ -131,8 +131,11 @@ Page({
             color_style: '#fff',
             show: false,
             covert_test_remark: '',
-            activeId: []
+            activeId: [],
+            test_list: [],
+            pageCur: 1
           })
+          that.testData()
         } else {
           that.setData({
             fail_show: true,
@@ -180,16 +183,13 @@ Page({
         success(res) {
           // 成功后
           if (res.data.flag) {
-            that.testData()
             that.setData({
               success_show: true,
               color_style: '#fff',
-              state: '',
-              pid: "",
-              plannumber: "",
-              materialcode: '',
-              materialname: ''
+              pageCur: 1,
+              test_list: []
             })
+            that.testData()
           } else {
             that.setData({
               fail_show: true

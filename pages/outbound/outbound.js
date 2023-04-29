@@ -10,9 +10,16 @@ Page({
     show: false,
     success_show: false,
     fail_show: false,
+    ready: true
   },
   // 扫码函数
   scanCode(e) {
+    if (!this.data.ready) {
+      return
+    }
+    this.setData({
+      ready: false
+    })
     var that = this
     // 对扫码结果进行分析
     // 1. 通过字符串正则表达式提取构件号
@@ -50,6 +57,9 @@ Page({
         title: '扫描结果已存在!',
         icon: 'none',
         duration: 500
+      })
+      this.setData({
+        ready: true
       })
       return
     }
@@ -94,6 +104,9 @@ Page({
             product: pop_pageDate[0],
             products: that.data.products
           })
+          that.setData({
+            ready: true
+          })
         } else {
           // 该构件已入库，提醒
           wx.showToast({
@@ -101,10 +114,16 @@ Page({
             icon: 'none',
             duration: 1000
           })
+          that.setData({
+            ready: true
+          })
         }
       },
       error(msg) {
         console.log(msg)
+        that.setData({
+          ready: true
+        })
       }
     })
     // }

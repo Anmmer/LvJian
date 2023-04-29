@@ -13,6 +13,7 @@
           <van-field label="线别" name="line" placeholder="请输入线别" />
           <van-field label="物料编码" name="materialcode" placeholder="请输入物料编码" />
           <van-field label="物料名称" name="materialname" placeholder="请输入物料名称" />
+          <van-field label="图号" name="drawing_no" placeholder="请输入物料名称" />
         </van-cell-group>
         <button form-type="submit" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">查询</button>
       </form>
