@@ -66,7 +66,7 @@ Page({
         materialcode: materialcode
       })
       this.getData_1()
-      this.getWarehouseInfo()
+
     } else {
       wx.showToast({
         title: '识别二维码失败!',
@@ -136,7 +136,7 @@ Page({
       },
       success(res) {
         if (res.data.warehouseInfo) {
-          let warehouseInfo = res.data.warehouseInfo
+          let warehouseInfo = res.data.warehouseInfo[0]
           that.setData({
             warehouseInfo: warehouseInfo
           })
@@ -348,11 +348,12 @@ Page({
               pop_pageDate[0].state = '质检完成'
             }
           }
-
+          let warehouseInfo = pop_pageDate[0].stock_status === '0' ? '待入库' : '已入库'
           that.setData({
-            dataArray: pop_pageDate
+            dataArray: pop_pageDate,
+            warehouseInfo: warehouseInfo
           })
-
+          that.getWarehouseInfo()
           if (typeof (res.data.warehouse_name) != "undefined") {
             that.setData({
               storageInfo: "构件存储于仓储组织'" + res.data.factory_name + "'下的货位'" + res.data.warehouse_name + "'!"

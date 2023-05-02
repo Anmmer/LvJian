@@ -40,7 +40,7 @@
           <view>入库状态：{{item.stock_status||''}}</view>
           <view>入库日期：{{item.create_time||''}}</view>
           <view>操作人：{{item.user_name||''}}</view>
-          <view>预出库审批：{{item.inspect}}</view>
+          <view>预出库审批：{{item.isOrder}}</view>
           <view>出库状态：{{item.checktime||''}}</view>
           <view>出库日期：{{item.inspect_user||''}}</view>
           <view>操作人：{{item.inspect_user||''}}</view>
