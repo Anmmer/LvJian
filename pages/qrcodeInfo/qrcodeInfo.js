@@ -138,11 +138,11 @@ Page({
         if (res.data.warehouseInfo) {
           let warehouseInfo = res.data.warehouseInfo
           that.setData({
-            dataArray1: warehouseInfo
+            warehouseInfo: warehouseInfo
           })
         } else {
           that.setData({
-            dataArray1: []
+            warehouseInfo: {}
           })
         }
       }

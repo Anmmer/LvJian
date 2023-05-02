@@ -35,7 +35,7 @@
         </text>
         <text>{{storageInfo}}</text>
       </view> -->
-      <!-- <van-panel title="仓库信息">
+      <van-panel title="仓库信息">
         <view style="height:auto;overflow-y:auto; width: 90%;margin: 0 auto; ">
           <view>入库状态：{{item.stock_status||''}}</view>
           <view>入库日期：{{item.create_time||''}}</view>
@@ -46,7 +46,7 @@
           <view>操作人：{{item.inspect_user||''}}</view>
          
         </view>
-      </van-panel> -->
+      </van-panel>
     </view>
   </view>
 </view>

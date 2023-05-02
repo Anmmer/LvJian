@@ -21,8 +21,8 @@
           <button bindtap="jiaodao" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">扫码入库</button>
         </view>
 
-        <van-field label="库位地址" disabled bindtap="show2" value="{{path}}" placeholder="请选择" />
-        <van-field label="入库方式" disabled value="{{in_warehouse_method}}" bindtap="show" placeholder="点击选择入库方式" />
+        <van-field label="库位地址" readonly="true" bindtap="show2" value="{{path}}" placeholder="请选择" />
+        <van-field label="入库方式" readonly="true" value="{{in_warehouse_method}}" bindtap="show" placeholder="点击选择入库方式" />
       </form>
       <view class="tiaomu1"> <text class="mark">|</text> 查询结果</view>
       <text class="daipan">数量：{{pourMadeNumber}}\n</text>

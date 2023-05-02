@@ -90,6 +90,13 @@ Page({
         url: "/pages/initWarehouse/initWarehouse",
         img: "/pages/image/kecheng5.png"
       },
+      {
+        icon: "/pages/image/dr.png",
+        wenzi: "库存查询",
+        linktype: "navigateTo",
+        url: "/pages/warehouseQuery/warehouseQuery",
+        img: "/pages/image/kecheng5.png"
+      },
 
     ],
     active: 0,

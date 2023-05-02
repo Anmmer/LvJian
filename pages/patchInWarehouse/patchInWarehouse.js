@@ -223,11 +223,6 @@ Page({
   onLoad: function (options) {
     this.setNavigation();
     this.getOutWarehouseMethod()
-    wx.showToast({
-      title: '请先扫描库房二维码',
-      icon: 'none',
-      duration: 2500
-    })
   },
 
   setNavigation() {

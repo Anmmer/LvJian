@@ -77,6 +77,7 @@ Page({
           "content-type": 'application/x-www-form-urlencoded;charset=utf-8'
         },
         success(res) {
+
           if (res.data.data.length != 0) {
             // 生产状态
             let pop_pageDate = res.data.data
@@ -98,11 +99,12 @@ Page({
                 icon: 'none',
                 duration: 1000
               })
+              that.setData({
+                ready: true
+              })
               return
             }
-            that.setData({
-              ready: true
-            })
+
             let arr = that.data.products
             that.data.materialcodes.unshift(materialcode)
             arr.unshift(pop_pageDate[0])

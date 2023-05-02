@@ -61,7 +61,8 @@
     "pages/initWarehouse/initWarehouse",
     "pages/inboundQuery/inboundQuery",
     "pages/outboundQuery/outboundQuery",
-    "pages/moveWarehouseQuery/moveWarehouseQuery"
+    "pages/moveWarehouseQuery/moveWarehouseQuery",
+    "pages/warehouseQuery/warehouseQuery"
   ],
   "window": {
     "backgroundTextStyle": "light",
