@@ -33,6 +33,7 @@
               <view>物料编码：{{item.materialcode}} </view>
               <view>物料名称：{{item.materialname}} </view>
               <view>构 件 号：{{item.preproductid}}</view>
+              <view>构 件 号：{{item.preproductid}}</view>
               <view>方量：{{item.fangliang}}</view>
             </view>
             <view>

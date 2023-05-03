@@ -51,6 +51,9 @@ Page({
     //     materialcode = strs[i].substring(idx + 1)
     //   }
     // }
+    if (this.data.materialcode === materialcode)
+      return
+
     if (materialcode && id) {
       if (this.data.id !== id) {
         this.getStyle(id)
@@ -63,7 +66,8 @@ Page({
     }
     if (materialcode) {
       this.setData({
-        materialcode: materialcode
+        materialcode: materialcode,
+        warehouseInfo: {}
       })
       this.getData_1()
 
@@ -128,21 +132,71 @@ Page({
     wx.request({
       url: 'https://mes.ljzggroup.com/DuiMaNew/GetWarehouseInfo',
       data: {
-        materialcode: this.data.materialcode
+        materialcode: this.data.materialcode,
+        pageCur: 1,
+        pageMax: 10,
       },
       method: 'POST',
       header: {
         "content-type": 'application/x-www-form-urlencoded'
       },
       success(res) {
-        if (res.data.warehouseInfo) {
-          let warehouseInfo = res.data.warehouseInfo[0]
+        that.getWarehouseLog1()
+        if (res.data.warehouseInfo.length !== 0) {
+          that.data.warehouseInfo.isOrder = (res.data.warehouseInfo[0].isOrder === '0' ? '未审批' : '已审批')
           that.setData({
-            warehouseInfo: warehouseInfo
+            warehouseInfo: that.data.warehouseInfo
           })
-        } else {
+        }
+      }
+    })
+  },
+  getWarehouseLog1() {
+    let that = this
+    wx.request({
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetWarehouseLog',
+      data: {
+        materialcode: this.data.materialcode,
+        pageCur: 1,
+        pageMax: 10,
+        type: '1'
+      },
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        that.getWarehouseLog2()
+        if (res.data.data.length !== 0) {
+          that.data.warehouseInfo.create_time1 = res.data.data[0].create_date
+          that.data.warehouseInfo.user_name1 = res.data.data[0].user_name
           that.setData({
-            warehouseInfo: {}
+            warehouseInfo: that.data.warehouseInfo
+          })
+        }
+      }
+    })
+  },
+  getWarehouseLog2() {
+    let that = this
+    wx.request({
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetWarehouseLog',
+      data: {
+        materialcode: this.data.materialcode,
+        pageCur: 1,
+        pageMax: 10,
+        type: '2'
+      },
+      method: 'POST',
+      header: {
+        "content-type": 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        if (res.data.data.length !== 0) {
+          that.data.warehouseInfo.create_time2 = res.data.data[0].create_date
+          that.data.warehouseInfo.user_name2 = res.data.data[0].user_name
+          that.setData({
+            warehouseInfo: that.data.warehouseInfo
           })
         }
       }
@@ -192,8 +246,6 @@ Page({
   },
   getData() {
     let that = this
-    if (this.data.pop_pageDate[0].materialcode === this.data.materialcode)
-      return
     wx.request({
       url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProduct',
       data: {
@@ -253,9 +305,7 @@ Page({
           //   }
           // }
 
-          that.setData({
-            obj: pop_pageDate
-          })
+
 
           if (typeof (res.data.warehouse_name) != "undefined") {
             that.setData({
@@ -348,10 +398,10 @@ Page({
               pop_pageDate[0].state = '质检完成'
             }
           }
-          let warehouseInfo = pop_pageDate[0].stock_status === '0' ? '待入库' : '已入库'
+          that.data.warehouseInfo.stock_status = pop_pageDate[0].stock_status === '0' ? '待入库' : '已入库'
           that.setData({
             dataArray: pop_pageDate,
-            warehouseInfo: warehouseInfo
+            warehouseInfo: that.data.warehouseInfo
           })
           that.getWarehouseInfo()
           if (typeof (res.data.warehouse_name) != "undefined") {

@@ -37,14 +37,13 @@
       </view> -->
       <van-panel title="仓库信息">
         <view style="height:auto;overflow-y:auto; width: 90%;margin: 0 auto; ">
-          <view>入库状态：{{item.stock_status||''}}</view>
-          <view>入库日期：{{item.create_time||''}}</view>
-          <view>操作人：{{item.user_name||''}}</view>
-          <view>预出库审批：{{item.isOrder}}</view>
-          <view>出库状态：{{item.checktime||''}}</view>
-          <view>出库日期：{{item.inspect_user||''}}</view>
-          <view>操作人：{{item.inspect_user||''}}</view>
-         
+          <view>库存状态：{{warehouseInfo.stock_status||''}}</view>
+          <view>入库日期：{{warehouseInfo.create_time1||''}}</view>
+          <view>操作人：{{warehouseInfo.user_name1||''}}</view>
+          <view>预出库审批：{{warehouseInfo.isOrder}}</view>
+          <view>出库日期：{{warehouseInfo.create_time2||''}}</view>
+          <view>操作人：{{warehouseInfo.user_name2||''}}</view>
+
         </view>
       </van-panel>
     </view>

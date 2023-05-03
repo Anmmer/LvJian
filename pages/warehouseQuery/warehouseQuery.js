@@ -11,6 +11,8 @@ Page({
     materialcode: '',
     factory_id: '',
     planname: '',
+    items: [],
+    show2: false,
     drawing_no: '',
     columns: [],
     pour_list: [],
@@ -50,6 +52,7 @@ Page({
 
 
   },
+  
   pourDataPages() {
     if (this.data.pageCur < this.data.pageAll) {
       this.setData({
@@ -88,6 +91,7 @@ Page({
   },
   change(e) {
     let factory = e.detail.picker
+    conso
     let i = e.detail.index
     if (i < 2) {
       factory.setColumnValues(i + 1, e.detail.value[i] ? e.detail.value[i].children : [])
@@ -173,7 +177,23 @@ Page({
       show1: true
     })
   },
+  change(e) {
 
+    let factory = e.detail.picker
+    let i = e.detail.index
+    if (i < 2) {
+      factory.setColumnValues(i + 1, e.detail.value[i] ? e.detail.value[i].children : [])
+      if (i === 0 && e.detail.value[i] && e.detail.value[i].children.length) {
+        factory.setColumnValues(i + 2, e.detail.value[i].children[0] ? e.detail.value[i].children[0].children : [])
+      }
+    }
+  },
+  onCancel() {
+    this.setData({
+      show1: false,
+      show2: false
+    })
+  },
 
   successOnClose() {
     this.setData({
