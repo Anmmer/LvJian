@@ -13,6 +13,8 @@ Page({
     planname: '',
     items: [],
     show2: false,
+    building_no: '',
+    floor_no: '',
     drawing_no: '',
     columns: [],
     pour_list: [],
@@ -52,7 +54,7 @@ Page({
 
 
   },
-  
+
   pourDataPages() {
     if (this.data.pageCur < this.data.pageAll) {
       this.setData({
@@ -91,7 +93,6 @@ Page({
   },
   change(e) {
     let factory = e.detail.picker
-    conso
     let i = e.detail.index
     if (i < 2) {
       factory.setColumnValues(i + 1, e.detail.value[i] ? e.detail.value[i].children : [])
@@ -109,7 +110,7 @@ Page({
     const {
       value
     } = event.detail;
-
+    console.log(event)
     this.setData({
       path: value[2].path,
       factory_id: value[2].id,
@@ -128,9 +129,11 @@ Page({
         // line: e.detail.value.line,
         pageCur: 1,
         materialname: e.detail.value.materialname,
-        materialcode: e.detail.value.materialcode,
+        // materialcode: e.detail.value.materialcode,
         drawing_no: e.detail.value.drawing_no,
         planname: e.detail.value.planname,
+        building_no: e.detail.value.building_no,
+        floor_no: e.detail.value.floor_no
       })
     }
     let data = {
@@ -139,7 +142,10 @@ Page({
       preproductid: this.data.drawing_no,
       planname: this.data.planname,
       // isOrder: true,
-      materialcode: this.data.materialcode,
+      // materialcode: this.data.materialcode,
+      factoryName: this.data.factory_id,
+      building_no: this.data.building_no,
+      floor_no: this.data.floor_no,
       pageCur: this.data.pageCur,
       pageMax: this.data.pageMax
     }

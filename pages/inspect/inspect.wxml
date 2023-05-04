@@ -29,7 +29,7 @@
               <view>构 件 号：{{item.preproductid}}</view>
             </view>
             <view>
-              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item.materialcode}}" bindtap="submitInfo">检验</button>
+              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item.materialcode}}" bindtap="submitInfo">质检</button>
             </view>
           </view>
           <text>\n</text>

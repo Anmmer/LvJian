@@ -10,7 +10,7 @@
       <view class="tiaomu1"> <text class="mark">|</text> 计划信息查询</view>
       <form bindsubmit="submit">
         <van-cell-group>
-          <van-field label="计划名称" name="planname" placeholder="请输入计划名称" />
+          <van-field label="项目名称" name="planname" placeholder="请输入项目名称" />
           <van-field label="物料编码" name="materialcode" placeholder="请输入物料编码" />
           <van-field label="图号" name="drawing_no" placeholder="请输入图号" />
           <van-field label="开始日期" name="start_date" placeholder="点击选择日期" readonly="true" bindtap="showPopup1"

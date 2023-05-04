@@ -30,7 +30,7 @@
               <view>图 号：{{item.preproductid}}</view>
             </view>
             <view>
-              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item.pid}}" bindtap="submitInfo">检验</button>
+              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item.pid}}" bindtap="submitInfo">浇捣</button>
             </view>
           </view>
           <text>\n</text>

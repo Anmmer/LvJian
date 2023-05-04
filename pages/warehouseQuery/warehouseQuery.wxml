@@ -11,16 +11,19 @@
       <form bindsubmit="pourData">
         <van-cell-group>
           <!-- <van-field label="线别" name="line" placeholder="请输入线别" /> -->
-          <van-field label="物料编码" name="materialcode" placeholder="请输入物料编码" />
+          <!-- <van-field label="物料编码" name="materialcode" placeholder="请输入物料编码" /> -->
           <van-field label="物料名称" name="materialname" placeholder="请输入物料名称" />
-          <van-field label="构建号" name="drawing_no" placeholder="请输入物料名称" />
+          <van-field label="构件号" name="drawing_no" placeholder="请输入物料名称" />
           <van-field label="项目名称" name="planname" placeholder="请输入物料名称" />
+          <van-field label="楼栋" name="building_no" placeholder="请输入楼栋" />
+          <van-field label="楼层" name="floor_no" placeholder="请输入楼层" />
+          <van-field label="库位地址" bindtap="show2" value="{{path}}" placeholder="请选择" />
         </van-cell-group>
         <vie style="display: flex;">
           <button form-type="submit" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">查询</button>
           <!-- <button bindtap="jiaodao" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">扫码移库</button> -->
         </vie>
-        <van-field label="库位地址" bindtap="show2" value="{{path}}" placeholder="请选择" />
+
       </form>
       <view class="tiaomu1"> <text class="mark">|</text> 查询结果</view>
       <text class="daipan">数量：{{pourMadeNumber}}\n</text>
@@ -33,7 +36,9 @@
               <view>物料编码：{{item.materialcode}} </view>
               <view>物料名称：{{item.materialname}} </view>
               <view>构 件 号：{{item.preproductid}}</view>
-              <view>货位地址：{{item.path}}</view>
+              <view>楼 栋：{{item.building_no}}</view>
+              <view>楼 层：{{item.floor_no}}</view>
+              <view>仓库地址：{{item.path}}</view>
               <view>方量：{{item.fangliang}}</view>
             </view>
             <!-- <view>
@@ -47,7 +52,7 @@
       <van-popup position="bottom" show="{{ show2 }}">
         <van-picker show-toolbar title="库位信息" id="factory" columns="{{ items }}" bind:cancel="onCancel" bind:change="change" bind:confirm="onConfirm1" />
       </van-popup>
-     
+
       <van-toast id="van-toast" />
     </view>
   </view>
