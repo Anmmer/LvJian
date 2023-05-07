@@ -7,17 +7,16 @@
   </view>
   <view style="margin-top:{{startBarHeight+navgationHeight+10}}px;">
     <view class="mid" style="height: 100%;">
-      <view class="tiaomu1"> <text class="mark">|</text> 库存信息查询</view>
+      <view class="tiaomu1"> <text class="mark">|</text> 盘库计划查询</view>
       <form bindsubmit="pourData">
         <van-cell-group>
           <!-- <van-field label="线别" name="line" placeholder="请输入线别" /> -->
           <!-- <van-field label="物料编码" name="materialcode" placeholder="请输入物料编码" /> -->
-          <van-field label="物料名称" name="materialname" placeholder="请输入物料名称" />
-          <van-field label="图号" name="drawing_no" placeholder="请输入图号" />
-          <van-field label="项目名称" name="planname" placeholder="请输入项目名称" />
-          <van-field label="楼栋" name="building_no" placeholder="请输入楼栋" />
-          <van-field label="楼层" name="floor_no" placeholder="请输入楼层" />
-          <van-field label="库位地址" readonly="true" bindtap="show2" value="{{path}}" placeholder="请选择" />
+          <van-field label="计划批号" name="batch_id" placeholder="请输入物料名称" />
+          <van-field label="制单人" name="user_name" placeholder="请输入物料名称" />
+          <van-field label="开始时间" name="startDate" placeholder="请输入物料名称" />
+          <van-field label="结束日期" name="endDate" placeholder="请输入楼栋" />
+
         </van-cell-group>
         <vie style="display: flex;">
           <button form-type="submit" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">查询</button>
@@ -25,25 +24,21 @@
         </vie>
 
       </form>
-      <view class="tiaomu1"> <text class="mark">|</text> 查询结果</view>
-      <text class="daipan">数量：{{pourMadeNumber}}\n</text>
-      <text class="daipan">明细：</text>
+      <view class="tiaomu1"> <text class="mark">|</text> 查询结果<text style="font-weight: 100;"> （数量：{{pourMadeNumber}}）</text></view>
       <!-- <view class="detail"> -->
-      <scroll-view scroll-y="true" style="height: 640rpx;" bindscrolltolower="pourDataPages">
+      <scroll-view scroll-y="true" style="height: 700rpx;" bindscrolltolower="pourDataPages">
         <view wx:for="{{pour_list}}" wx:key="pour_list">
           <view style="display: flex;justify-content: space-between;">
             <view>
-              <view>物料编码：{{item.materialcode}} </view>
-              <view>物料名称：{{item.materialname}} </view>
-              <view>构 件 号：{{item.preproductid}}</view>
-              <view>楼 栋：{{item.building_no}}</view>
-              <view>楼 层：{{item.floor_no}}</view>
-              <view>仓库地址：{{item.path}}</view>
-              <view>方量：{{item.fangliang}}</view>
+              <view>盘库单号：{{item.batch_id}} </view>
+              <view>创建日期：{{item.create_time}} </view>
+              <view>应盘数量：{{item.should_check_num}}</view>
+              <view>已盘数量：{{item.real_check_num}}</view>
             </view>
-            <!-- <view>
-              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item.materialcode}}" bindtap="submitInfo">移库</button>
-            </view> -->
+            <view style="display: flex;flex-direction: column;justify-content: center;">
+              <button style="padding: 15rpx 10rpx;width: 180rpx;font-size: 25rpx;line-height: 20rpx;background-color: #1989fa;color: #fff;" data-id="{{item}}" bindtap="jiaodao">点击盘库</button>
+              <!-- <button style="padding: 15rpx 10rpx;width: 180rpx;font-size: 25rpx;line-height: 20rpx;background-color: #1989fa;color: #fff;margin-top: 15rpx;" data-id="{{item.check_id}}" bindtap="submitInfo">查看进度</button> -->
+            </view>
           </view>
           <text>\n</text>
         </view>

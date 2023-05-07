@@ -13,7 +13,7 @@
           <!-- <van-field label="线别" name="line" placeholder="请输入线别" /> -->
           <!-- <van-field label="物料编码" name="materialcode" placeholder="请输入物料编码" /> -->
           <van-field label="物料名称" name="materialname" placeholder="请输入物料名称" />
-          <van-field label="图号" name="drawing_no" placeholder="请输入图号" />
+          <van-field label="图号号" name="drawing_no" placeholder="请输入图号" />
           <van-field label="项目名称" name="planname" placeholder="请输入项目名称" />
           <van-field label="楼栋" name="building_no" placeholder="请输入楼栋" />
           <van-field label="楼层" name="floor_no" placeholder="请输入楼层" />
@@ -35,15 +35,15 @@
             <view>
               <view>物料编码：{{item.materialcode}} </view>
               <view>物料名称：{{item.materialname}} </view>
-              <view>构 件 号：{{item.preproductid}}</view>
-              <view>楼 栋：{{item.building_no}}</view>
+              <view>图号：{{item.drawing_no}}</view>
+              <!-- <view>楼 栋：{{item.building_no}}</view>
               <view>楼 层：{{item.floor_no}}</view>
               <view>仓库地址：{{item.path}}</view>
-              <view>方量：{{item.fangliang}}</view>
+              <view>方量：{{item.fangliang}}</view> -->
             </view>
-            <!-- <view>
-              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item.materialcode}}" bindtap="submitInfo">移库</button>
-            </view> -->
+            <view>
+              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item}}" bindtap="submitInfo">添加</button>
+            </view>
           </view>
           <text>\n</text>
         </view>

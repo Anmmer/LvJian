@@ -20,7 +20,7 @@
           <button form-type="submit" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">查询</button>
           <button bindtap="jiaodao" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">扫码移库</button>
         </vie>
-        <van-field label="库位地址" bindtap="show2" value="{{path}}" placeholder="请选择" />
+        <van-field label="库位地址"  readonly="true" bindtap="show2" value="{{path}}" placeholder="请选择" />
       </form>
       <view class="tiaomu1"> <text class="mark">|</text> 查询结果</view>
       <text class="daipan">数量：{{pourMadeNumber}}\n</text>

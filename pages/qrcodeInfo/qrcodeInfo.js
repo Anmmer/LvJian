@@ -94,7 +94,7 @@ Page({
         url: "https://mes.ljzggroup.com/DuiMaNew/QuerySQL",
         method: 'post',
         header: {
-          "content-type": 'application/x-www-form-urlencoded'
+          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         },
         data: {
           sqlStr: "select qrcode_content,qrcode_name from qrcode where qrcode_id=" + qrcodeid + ";",
@@ -138,7 +138,7 @@ Page({
       },
       method: 'POST',
       header: {
-        "content-type": 'application/x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
         that.getWarehouseLog1()
@@ -163,7 +163,7 @@ Page({
       },
       method: 'POST',
       header: {
-        "content-type": 'application/x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
         that.getWarehouseLog2()
@@ -189,7 +189,7 @@ Page({
       },
       method: 'POST',
       header: {
-        "content-type": 'application/x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
         if (res.data.data.length !== 0) {
@@ -214,7 +214,7 @@ Page({
         url: "https://mes.ljzggroup.com/DuiMaNew/QuerySQL",
         method: 'post',
         header: {
-          "content-type": 'application/x-www-form-urlencoded'
+          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         },
         data: {
           sqlStr: "select pi_key,pi_value from project_item;",
@@ -253,7 +253,7 @@ Page({
       },
       method: 'POST',
       header: {
-        "content-type": 'application/x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
         //设置构件生产情况
@@ -353,7 +353,7 @@ Page({
       },
       method: 'POST',
       header: {
-        "content-type": 'application/x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
         //设置构件生产情况
@@ -433,7 +433,7 @@ Page({
       },
       method: 'POST',
       header: {
-        "content-type": 'application/x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
         let jsonobj = res.data.data0
@@ -469,7 +469,7 @@ Page({
       },
       method: 'POST',
       header: {
-        "content-type": 'application/x-www-form-urlencoded'
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       success(res) {
         let jsonobj = res.data.data0[0]

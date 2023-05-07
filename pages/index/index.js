@@ -73,7 +73,7 @@ Page({
         icon: "/pages/image/pk.png",
         wenzi: "盘点库存",
         linktype: "navigateTo",
-        url: "/pages/checkWarehouse/checkWarehouse",
+        url: "/pages/checkWarehouseQuery/checkWarehouseQuery",
         img: "/pages/image/kecheng5.png"
       },
       {

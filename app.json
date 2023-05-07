@@ -62,7 +62,9 @@
     "pages/inboundQuery/inboundQuery",
     "pages/outboundQuery/outboundQuery",
     "pages/moveWarehouseQuery/moveWarehouseQuery",
-    "pages/warehouseQuery/warehouseQuery"
+    "pages/warehouseQuery/warehouseQuery",
+    "pages/checkWarehouseQuery/checkWarehouseQuery",
+    "pages/addCheckWarehouse/addCheckWarehouse"
   ],
   "window": {
     "backgroundTextStyle": "light",

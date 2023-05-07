@@ -133,7 +133,7 @@ Page({
         },
         method: 'POST',
         header: {
-          "content-type": 'application/x-www-form-urlencoded'
+          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         },
         success(res) {
           // 成功后

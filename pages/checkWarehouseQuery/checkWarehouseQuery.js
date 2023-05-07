@@ -5,11 +5,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    pourMadeNumber: 0,
-    checkNumber: 0,
+    batch_id: '',
+    user_name: '',
+    startDate: '',
+    endDate: '',
     pour_list: [],
-    success_show: false,
-    fail_show: false,
+    pourMadeNumber: 0,
     pageAll: 0,
     pageCur: 1,
     pageMax: 10
@@ -33,29 +34,26 @@ Page({
     var that = this
     if (e) {
       this.setData({
-        line: e.detail.value.line,
         pageCur: 1,
-        materialname: e.detail.value.materialname,
-        materialcode: e.detail.value.materialcode,
-        pour_list: [],
-        drawing_no: e.detail.value.drawing_no
+        batch_id: e.detail.value.batch_id,
+        user_name: e.detail.value.user_name,
+        startDate: e.detail.value.startDate,
+        endDate: e.detail.value.endDate,
       })
     }
     let data = {
-      pourState: "0",
-      inspectState: "0",
-      line: this.data.line,
-      materialname: this.data.materialname,
-      materialcode: this.data.materialcode,
-      drawing_no: this.data.drawing_no,
+      batch_id: this.data.batch_id,
+      user_name: this.data.user_name,
+      startDate: this.data.startDate,
+      endDate: this.data.endDate,
+      type: '0',
+      status: '1',
       pageCur: this.data.pageCur,
       pageMax: this.data.pageMax
     }
-    if (wx.getStorageSync('on_or_off') == '1') {
-      data.isTest = 'true'
-    }
+
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaNew/GetPreProduct',
+      url: 'http://localhost:8989/DuiMa/InventoryCheck',
       data: data,
       method: 'POST',
       header: {
@@ -82,55 +80,11 @@ Page({
   fanhui: function () {
     wx.navigateBack()
   },
-  successOnClose() {
-    this.setData({
-      success_show: false
-    })
-  },
-  failOnClose() {
-    this.setData({
-      fail_show: false
-    })
-  },
-  submitInfo(e) {
-    var that = this
-    if (e.target.dataset.id != '') {
-      let arr = [];
-      arr.push(e.target.dataset.id)
-      wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaNew/Pour',
-        data: {
-          pids: JSON.stringify(arr),
-          pourmade_user: wx.getStorageSync('userName')
-        },
-        method: 'POST',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-        },
-        success(res) {
-          // 成功后
-          if (res.data.flag) {
-            that.setData({
-              success_show: true,
-              color_style: '#fff',
-              state: '',
-              pid: "",
-              plannumber: "",
-              materialcode: '',
-              pour_list: [],
-              pageCur: 1
-            })
-            that.pourData()
-          } else {
-            that.setData({
-              fail_show: true
-            })
-          }
 
-        }
-      })
-    }
+  submitInfo() {
+
   },
+
   setNavigation() {
     let startBarHeight = 20
     let navgationHeight = 44
@@ -161,9 +115,10 @@ Page({
   onShow: function () {
 
   },
-  jiaodao() {
+  jiaodao(e) {
+    console.log(e)
     wx.navigateTo({
-      url: "../processConfirm/processConfirm",
+      url: "../checkWarehouse/checkWarehouse?check_id=" + e.target.dataset.id.check_id + "&create_time=" + e.target.dataset.id.create_time + "&should_check_num=" + e.target.dataset.id.should_check_num + "&real_check_num=" + e.target.dataset.id.real_check_num + "&batch_id=" + e.target.dataset.id.batch_id + "&user_name=" + e.target.dataset.id.user_name,
     })
   },
   check() {

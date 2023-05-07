@@ -11,6 +11,10 @@ Page({
     materialcode: '',
     factory_id: '',
     planname: '',
+    items: [],
+    show2: false,
+    building_no: '',
+    floor_no: '',
     drawing_no: '',
     columns: [],
     pour_list: [],
@@ -50,6 +54,7 @@ Page({
 
 
   },
+
   pourDataPages() {
     if (this.data.pageCur < this.data.pageAll) {
       this.setData({
@@ -105,7 +110,7 @@ Page({
     const {
       value
     } = event.detail;
-
+    console.log(event)
     this.setData({
       path: value[2].path,
       factory_id: value[2].id,
@@ -124,9 +129,11 @@ Page({
         // line: e.detail.value.line,
         pageCur: 1,
         materialname: e.detail.value.materialname,
-        materialcode: e.detail.value.materialcode,
+        // materialcode: e.detail.value.materialcode,
         drawing_no: e.detail.value.drawing_no,
         planname: e.detail.value.planname,
+        building_no: e.detail.value.building_no,
+        floor_no: e.detail.value.floor_no
       })
     }
     let data = {
@@ -135,13 +142,16 @@ Page({
       preproductid: this.data.drawing_no,
       planname: this.data.planname,
       // isOrder: true,
-      materialcode: this.data.materialcode,
+      // materialcode: this.data.materialcode,
+      factoryName: this.data.factory_id,
+      building_no: this.data.building_no,
+      floor_no: this.data.floor_no,
       pageCur: this.data.pageCur,
       pageMax: this.data.pageMax
     }
 
     wx.request({
-      url: 'https://mes.ljzggroup.com/DuiMaNew/GetWarehouseInfo',
+      url: 'http://localhost:8989/DuiMa/GetWarehouseInfo',
       data: data,
       method: 'POST',
       header: {
@@ -173,7 +183,23 @@ Page({
       show1: true
     })
   },
+  change(e) {
 
+    let factory = e.detail.picker
+    let i = e.detail.index
+    if (i < 2) {
+      factory.setColumnValues(i + 1, e.detail.value[i] ? e.detail.value[i].children : [])
+      if (i === 0 && e.detail.value[i] && e.detail.value[i].children.length) {
+        factory.setColumnValues(i + 2, e.detail.value[i].children[0] ? e.detail.value[i].children[0].children : [])
+      }
+    }
+  },
+  onCancel() {
+    this.setData({
+      show1: false,
+      show2: false
+    })
+  },
 
   successOnClose() {
     this.setData({
@@ -187,47 +213,31 @@ Page({
   },
   submitInfo(e) {
     var that = this
-    if (!this.data.factory_id) {
-      wx.showToast({
-        title: '请选择库位地址',
-        icon: 'none',
-        duration: 1000
+    //获取页面栈
+    let pages = getCurrentPages();
+    //检查页面栈
+    //判断页面栈中页面的数量是否有跳转(可以省去判断)
+    if (pages.length > 1) {
+      //获取上一个页面实例对象
+      let prePage = pages[pages.length - 2];
+      //调用上一个页面实例对象的方法
+      let data = e.target.dataset.id
+      if (prePage.data.products.find(v => {
+          return v.materialcode === data.materialcode
+        })) {
+        wx.showToast({
+          title: '该构件已存在',
+          icon: 'none',
+          duration: 500
+        })
+        return
+      }
+      prePage.data.products.unshift(data)
+      prePage.setData({
+        products: prePage.data.products
       })
-      return
-    }
-    if (e.target.dataset.id != '') {
-      let arr = [];
-      arr.push(e.target.dataset.id)
-      wx.request({
-        url: 'https://mes.ljzggroup.com/DuiMaNew/InOutWarehouse',
-        data: {
-          ids: JSON.stringify(arr),
-          type: "3",
-          in_warehouse_id: that.data.factory_id,
-          userName: wx.getStorageSync('userName'),
-        },
-        method: 'POST',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-        },
-        success(res) {
-          // 成功后
-          if (res.data.flag) {
-            that.setData({
-              success_show: true,
-              color_style: '#fff',
-              pour_list: [],
-              pageCur: 1
-            })
-            that.pourData()
-          } else {
-            that.setData({
-              fail_show: true
-            })
-          }
-
-        }
-      })
+      //返回上一个页面
+      wx.navigateBack();
     }
   },
   setNavigation() {
