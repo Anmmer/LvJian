@@ -6,6 +6,7 @@ Page({
     result: '',
     warehouse_id: '',
     products: [],
+    result: [],
     warehouse_name: '',
     success_show: false,
     fail_show: false,
@@ -56,7 +57,7 @@ Page({
         duration: 500
       })
       this.setData({
-        ready: false
+        ready: true
       })
       return
     }
@@ -74,8 +75,9 @@ Page({
           ready: true
         })
         if (res.data.data.length > 0) {
+          that.data.products.unshift(res.data.data[0])
           that.setData({
-            products: that.data.products.unshift(res.data.data[0]),
+            products: that.data.products,
 
           })
         }
@@ -96,6 +98,7 @@ Page({
       ready: true
     })
   },
+  
   submitAll(event) {
     var that = this
     if (this.data.products.length === 0) {
@@ -112,7 +115,7 @@ Page({
     }
     // 可以上传
     wx.request({
-      url: 'http://localhost:8989/DuiMa/InventoryCheck',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/InventoryCheck',
       data: {
         materialcodes: JSON.stringify(arr),
         type: "8",

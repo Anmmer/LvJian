@@ -12,6 +12,7 @@ Page({
     factory_id: '',
     planname: '',
     items: [],
+    result: [],
     show2: false,
     building_no: '',
     floor_no: '',
@@ -91,6 +92,19 @@ Page({
       }
     })
   },
+  onChange(event) {
+    console.log(event)
+    this.setData({
+      result: event.detail
+    });
+  },
+  toggle(event) {
+    const {
+      index
+    } = event.currentTarget.dataset;
+    const checkbox = this.selectComponent(`.checkboxes-${index}`);
+    checkbox.toggle();
+  },
   change(e) {
     let factory = e.detail.picker
     let i = e.detail.index
@@ -151,7 +165,7 @@ Page({
     }
 
     wx.request({
-      url: 'http://localhost:8989/DuiMa/GetWarehouseInfo',
+      url: 'https://mes.ljzggroup.com/DuiMaNew/GetWarehouseInfo',
       data: data,
       method: 'POST',
       header: {
@@ -221,18 +235,42 @@ Page({
       //获取上一个页面实例对象
       let prePage = pages[pages.length - 2];
       //调用上一个页面实例对象的方法
-      let data = e.target.dataset.id
-      if (prePage.data.products.find(v => {
-          return v.materialcode === data.materialcode
-        })) {
+      if (!this.data.result.length) {
         wx.showToast({
-          title: '该构件已存在',
+          title: '请选择构件',
           icon: 'none',
-          duration: 500
+          duration: 1000
         })
         return
       }
-      prePage.data.products.unshift(data)
+
+      let materialcode = ''
+      if (prePage.data.products.find(v => {
+          materialcode = this.data.result.find(e => {
+            return v.materialcode === e
+          })
+          return materialcode
+        })) {
+
+        wx.showToast({
+          title: "物料编码为" + materialcode + '的构件已存在',
+          icon: 'none',
+          duration: 1000
+        })
+        return
+      }
+      let that = this
+      console.log(that.data.pour_list)
+      this.data.result.forEach(e => {
+
+        let index = that.data.pour_list.find(v => {
+          return v.materialcode === e
+        })
+        if (index) {
+          prePage.data.products.unshift(index)
+        }
+      });
+      console.log(prePage.data.products)
       prePage.setData({
         products: prePage.data.products
       })

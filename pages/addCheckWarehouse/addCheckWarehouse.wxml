@@ -21,6 +21,7 @@
         </van-cell-group>
         <vie style="display: flex;">
           <button form-type="submit" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">查询</button>
+          <button style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;color:#fff;font-size:25rpx;text-align: center;line-height: 30rpx;" bindtap="submitInfo">添加</button>
           <!-- <button bindtap="jiaodao" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">扫码移库</button> -->
         </vie>
 
@@ -30,23 +31,26 @@
       <text class="daipan">明细：</text>
       <!-- <view class="detail"> -->
       <scroll-view scroll-y="true" style="height: 640rpx;" bindscrolltolower="pourDataPages">
-        <view wx:for="{{pour_list}}" wx:key="pour_list">
-          <view style="display: flex;justify-content: space-between;">
-            <view>
-              <view>物料编码：{{item.materialcode}} </view>
-              <view>物料名称：{{item.materialname}} </view>
-              <view>图号：{{item.drawing_no}}</view>
-              <!-- <view>楼 栋：{{item.building_no}}</view>
+        <van-checkbox-group value="{{ result }}" bind:change="onChange">
+          <van-checkbox wx:for="{{ pour_list }}" wx:key="materialcode" name="{{ item.materialcode }}">
+
+            <view style="display: flex;justify-content: space-between;">
+              <view>
+                <view>物料编码：{{item.materialcode}} </view>
+                <view>物料名称：{{item.materialname}} </view>
+                <view>图号：{{item.drawing_no}}</view>
+                <!-- <view>楼 栋：{{item.building_no}}</view>
               <view>楼 层：{{item.floor_no}}</view>
               <view>仓库地址：{{item.path}}</view>
               <view>方量：{{item.fangliang}}</view> -->
+              </view>
+              <!-- <view>
+                <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item}}" bindtap="submitInfo">添加</button>
+              </view> -->
             </view>
-            <view>
-              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item}}" bindtap="submitInfo">添加</button>
-            </view>
-          </view>
-          <text>\n</text>
-        </view>
+            <text>\n</text>
+          </van-checkbox>
+        </van-checkbox-group>
       </scroll-view>
       <!-- </view> -->
       <van-popup position="bottom" show="{{ show2 }}">

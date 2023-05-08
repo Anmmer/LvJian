@@ -1,0 +1,37 @@
+<view>
+  <view class='navigation'>
+    <view class='startBar' style='height:{{startBarHeight}}px'></view>
+    <view class='navgation' style='height:{{navgationHeight}}px'>
+      <view class="wenzi" bindtap="fanhui">返回</view>
+    </view>
+  </view>
+  <view style="margin-top:{{startBarHeight+navgationHeight+10}}px;">
+    <view class="mid" style="height: 100%;">
+      <view class="tiaomu1"> <text class="mark">|</text> 待盘信息</view>
+      <text class="daipan">数量：{{pourMadeNumber}}\n</text>
+      <text class="daipan">明细：</text>
+      <!-- <view class="detail"> -->
+      <scroll-view scroll-y="true" style="height:1000rpx;" bindscrolltolower="pourDataPages">
+        <view wx:for="{{pour_list}}" wx:key="pour_list">
+          <view style="display: flex;justify-content: space-between;">
+            <view>
+              <view>物料编码：{{item.materialcode}} </view>
+              <view>物料名称：{{item.materialname}} </view>
+              <view>构件编号：{{item.drawing_no}} </view>
+            </view>
+            <!-- <view>
+              <button style="width: 150rpx;font-size: 25rpx;background-color: #1989fa;color: #fff;" data-id="{{item.materialcode}}" bindtap="submitInfo">移库</button>
+            </view> -->
+          </view>
+          <text>\n</text>
+        </view>
+      </scroll-view>
+      <!-- </view> -->
+      <van-popup position="bottom" show="{{ show2 }}">
+        <van-picker show-toolbar title="库位信息" id="factory" columns="{{ items }}" bind:cancel="onCancel" bind:change="change" bind:confirm="onConfirm1" />
+      </van-popup>
+
+      <van-toast id="van-toast" />
+    </view>
+  </view>
+</view>

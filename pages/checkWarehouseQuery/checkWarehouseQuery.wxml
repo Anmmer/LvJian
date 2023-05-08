@@ -37,7 +37,7 @@
             </view>
             <view style="display: flex;flex-direction: column;justify-content: center;">
               <button style="padding: 15rpx 10rpx;width: 180rpx;font-size: 25rpx;line-height: 20rpx;background-color: #1989fa;color: #fff;" data-id="{{item}}" bindtap="jiaodao">点击盘库</button>
-              <!-- <button style="padding: 15rpx 10rpx;width: 180rpx;font-size: 25rpx;line-height: 20rpx;background-color: #1989fa;color: #fff;margin-top: 15rpx;" data-id="{{item.check_id}}" bindtap="submitInfo">查看进度</button> -->
+              <button style="padding: 15rpx 10rpx;width: 180rpx;font-size: 25rpx;line-height: 20rpx;background-color: #1989fa;color: #fff;margin-top: 15rpx;" data-id="{{item}}" bindtap="submitInfo">待盘查询</button>
             </view>
           </view>
           <text>\n</text>

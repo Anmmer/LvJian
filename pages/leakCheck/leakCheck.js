@@ -5,23 +5,46 @@ Page({
    * 页面的初始数据
    */
   data: {
-    batch_id: '',
-    user_name: '',
-    startDate: '',
-    endDate: '',
-    pour_list: [],
     pourMadeNumber: 0,
+    checkNumber: 0,
+    materialname: '',
+    materialcode: '',
+    factory_id: '',
+    planname: '',
+    items: [],
+    show2: false,
+    building_no: '',
+    floor_no: '',
+    drawing_no: '',
+    columns: [],
+    pour_list: [],
+    success_show: false,
+    fail_show: false,
     pageAll: 0,
     pageCur: 1,
-    pageMax: 10
+    pageMax: 10,
+    check_id: '',
+    create_time: '',
+    path: '',
+    planname: '',
+    build_type: ''
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options)
+    this.setData({
+      check_id: options.check_id,
+      create_time: options.create_time,
+      path: options.path,
+      planname: options.planname,
+      build_type: options.build_type
+    })
     this.setNavigation();
-    // this.pourData();
+    this.pourData();
   },
+
   pourDataPages() {
     if (this.data.pageCur < this.data.pageAll) {
       this.setData({
@@ -30,24 +53,25 @@ Page({
       this.pourData()
     }
   },
+
   pourData(e) {
     var that = this
     if (e) {
       this.setData({
+        // line: e.detail.value.line,
         pageCur: 1,
-        batch_id: e.detail.value.batch_id,
-        user_name: e.detail.value.user_name,
-        startDate: e.detail.value.startDate,
-        endDate: e.detail.value.endDate,
+        materialname: e.detail.value.materialname,
+        // materialcode: e.detail.value.materialcode,
+        drawing_no: e.detail.value.drawing_no,
+        planname: e.detail.value.planname,
+        building_no: e.detail.value.building_no,
+        floor_no: e.detail.value.floor_no
       })
     }
     let data = {
-      batch_id: this.data.batch_id,
-      user_name: this.data.user_name,
-      startDate: this.data.startDate,
-      endDate: this.data.endDate,
-      type: '0',
-      status: '1',
+      check_id: this.data.check_id,
+      check_type: "leak_check",
+      type: '4',
       pageCur: this.data.pageCur,
       pageMax: this.data.pageMax
     }
@@ -68,7 +92,7 @@ Page({
           })
         } else {
           that.setData({
-            pour_list: res.data.data,
+            pour_list: res.data.warehouseInfo,
             pourMadeNumber: res.data.cnt,
             pageAll: res.data.pageAll,
           })
@@ -79,13 +103,6 @@ Page({
   },
   fanhui: function () {
     wx.navigateBack()
-  },
-
-  submitInfo(e) {
-    console.log(e.target.dataset.id)
-    wx.navigateTo({
-      url: "../leakCheck/leakCheck?check_id=" + e.target.dataset.id.check_id + '&create_time=' + e.target.dataset.id.create_time + '&path=' + e.target.dataset.id.path + '&planname=' + e.target.dataset.id.planname + '&build_type=' + e.target.dataset.id.build_type
-    })
   },
 
   setNavigation() {
@@ -118,13 +135,12 @@ Page({
   onShow: function () {
 
   },
-  jiaodao(e) {
-    console.log(e)
+  jiaodao() {
     wx.navigateTo({
-      url: "../checkWarehouse/checkWarehouse?check_id=" + e.target.dataset.id.check_id + "&create_time=" + e.target.dataset.id.create_time + "&should_check_num=" + e.target.dataset.id.should_check_num + "&real_check_num=" + e.target.dataset.id.real_check_num + "&batch_id=" + e.target.dataset.id.batch_id + "&user_name=" + e.target.dataset.id.user_name,
+      url: "../moveWarehouse/moveWarehouse",
     })
   },
-  detail() {
+  check() {
     console.log("出库")
     wx.navigateTo({
       url: "../check/check",

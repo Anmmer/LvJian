@@ -360,44 +360,6 @@ Page({
         if (res.data.data.length != 0) {
           // 生产状态
           let pop_pageDate = res.data.data
-          if (wx.getStorageSync('on_or_off') == '1') {
-            pop_pageDate[0].style1 = 'display:none'
-            pop_pageDate[0].style2 = 'display:none'
-            if (pop_pageDate[0]['covert_test'] == 0) {
-              pop_pageDate[0].state = '已打印'
-            }
-            if (pop_pageDate[0]['covert_test'] == 1) {
-              pop_pageDate[0].state = '隐蔽性检验通过'
-            }
-            if (pop_pageDate[0]['covert_test'] == 2) {
-              pop_pageDate[0].style1 = 'display:block'
-              pop_pageDate[0].state = '隐蔽性未通过'
-            }
-            if (pop_pageDate[0]['pourmade'] == 1) {
-              pop_pageDate[0].state = '已浇捣'
-            }
-            if (pop_pageDate[0]['inspect'] == 1) {
-              pop_pageDate[0].state = '质检合格'
-            }
-            if (pop_pageDate[0]['inspect'] == 2) {
-              pop_pageDate[0].style2 = 'display:block'
-              pop_pageDate[0].state = '质检不合格'
-            }
-          } else {
-            if (pop_pageDate[0]['pourmade'] === 0 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '待浇捣'
-            }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '浇捣完成'
-              that.data.disabled = 'disabled'
-            }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 0) {
-              pop_pageDate[0].state = '待质检'
-            }
-            if (pop_pageDate[0]['pourmade'] === 1 && pop_pageDate[0]['inspect'] === 1) {
-              pop_pageDate[0].state = '质检完成'
-            }
-          }
           that.data.warehouseInfo.stock_status = pop_pageDate[0].stock_status === '0' ? '待入库' : '已入库'
           that.setData({
             dataArray: pop_pageDate,

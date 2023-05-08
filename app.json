@@ -64,7 +64,8 @@
     "pages/moveWarehouseQuery/moveWarehouseQuery",
     "pages/warehouseQuery/warehouseQuery",
     "pages/checkWarehouseQuery/checkWarehouseQuery",
-    "pages/addCheckWarehouse/addCheckWarehouse"
+    "pages/addCheckWarehouse/addCheckWarehouse",
+    "pages/leakCheck/leakCheck"
   ],
   "window": {
     "backgroundTextStyle": "light",
