@@ -1,4 +1,5 @@
 // pages/produce/produce.js
+import utils from "../../utils/util"
 Page({
 
   /**
@@ -10,10 +11,27 @@ Page({
     startDate: '',
     endDate: '',
     pour_list: [],
+    currentDate1: new Date().getTime(), // 初始日期 // 时间戳补 3 位
+    currentDate2: new Date().getTime(), // 初始日期 // 时间戳补 3 位
     pourMadeNumber: 0,
+    show1: false,
+    show2: false,
     pageAll: 0,
     pageCur: 1,
-    pageMax: 10
+    pageMax: 10,
+    start_date: '',
+    end_date: '',
+    // 时间 - 显示赋值
+    formatter(type, value) {
+      if (type === 'year') {
+        return `${value} 年 `;
+      } else if (type === 'month') {
+        return `${value} 月 `;
+      } else if (type === 'day') {
+        return `${value} 日 `;
+      }
+      return value;
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -86,6 +104,94 @@ Page({
     wx.navigateTo({
       url: "../leakCheck/leakCheck?check_id=" + e.target.dataset.id.check_id + '&create_time=' + e.target.dataset.id.create_time + '&path=' + e.target.dataset.id.path + '&planname=' + e.target.dataset.id.planname + '&build_type=' + e.target.dataset.id.build_type
     })
+  },
+  // 时间 - 当值变化时触发的事件 start
+  onInput1(event) {
+    var newTime = new Date(event.detail);
+    if (this.data.show == 0) {
+      newTime = null;
+    } else {
+      newTime = utils.formatTime(newTime);
+    }
+    this.setData({
+      currentDate: event.detail,
+    });
+  },
+  // 时间 - 当值变化时触发的事件 end
+  onInput2(event) {
+    var etime = event.detail + (86400 - 1) * 1000;
+    var newTime = new Date(etime);
+    if (this.data.show2 == false) {
+      newTime = null;
+    } else {
+      newTime = utils.formatTime(newTime);
+    }
+    this.setData({
+      currentDate2: event.detail,
+    });
+  },
+  // 时间 - 弹出框
+  showPopup1() {
+    this.setData({
+      key1: 1
+    });
+    this.setData({
+      show1: true
+    });
+  },
+  // 时间 - 弹出框
+  showPopup2() {
+    this.setData({
+      key2: 1
+    });
+    this.setData({
+      show2: true
+    });
+  },
+  // 时间 - 弹出框关闭
+  onClose() {
+    this.setData({
+      show1: false
+    });
+    this.setData({
+      show2: false
+    });
+  },
+  // 时间 - 确定按钮
+  confirmFn1(e) {
+    var newTime = new Date(e.detail);
+    newTime = utils.formatTime(newTime);
+    this.setData({
+      start_date: newTime
+    });
+    this.setData({
+      show1: false
+    });
+  },
+  onChange(event) {
+    this.setData({
+      checked: event.detail
+    });
+  },
+  // 时间 - 确定按钮
+  confirmFn2(e) {
+    var newTime = new Date(e.detail);
+    newTime = utils.formatTime(newTime);
+    this.setData({
+      end_date: newTime
+    });
+    this.setData({
+      show2: false
+    });
+  },
+  // 时间 - 取消按钮
+  cancelFn() {
+    this.setData({
+      show1: false
+    });
+    this.setData({
+      show2: false
+    });
   },
 
   setNavigation() {

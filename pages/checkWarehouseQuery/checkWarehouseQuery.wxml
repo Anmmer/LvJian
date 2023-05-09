@@ -12,10 +12,10 @@
         <van-cell-group>
           <!-- <van-field label="线别" name="line" placeholder="请输入线别" /> -->
           <!-- <van-field label="物料编码" name="materialcode" placeholder="请输入物料编码" /> -->
-          <van-field label="计划批号" name="batch_id" placeholder="请输入物料名称" />
-          <van-field label="制单人" name="user_name" placeholder="请输入物料名称" />
-          <van-field label="开始时间" name="startDate" placeholder="请输入物料名称" />
-          <van-field label="结束日期" name="endDate" placeholder="请输入楼栋" />
+          <van-field label="计划批号" name="batch_id" placeholder="请输入批次号" />
+          <van-field label="制单人" name="user_name" placeholder="请输入制单人" />
+          <van-field label="开始日期" name="startDate" placeholder="点击选择日期" readonly="true" bindtap="showPopup1" value="{{start_date}}" />
+          <van-field label="结束日期" name="endDate" placeholder="点击选择日期" readonly="true" bindtap="showPopup2" value="{{end_date}}" />
 
         </van-cell-group>
         <vie style="display: flex;">
@@ -44,8 +44,21 @@
         </view>
       </scroll-view>
       <!-- </view> -->
-      <van-popup position="bottom" show="{{ show2 }}">
+      <!-- <van-popup position="bottom" show="{{ show2 }}">
         <van-picker show-toolbar title="库位信息" id="factory" columns="{{ items }}" bind:cancel="onCancel" bind:change="change" bind:confirm="onConfirm1" />
+      </van-popup> -->
+      <!--start 时间选择 -->
+      <van-popup show="{{ show1 }}" bind:close="onClose" position="bottom">
+        <view>
+          <van-datetime-picker type="date" value="{{ currentDate1 }}" bind:input="onInput1" formatter="{{ formatter }}" bind:confirm="confirmFn1" bind:cancel="cancelFn" />
+        </view>
+      </van-popup>
+      <!-- 时间选择 -->
+      <!--end 时间选择 -->
+      <van-popup show="{{ show2 }}" bind:close="onClose" position="bottom">
+        <view>
+          <van-datetime-picker type="date" value="{{ currentDate2 }}" bind:input="onInput2" formatter="{{ formatter }}" bind:confirm="confirmFn2" bind:cancel="cancelFn" />
+        </view>
       </van-popup>
 
       <van-toast id="van-toast" />

@@ -19,10 +19,15 @@
       <!--构件生产情况-->
       <van-panel title="构件生产情况">
         <view style="height:auto;overflow-y:auto; width: 90%;margin: 0 auto; " wx:for="{{dataArray}}" wx:key="dataArray">
-          <view>浇捣状态：{{item.pourmade}}</view>
+          <!-- <view>浇捣状态：{{item.pourmade}}</view> -->
+          <view wx:if="{{item.pourmade === 0}}">浇捣状态：未开始</view>
+          <view wx:if="{{item.pourmade === 1}}">浇捣状态：已完成</view>
           <view>浇捣日期：{{item.pourtime||''}}</view>
           <view>浇捣人：{{item.pourmade_user||''}}</view>
-          <view>质检状态：{{item.inspect}}</view>
+          <!-- <view>质检状态：{{item.inspect}}</view> -->
+          <view wx:if="{{item.inspect === 0}}">质检状态：未开始</view>
+          <view wx:if="{{item.inspect === 1}}">质检状态：质检合格</view>
+          <view wx:if="{{item.inspect === 2}}">质检状态：质检不合格</view>
           <view>质检日期：{{item.checktime||''}}</view>
           <view>质检人：{{item.inspect_user||''}}</view>
           <!-- <view style="{{item.style1}}">隐蔽检验不合格原因：{{item.covert_test_failure_reason}}</view>
