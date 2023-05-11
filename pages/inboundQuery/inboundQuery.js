@@ -332,7 +332,7 @@ Page({
   },
   jiaodao() {
     wx.navigateTo({
-      url: "../inbound/inbound",
+      url: "../inbound/inbound?factory_id=" + (this.data.factory_id || '') + "&path=" + this.data.path,
     })
   },
   check() {

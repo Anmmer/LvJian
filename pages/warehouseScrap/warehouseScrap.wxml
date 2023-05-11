@@ -7,27 +7,56 @@
   </view>
   <view style="margin-top:{{startBarHeight+navgationHeight+10}}px;height: 85%;">
     <view class="mid" style="height: 100%;">
+      <view class="tiaomu1"> <text class="mark">|</text> 查询条件</view>
+      <form bindsubmit="inspectData">
+        <van-cell-group>
+          <van-field label="物料名称" name="materialname" placeholder="请输入物料名称" />
+          <van-field label="图号" name="drawing_no" placeholder="请输入图号" />
+          <van-field label="项目名称" name="planname" placeholder="请输入项目名称" />
+        </van-cell-group>
+        <vie style="display: flex;">
+          <button form-type="submit" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">查询</button>
+          <button bindtap="jiaodao1" style="background-color: #1989fa;margin-top: 20rpx;height: 60rpx;width: 300rpx;font-size:25rpx;text-align: center;line-height: 30rpx;" type="primary">扫码报废</button>
+        </vie>
+
+      </form>
       <view class="tiaomu1"> <text class="mark">|</text> 报废库</view>
       <text class="daipan">报废库数量：{{checkNumber}}\n</text>
       <text class="daipan">报废库明细：</text>
-      <scroll-view scroll-y="true" style="height: 82%;" bindscrolltolower="inspectDataPages">
-        <view style="width: 95%;margin: 0 auto;padding: 10rpx 0;" wx:for="{{inspect_list}}" wx:key="inspect_list">
-          <view>物料编码：{{item.materialcode}} </view>
-          <view>物料名称：{{item.materialname}} </view>
-          <view>构 件 号：{{item.preproductid}}</view>
-          <view>报废库地址：{{item.scrap_library}}</view>
-          <view>不合格原因：{{item.failure_reason}}</view>
-          <view>备 注 ：{{item.scrap_remark}}</view>
+      <scroll-view scroll-y="true" style="height: 60%;" bindscrolltolower="inspectDataPages">
+        <view style="width: 95%;margin: 0 auto;padding: 10rpx 0;display: flex;justify-content: space-between;" wx:for="{{inspect_list}}" wx:key="inspect_list">
+          <view>
+            <view>物料名称：{{item.materialname}} </view>
+            <view>图号：{{item.preproductid}}</view>
+            <view>修补库地址：{{item.patch_library}}</view>
+            <view>不合格原因：{{item.failure_reason}}</view>
+            <view>备 注 ：{{item.inspect_remark}}</view>
+          </view>
+          <view style="display: flex;flex-direction: column;justify-content: center;">
+            <button style="padding: 15rpx 10rpx;width: 150rpx;font-size: 25rpx;line-height: 20rpx;background-color: #1989fa;color: #fff;" data-id="{{item.materialcode}}" bindtap="submitAll">报废</button>
+          </view>
           <text>\n</text>
         </view>
       </scroll-view>
+      <van-popup custom-style="border-radius: 20rpx" show="{{ success_show }}" bind:close="successOnClose">
+        <view style="margin:20rpx;display: flex;flex-direction: column;align-items: center;border-radius: 10rpx;">
+          <van-icon name="passed" size="10rem" color="#07c160" />
+          <view>操作成功</view>
+        </view>
+      </van-popup>
+      <van-popup custom-style="border-radius: 20rpx" show="{{ fail_show }}" bind:close="failOnClose">
+        <view style="margin:20rpx;display: flex;flex-direction: column;align-items: center;border-radius: 10rpx;">
+          <van-icon name="close" size="10rem" color="#f10c0c" />
+          <view>操作失败</view>
+        </view>
+      </van-popup>
       <view style="display: flex; position: absolute; bottom: 40rpx; width: 94%;">
-        <view class="functionItem4" bindtap="jiaodao1">
+        <!-- <view class="functionItem4" bindtap="jiaodao1">
           <text class="main">报废</text>
-        </view>
-        <view class="functionItem4" bindtap="jiaodao2">
+        </view> -->
+        <!-- <view class="functionItem4" bindtap="jiaodao2">
           <text class="main">入库</text>
-        </view>
+        </view> -->
       </view>
     </view>
   </view>

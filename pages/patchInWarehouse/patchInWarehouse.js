@@ -135,6 +135,14 @@ Page({
   },
   submitAll(event) {
     var that = this
+    if(!this.data.patch_library){
+      wx.showToast({
+        title: '地址不能为空',
+        icon: 'none',
+        duration: 1000
+      })
+      return
+    }
     // 提交并清空
     if (this.data.products.length != 0) {
       let arr = []

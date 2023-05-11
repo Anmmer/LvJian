@@ -200,17 +200,14 @@ Page({
         },
         success(res) {
           // 清空所有
-          if (res.data.message) {
-            Toast.success(res.data.message);
-          }
           if (res.data.flag) {
             that.setData({
               success_show: true,
               products: [],
-       
               warehouse_name: ""
             })
           } else {
+            Toast.success(res.data.message);
             that.setData({
               fail_show: true
             })

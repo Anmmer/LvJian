@@ -7,7 +7,7 @@
   </view>
   <view style="margin-top:{{startBarHeight+navgationHeight+10}}px;height: 83%;">
     <view class="mid" style="height: 100%;">
-      <view class="tiaomu1"> <text class="mark">|</text> 库存信息查询</view>
+      <view class="tiaomu1"> <text class="mark">|</text> 查询条件</view>
       <form bindsubmit="inspectData">
         <van-cell-group>
           <van-field label="物料名称" name="materialname" placeholder="请输入物料名称" />

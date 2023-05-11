@@ -116,7 +116,7 @@ Page({
     if (this.data.materialcode == null || this.data.materialcode == '') {
       // 没有materialcode
       wx.showToast({
-        title: '请先扫描一个未完工构件的二维码!',
+        title: '请扫描构件二维码!',
         icon: 'none',
         duration: 1000
       })

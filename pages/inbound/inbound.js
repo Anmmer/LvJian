@@ -344,11 +344,18 @@ Page({
    */
   onLoad: function (options) {
     this.setNavigation();
-    wx.showToast({
-      title: '请先扫描库房二维码',
-      icon: 'none',
-      duration: 2500
+    console.log(options)
+    this.setData({
+      path: options.path,
+      warehouse_id: options.factory_id
     })
+    if (!this.data.warehouse_id) {
+      wx.showToast({
+        title: '请先扫描库房二维码',
+        icon: 'none',
+        duration: 2500
+      })
+    }
     this.getInWarehouseMethod()
   },
 
